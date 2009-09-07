@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+	>
+
+	<bean id="sendSmsManager"
+		class="org.esupportail.smsuapi.business.SendSmsManager">
+		<description>The business layer concerning the sending.</description>
+		<property name="daoService" ref="daoService" />
+		<property name="smsSender" ref="smsSenderOlmImpl" />
+		<property name="schedulerUtils" ref="schedulerUtils"/>
+		<property name="clientManager" ref="clientManager"/>
+	</bean>
+
+	<bean id="sendSmsThirdManager"
+		class="org.esupportail.smsuapi.business.SendSmsThirdManager">
+		<description>The business layer concerning the sending.</description>
+		<property name="daoService" ref="daoService" />
+		<property name="smsSender" ref="smsSenderOlmImpl" />
+		<property name="schedulerUtils" ref="schedulerUtils"/>
+		<property name="clientManager" ref="clientManager"/>
+	</bean>
+	
+	
+	<bean id="statisticBuilder"
+		class="org.esupportail.smsuapi.business.stats.StatisticBuilder">
+		<property name="daoService" ref="daoService"/>
+	</bean>
+	
+	<bean id="blackListManager"
+		class="org.esupportail.smsuapi.business.BlackListManager">
+		<property name="daoService" ref="daoService"/>
+	</bean>
+	
+	<bean id="reportingManager"
+		class="org.esupportail.smsuapi.business.ReportingManager">
+		<property name="daoService" ref="daoService"/>
+		<property name="clientManager" ref="clientManager"/>
+	</bean>
+	
+	<bean id="clientManager"
+		class="org.esupportail.smsuapi.business.ClientManager">
+		<property name="subjectDNRegex" value="^.*CN=([^,]*).*$" />
+		<property name="daoService" ref="daoService"/>
+	</bean>
+	
+	<bean id="purgeSms"
+		class="org.esupportail.smsuapi.business.purge.PurgeSms">
+		<property name="seniorityDay">
+			<value type="int">${purge.sms.seniorityDay}</value>
+		</property>
+		<property name="daoService" ref="daoService"/>
+	</bean>
+	
+	<bean id="purgeStatistic"
+		class="org.esupportail.smsuapi.business.purge.PurgeStatistic">
+		<property name="seniorityDay">
+			<value type="int">${purge.statistic.seniorityDay}</value>
+		</property>
+		<property name="daoService" ref="daoService"/>
+	</bean>
+	
+</beans>

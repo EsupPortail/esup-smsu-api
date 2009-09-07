@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 
+		/properties/sms/sms.xml
+		The configuration file for sms services.
+		This file is referenced by /properties/applicationContext.xml.
+	-->
+
+	<bean id="smsSenderOlmImpl"
+		class="org.esupportail.smsuapi.services.sms.impl.olm.SMSSenderOlmImpl">
+		<description>
+			Olm implementation of the broker, this class manage the sms sending
+		</description>
+		<property name="olmConnector" ref="olmConnector"/>
+		<property name="simulateMessageSending">
+			<value type="boolean">${sms.connector.simulateSending}</value>
+		</property>
+	</bean>
+	
+
+	<bean id="olmConnector"
+		class="org.esupportail.smsuapi.services.sms.impl.olm.OlmConnector">
+		<description>
+			Olm connector wrapper. This class is used to wrap the olm broker connector and
+			make it usable with spring.			
+		</description>
+		<property name="olmAckManger" ref="olmAckManager"/>
+		<property name="errorManager" ref="oldErrorManager"/>
+		<property name="connectorName" value="${sms.connector.olm.name}"/>
+		<property name="olmConnectorPropertyFile" value="${sms.connector.olm.propertyFile}"/>
+	</bean>
+
+	<bean id="oldErrorManager"
+		class="org.esupportail.smsuapi.services.sms.impl.olm.OlmErrorManager">
+		<description>
+			olm error and warning listener. it logs errors and warning sent by the libmgs
+		</description>
+	</bean>
+
+	<bean id="olmAckManager"
+		class="org.esupportail.smsuapi.services.sms.impl.olm.OlmAckManager">
+		<description>
+			olm ack manager. It convert the olm ack into ack usable by api-smsu
+		</description>
+		<property name="ackManager" ref="ackManager"/>
+		<property name="olmSentStatusCode"> 
+			<value type="int">${sms.connector.olm.olmSentStatusCode}</value>
+		</property>
+		<property name="olmErrorStatusCode">
+			<value type="int">${sms.connector.olm.olmErrorStatusCode}</value>
+		</property>
+		<property name="olmInvalidMSISDNCauseCode">
+			<value type="int">${sms.connector.olm.olmInvalidMSISDNCauseCode}</value>
+		</property>
+	</bean>
+
+
+	<bean id="ackManager"
+		class="org.esupportail.smsuapi.services.sms.ackmanagement.AckManager">
+		<description>
+			olm ack manager. It convert the olm ack into ack usable by api-smsu
+		</description>
+	</bean>
+
+	
+	<bean id="ackManagerBusiness"
+		class="org.esupportail.smsuapi.services.sms.ackmanagement.AckManagerBusiness">
+		<description>
+			It is the business layer of ack managment. It manages the ack whatever the broker.
+		</description>
+		<property name="daoService" ref="daoService"/>
+	</bean>
+</beans>
