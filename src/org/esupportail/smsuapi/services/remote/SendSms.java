@@ -17,7 +17,11 @@ public interface SendSms extends Serializable {
 
 	/**
 	 * check Quota. 
+	 * @param nbDest 
+	 * @param labelAccount 
 	 * @return true or false.
+	 * @throws UnknownIdentifierApplicationException 
+	 * @throws InsufficientQuotaException 
 	 */
 	Boolean isQuotaOk(Integer nbDest, String labelAccount)
 	throws UnknownIdentifierApplicationException, 
@@ -25,6 +29,13 @@ public interface SendSms extends Serializable {
 	
 	/**
 	 * send SMS.
+	 * @param msgId 
+	 * @param perId 
+	 * @param bgrId 
+	 * @param svcId 
+	 * @param smsPhone 
+	 * @param labelAccount 
+	 * @param msgContent 
 	 */
 	void sendSMS(Integer msgId, Integer perId, Integer bgrId, Integer svcId, 
 			String smsPhone, String labelAccount, String msgContent);

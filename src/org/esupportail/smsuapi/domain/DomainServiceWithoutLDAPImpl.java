@@ -69,12 +69,12 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * {@link SendSmsThirdManager}.
 	 */
 	private SendSmsThirdManager sendSmsThirdManager;
-	
+
 	/**
 	 * {@link BlackListManager}.
 	 */
 	private BlackListManager blackListManager;
-	
+
 	/**
 	 * {@link ReportingManager}.
 	 */
@@ -84,7 +84,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 *  {@link ClientManager}.
 	 */
 	private ClientManager clientManager;
-	
+
 	/**
 	 * A logger.
 	 */
@@ -299,12 +299,12 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * @throws UnknownIdentifierApplicationException 
 	 */
 	public int getNbDest(final Integer msgId) 
-				throws UnknownIdentifierMessageException, UnknownIdentifierApplicationException {
+	throws UnknownIdentifierMessageException, UnknownIdentifierApplicationException {
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 		// Application app = daoService.getApplicationByName(clientName);
 		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
+			throw new UnknownIdentifierApplicationException("Unknown application : " + clientName);
 		} else {
 			if (daoService.getNbDest(msgId, app) == 0) {
 				throw new UnknownIdentifierMessageException("Unknown message");
@@ -364,7 +364,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 			throw new UnknownIdentifierApplicationException("Unknown application");
 		} else { return daoService.getNbProgressSMS(msgId, app); }
 	}
-	
+
 	/**
 	 * @return the number of SMS in error.
 	 * @throws UnknownIdentifierApplicationException 
@@ -383,9 +383,9 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
 		} else { return daoService.getNbErrorSMS(msgId, app, list); }
-	
+
 	}
-	
+
 	/**
 	 * @return the number of SMS in error.
 	 */
@@ -396,28 +396,28 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
-		
+
 		Set<String> nums = new HashSet<String>();
 		List<Sms> smslist = new ArrayList<Sms>();
-		
+
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 		//Application app = daoService.getApplicationByName(clientName);
-		
-		 if (app != null) {
-		// Retrieve list of phones numbers 	
-		smslist = daoService.getListNumErreur(msgId, app, list);
-		Iterator<Sms> iter = smslist.iterator();
-	    while (iter.hasNext()) {
-	    	// add phone number to nums Set
-	    	Sms sms = (Sms) iter.next();
-	    	nums.add(sms.getPhone());
-	    	}
-		 }
-		
+
+		if (app != null) {
+			// Retrieve list of phones numbers 	
+			smslist = daoService.getListNumErreur(msgId, app, list);
+			Iterator<Sms> iter = smslist.iterator();
+			while (iter.hasNext()) {
+				// add phone number to nums Set
+				Sms sms = (Sms) iter.next();
+				nums.add(sms.getPhone());
+			}
+		}
+
 		return nums;
 	}
-	
+
 	//////////////////////////////////////////////////////////////
 	// WS SendSms methods
 	//////////////////////////////////////////////////////////////
@@ -425,21 +425,29 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
 	public Boolean isQuotaOk(final Integer nbDest, final String labelAccount) 
-			throws UnknownIdentifierApplicationException, 
-									InsufficientQuotaException {
+	throws UnknownIdentifierApplicationException, 
+	InsufficientQuotaException {
 		Boolean retVal = sendSmsManager.isQuotaOk(nbDest, labelAccount);
 		return retVal;
 	}
-	
+
 	/**
+	 * @param msgId 
+	 * @param perId 
+	 * @param bgrId 
+	 * @param svcId 
+	 * @param smsPhone 
+	 * @param labelAccount 
+	 * @param msgContent 
+	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
 	public void sendSMS(final Integer msgId, final Integer perId, final Integer bgrId, 
 			final Integer svcId, final String smsPhone, 
 			final String labelAccount, final String msgContent) {
-        sendSmsManager.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);	
+		sendSmsManager.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);	
 	}
-	
+
 	//////////////////////////////////////////////////////////////
 	// WS SendSmsThird methods
 	//////////////////////////////////////////////////////////////
@@ -448,13 +456,13 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
 	public void sendSMSByThird(final List<String> smsPhoneList, final String msgContent, final int msgId)
-						throws UnknownIdentifierApplicationException, 
-						InsufficientQuotaException {
-	
+	throws UnknownIdentifierApplicationException, 
+	InsufficientQuotaException {
+
 		sendSmsThirdManager.sendSMSByThird(smsPhoneList, msgContent, msgId);
 	}
-		
-	
+
+
 	//////////////////////////////////////////////////////////////
 	// WS Blacklist methods
 	//////////////////////////////////////////////////////////////
@@ -470,12 +478,12 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		Boolean retVal = blackListManager.isPhoneNumberInBlackList(phoneNumber); 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Response return in domaineService for : " 
-						 + phoneNumber + " is : " + retVal);
+					+ phoneNumber + " is : " + retVal);
 		}
-		
+
 		return retVal;
 	}
-	
+
 	/**
 	 * Test if a phone number is already in the black list.
 	 * @param phoneNumber
@@ -486,22 +494,22 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 			logger.debug("Request in domainService for ListPhoneNumbersInBlackList");
 		}
 		Set<String> listPhoneNumbersInBlackList = blackListManager.getListPhoneNumbersInBlackList();
-		 
-		 if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(500);
-				sb.append("Response in domainService for ListPhoneNumbersInBlackList :");
-				Iterator<String> iter = listPhoneNumbersInBlackList.iterator();
-				while (iter.hasNext()) {
+
+		if (logger.isDebugEnabled()) {
+			final StringBuilder sb = new StringBuilder(500);
+			sb.append("Response in domainService for ListPhoneNumbersInBlackList :");
+			Iterator<String> iter = listPhoneNumbersInBlackList.iterator();
+			while (iter.hasNext()) {
 				sb.append(" - phone number in blacklist = ").append(iter.next());	
-				}
-				logger.debug(sb.toString());
 			}
+			logger.debug(sb.toString());
+		}
 		return listPhoneNumbersInBlackList;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * @see org.esupportail.smsuapi.domain.DomainService#getApplicationByName(java.lang.String)
 	 */
@@ -519,11 +527,11 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * @param year
 	 */
 	public ReportingInfos getStats(final int month, final int year) 
-			throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
+	throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
 		ReportingInfos reportingInfos = reportingManager.getStats(month, year);
-		   return reportingInfos;
+		return reportingInfos;
 	}
-	
+
 	/**
 	 * @see org.esupportail.smsuapi.domain.DomainService#testConnexion()
 	 */
@@ -531,7 +539,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 
 		String sReturn = "Application reconnue : ";
 		String application = clientManager.getClientName();
-		
+
 		return sReturn + application;
 	}
 
@@ -545,11 +553,11 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	public void setSendSmsThirdManager(final SendSmsThirdManager sendSmsThirdManager) {
 		this.sendSmsThirdManager = sendSmsThirdManager;
 	}
-	
+
 	public void setBlackListManager(final BlackListManager blackListManager) {
 		this.blackListManager = blackListManager;
 	}
-	
+
 	public void setReportingManager(final ReportingManager reportingManager) {
 		this.reportingManager = reportingManager;
 	}
@@ -557,5 +565,5 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	public void setClientManager(final ClientManager clientManager) {
 		this.clientManager = clientManager;
 	}
-	
+
 }

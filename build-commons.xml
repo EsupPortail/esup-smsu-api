@@ -8,7 +8,7 @@
 		</condition>
 	</fail>
 
-	<property name="commons.version" value="1.3.2" />
+	<property name="commons.version" value="1.3.4" />
 	<property name="commons.repository.path-prefix" value="http://sourcesup.cru.fr/cgi/viewvc.cgi/tags/${commons.version}/esup-commons" />
 	<property name="commons.repository.path-suffix" value="?root=esup-commons&amp;view=co" />
 	<property name="commons.repository.libs" value="
@@ -34,7 +34,7 @@
 		commons-validator-1.3.1.jar
 		dom4j-1.6.1.jar
 		ehcache-1.2.1.jar
-		esup-uportal-ws-client.jar
+		esup-uportal-ws-client-20071207.jar
 		fck-faces-1.7.26.jar
 		hibernate-3.3.1.ga.jar
 		icu4j-3_8_1.jar
@@ -114,8 +114,6 @@
 	<property name="webapp.config" value="${webapp.dir}/WEB-INF/web.xml"/>
 	<property name="portlet.config" value="${webapp.dir}/WEB-INF/portlet.xml"/>
 
-	<property name="apiutils.dir" value="${basedir}/utils"/>
-	
 	<path id="batch.classpath">
 		<fileset dir="${utils.dir}/lib" includes="**/*.jar" />
 		<fileset dir="${build.dir}/WEB-INF/lib" includes="**/*.jar" />
@@ -500,7 +498,7 @@
 				<copy todir="${tomcat.home}/common/lib" >
 					<fileset dir="${utils.dir}/tomcat/quick-start-lib" includes="*.jar" />
 				</copy>
-				<copy file="${apiutils.dir}/tomcat/server.xml" tofile="${tomcat.home}/conf/server.xml" overwrite="true">
+				<copy file="${utils.dir}/tomcat/server.xml" tofile="${tomcat.home}/conf/server.xml" overwrite="true">
 					<filterchain>
 						<expandproperties/>
 					</filterchain>
@@ -740,6 +738,7 @@
 						<echo>up to date.</echo>
 					</then>
 				</if>
+<!--
 				<echo>checking ${app.name} libs...</echo>
 				<if>
 					<not>
@@ -767,6 +766,7 @@
 				</if>
 				<touch file="${lib.dir}/.${app.name}.ok" />
 				<echo>up to date.</echo>
+-->
 			</then>
 		</if>
 	</target>

@@ -19,7 +19,7 @@ import org.esupportail.smsuapi.services.sms.ISMSSender;
  *
  */
 public class SendSmsManager {
-	
+
 	/**
 	 * Log4j logger.
 	 */
@@ -30,22 +30,22 @@ public class SendSmsManager {
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
-	
+
 	/**
 	 * {@link ISMSSender}.
 	 */
 	private ISMSSender smsSender;
-	
+
 	/**
 	 * Used to launch task.
 	 */
 	private SchedulerUtils schedulerUtils;
-	
+
 	/**
 	 *  {@link ClientManager}.
 	 */
 	private ClientManager clientManager;
-	
+
 	//////////////////////////////////////////////////////////////
 	// Constructeur
 	//////////////////////////////////////////////////////////////
@@ -55,64 +55,84 @@ public class SendSmsManager {
 	public SendSmsManager() {
 		super();
 	}
-	
+
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
 	public Boolean isQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
-		
+
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 		//Application app = daoService.getApplicationByName(clientName);
 		long quotaAcc = 0;
 		long quotaApp = 0;
 		Boolean retVal = false;
-		
+
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
 		} else {
-		Account acc = daoService.getAccByLabel(labelAccount);
-		if (acc == null) { 
-			// - créer nouveau account
-			Account newacc = new Account();
-			newacc.addToApplications(app);
-			newacc.setLabel(labelAccount);
-			newacc.setQuota((long) 0);
-			newacc.setConsumedSms((long) 0);
-			daoService.addAccount(newacc);
-			throw new InsufficientQuotaException("Quota error");
-		} else {
-			quotaAcc = acc.getQuota() - acc.getConsumedSms();
+			Account acc = daoService.getAccByLabel(labelAccount);
+			if (acc == null) { 
+				// - créer nouveau account
+				Account newacc = new Account();
+				newacc.addToApplications(app);
+				newacc.setLabel(labelAccount);
+				newacc.setQuota((long) 0);
+				newacc.setConsumedSms((long) 0);
+				daoService.addAccount(newacc);
+				throw new InsufficientQuotaException("Quota error");
+			} else {
+				quotaAcc = acc.getQuota() - acc.getConsumedSms();
 				if (quotaAcc > nbDest) { 
-					 quotaApp = app.getQuota() - app.getConsumedSms();
-					 if (quotaApp > nbDest) {
-					retVal = true;
-					 } else {
+					quotaApp = app.getQuota() - app.getConsumedSms();
+					if (quotaApp > nbDest) {
+						retVal = true;
+					} else {
 						throw new InsufficientQuotaException("Quota error");
 					}
 				} else {
 					throw new InsufficientQuotaException("Quota error");
 				}
-		  }
+			}
 		}
 		return retVal;
 	}
 
 	/**
+	 * @param msgId 
+	 * @param perId 
+	 * @param bgrId 
+	 * @param svcId 
+	 * @param smsPhone 
+	 * @param labelAccount 
+	 * @param msgContent 
+	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
 	public void sendSMS(final Integer msgId, final Integer perId, final Integer bgrId, 
-				final Integer svcId, final String smsPhone, 
-				final String labelAccount, final String msgContent) {
-		SMSBroker smsMessage = saveSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
-		// TO DE-COMMENT
-		if (smsMessage != null) { 
-			// launch the task witch manage the sms sending
-			schedulerUtils.launchSuperviseSmsSending(smsMessage);
-			//smsSender.sendMessage(smsMessage); 
+			final Integer svcId, final String smsPhone, 
+			final String labelAccount, final String msgContent) {
+
+		String clientName = clientManager.getClientName();
+		Application app = clientManager.getApplicationByCertificateCN(clientName);
+
+		if (app == null) { 
+			StringBuffer sb = new StringBuffer();
+			sb.append("An unknown application tries to send a SMS : [");
+			sb.append(clientName);
+			sb.append("]");
+			logger.error(sb.toString());
+		} else {
+			SMSBroker smsMessage = saveSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
+			// TO DE-COMMENT
+			if (smsMessage != null) { 
+				// launch the task witch manage the sms sending
+				schedulerUtils.launchSuperviseSmsSending(smsMessage);
+				//smsSender.sendMessage(smsMessage); 
 			}
+		}
 	}
 
 
@@ -122,16 +142,16 @@ public class SendSmsManager {
 	private SMSBroker saveSMS(final Integer msgId, final Integer perId, final Integer bgrId, 
 			final Integer svcId, final String smsPhone, 
 			final String labelAccount, final String msgContent) {
-	
+
 		long quotaAcc = 0;
 		long quotaApp = 0;
 		Boolean retVal = false;
-	
+
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 		// Application app = daoService.getApplicationByName(clientName);
 		SMSBroker smsMessage;
-		
+
 		// Pour la validation de l'adhésion
 		Account acc = daoService.getAccByLabel(labelAccount);
 		if (acc == null) { 
@@ -145,14 +165,14 @@ public class SendSmsManager {
 		} else {
 			quotaAcc = acc.getQuota() - acc.getConsumedSms();
 			if (quotaAcc > 0) { 
-				 quotaApp = app.getQuota() - app.getConsumedSms();
-				 if (quotaApp > 0) {
-				retVal = true;
-				 } else {
-					 retVal = false;
+				quotaApp = app.getQuota() - app.getConsumedSms();
+				if (quotaApp > 0) {
+					retVal = true;
+				} else {
+					retVal = false;
 				}
 			} else {
-				 	 retVal = false;
+				retVal = false;
 			}
 		}
 		if (retVal)	{
@@ -219,7 +239,7 @@ public class SendSmsManager {
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////
-	
+
 	/**
 	 * @param daoService the daoService to set
 	 */
@@ -238,7 +258,7 @@ public class SendSmsManager {
 	public void setSchedulerUtils(final SchedulerUtils schedulerUtils) {
 		this.schedulerUtils = schedulerUtils;
 	}
-	
+
 	/**
 	 * @param clientManager
 	 */

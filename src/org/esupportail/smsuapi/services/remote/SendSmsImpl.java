@@ -79,6 +79,7 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 
 
 	/**
+	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#sendSMS(java.lang.Integer, 
 	 * java.lang.Integer, 
 	 * java.lang.Integer, 

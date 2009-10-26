@@ -178,6 +178,7 @@ public interface DomainService extends Serializable {
 	 * @param smsPhone 
 	 * @param labelAccount 
 	 * @param msgContent 
+	 * @throws UnknownIdentifierApplicationException 
 	 */
 	void sendSMS(Integer msgId, Integer perId, 
 			Integer bgrId, Integer svcId, 
