@@ -10,12 +10,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import org.esupportail.commons.dao.AbstractJdbcJndiHibernateDaoService;
 import org.esupportail.commons.dao.HibernateFixedQueryPaginator;
 import org.esupportail.commons.dao.HqlUtils;
 import org.esupportail.commons.services.application.UninitializedDatabaseException;
 import org.esupportail.commons.services.application.VersionningUtils;
+import org.esupportail.commons.services.logging.Logger;
+import org.esupportail.commons.services.logging.LoggerImpl;
 //import org.esupportail.commons.services.logging.Logger;
 //import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.web.beans.Paginator;
@@ -30,6 +33,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -49,6 +53,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	 */
 	private static final long serialVersionUID = 3152554337896617315L;
 
+	
 	/**
 	 * The name of the 'id' attribute.
 	 */
@@ -62,7 +67,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	/**
 	 * A logger.
 	 */
-	//private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = new LoggerImpl(getClass());
 	
 	/**
 	 * Bean constructor.
@@ -302,6 +307,21 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	 */
 	public Sms getSms(final int id) {
 		return (Sms) getHibernateTemplate().get(Sms.class, id);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @see org.esupportail.smsuapi.dao.DaoService#getSms(org.esupportail.smsuapi.dao.beans.Application, int, java.lang.String)
+	 */
+	public List<Sms> getSms(final Application app, final  int id, final String phoneNumber) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
+		criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID,id));
+		criteria.add(Restrictions.eq(Sms.PROP_APP,app));
+		criteria.add(Restrictions.eq(Sms.PROP_PHONE, phoneNumber));
+		List<Sms> lstSms = getHibernateTemplate().findByCriteria(criteria);
+		
+		return lstSms;
 	}
 
 	/**
@@ -631,4 +651,22 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 		final Statistic result = (Statistic) query.uniqueResult();
 		return result;
 	}
+	
+
+	public List<Map> getAppsAndCountsToTreat() {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
+		
+		criteria.setProjection(Projections.projectionList()
+				.add( Projections.distinct(Projections.projectionList()
+						.add(Projections.property(Sms.PROP_APP), Sms.PROP_APP)
+						.add(Projections.property(Sms.PROP_ACC), Sms.PROP_ACC))));
+		
+		criteria.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
+		
+		List<Map> result = getHibernateTemplate().findByCriteria(criteria); 
+		
+		return result;
+	}
+
+
 }

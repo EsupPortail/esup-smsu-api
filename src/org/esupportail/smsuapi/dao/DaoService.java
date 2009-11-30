@@ -7,6 +7,7 @@ package org.esupportail.smsuapi.dao;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.esupportail.commons.web.beans.Paginator;
 import org.esupportail.smsuapi.dao.beans.Account;
@@ -106,6 +107,15 @@ public interface DaoService extends Serializable {
 	 * Get the sms by id.
 	 */
 	Sms getSms(int id);
+	
+	/**
+	 * Get the sms by message id, application and phone number
+	 * @param app 
+	 * @param id 
+	 * @param phoneNumber 
+	 * @return the list of Sms
+	 */
+	List<Sms> getSms(Application app, int id, String phoneNumber);
 	
 	/**
 	 * @param sms
@@ -294,5 +304,5 @@ public interface DaoService extends Serializable {
 	 */
 	Statistic getStatisticByApplicationAndMonthAndYear(Application application, int month, int year);
 	
-	
+	List<Map> getAppsAndCountsToTreat();
 }

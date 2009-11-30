@@ -1,5 +1,7 @@
 package org.esupportail.smsuapi.business;
 
+import java.util.List;
+
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -149,81 +151,87 @@ public class SendSmsManager {
 
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
-		// Application app = daoService.getApplicationByName(clientName);
-		SMSBroker smsMessage;
-
-		// Pour la validation de l'adhésion
-		Account acc = daoService.getAccByLabel(labelAccount);
-		if (acc == null) { 
-			// - créer nouveau account
-			Account newacc = new Account();
-			newacc.addToApplications(app);
-			newacc.setLabel(labelAccount);
-			newacc.setQuota((long) 0);
-			newacc.setConsumedSms((long) 0);
-			daoService.addAccount(newacc);
+		// chech if the sms already exists (in case of FO problem...)
+		List<Sms> lstSms = daoService.getSms(app, msgId, smsPhone);
+		if (!lstSms.isEmpty()) {
+			logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
 		} else {
-			quotaAcc = acc.getQuota() - acc.getConsumedSms();
-			if (quotaAcc > 0) { 
-				quotaApp = app.getQuota() - app.getConsumedSms();
-				if (quotaApp > 0) {
-					retVal = true;
+			// Application app = daoService.getApplicationByName(clientName);
+			SMSBroker smsMessage;
+
+			// Pour la validation de l'adhésion
+			Account acc = daoService.getAccByLabel(labelAccount);
+			if (acc == null) { 
+				// - créer nouveau account
+				Account newacc = new Account();
+				newacc.addToApplications(app);
+				newacc.setLabel(labelAccount);
+				newacc.setQuota((long) 0);
+				newacc.setConsumedSms((long) 0);
+				daoService.addAccount(newacc);
+			} else {
+				quotaAcc = acc.getQuota() - acc.getConsumedSms();
+				if (quotaAcc > 0) { 
+					quotaApp = app.getQuota() - app.getConsumedSms();
+					if (quotaApp > 0) {
+						retVal = true;
+					} else {
+						retVal = false;
+					}
 				} else {
 					retVal = false;
 				}
-			} else {
-				retVal = false;
 			}
-		}
-		if (retVal)	{
-			if (app != null) { 
-				// retrieve account by "account_label"
-				Account account = daoService.getAccByLabel(labelAccount);
-				// - remplir la table SMS
-				Sms sms = new Sms();
-				sms.setAcc(account);
-				sms.setApp(app);
-				sms.setGrpSenderId(bgrId);
-				sms.setInitialId(msgId);
-				sms.setPhone(smsPhone);
-				sms.setSenderId(perId);
-				sms.setSvcId(svcId);
-				sms.setStateAsEnum(SmsStatus.CREATED);
-				// add sms
-				daoService.addSms(sms);
+			if (retVal)	{
+				if (app != null) { 
+					// retrieve account by "account_label"
+					Account account = daoService.getAccByLabel(labelAccount);
+					// - remplir la table SMS
+					Sms sms = new Sms();
+					sms.setAcc(account);
+					sms.setApp(app);
+					sms.setGrpSenderId(bgrId);
+					sms.setInitialId(msgId);
+					sms.setPhone(smsPhone);
+					sms.setSenderId(perId);
+					sms.setSvcId(svcId);
+					sms.setStateAsEnum(SmsStatus.CREATED);
+					// add sms
+					daoService.addSms(sms);
 
-				// - vérifier le num est backlisté ou pas 
-				int bla = daoService.getBlackLListByPhone(smsPhone);
-				// - si backlist, alors "SMS_STATE" à jour
-				if (bla != 0) {
-					// state ERROR PRE BLACKLISTE	
-					sms.setStateAsEnum(SmsStatus.ERROR_PRE_BL);
-					// update sms
-					daoService.updateSms(sms); 
-				} else {	
-					// state IN PROGRESS	
-					sms.setStateAsEnum(SmsStatus.IN_PROGRESS);
-					// update sms
-					daoService.updateSms(sms); 
-					account.setConsumedSms(account.getConsumedSms() + 1);
-					// update account
-					daoService.updateAccount(account); 
-					app.setConsumedSms(app.getConsumedSms() + 1);
-					// update application
-					daoService.updateApplication(app);
+					// - vérifier le num est backlisté ou pas 
+					int bla = daoService.getBlackLListByPhone(smsPhone);
+					// - si backlist, alors "SMS_STATE" à jour
+					if (bla != 0) {
+						// state ERROR PRE BLACKLISTE	
+						sms.setStateAsEnum(SmsStatus.ERROR_PRE_BL);
+						// update sms
+						daoService.updateSms(sms); 
+					} else {	
+						// state IN PROGRESS	
+						sms.setStateAsEnum(SmsStatus.IN_PROGRESS);
+						// update sms
+						daoService.updateSms(sms); 
+						account.setConsumedSms(account.getConsumedSms() + 1);
+						// update account
+						daoService.updateAccount(account); 
+						app.setConsumedSms(app.getConsumedSms() + 1);
+						// update application
+						daoService.updateApplication(app);
 
-					// - call send SMS
-					smsMessage = new SMSBroker();
-					smsMessage.setId(sms.getId());
-					smsMessage.setMessage(msgContent);
-					smsMessage.setRecipient(smsPhone);
-					return smsMessage;
-				}	
+						// - call send SMS
+						smsMessage = new SMSBroker();
+						smsMessage.setId(sms.getId());
+						smsMessage.setMessage(msgContent);
+						smsMessage.setRecipient(smsPhone);
+						return smsMessage;
+					}	
 
-			}
-		} else { 
-			if (logger.isDebugEnabled()) {
-				logger.warn("Error Quota, SMS de validation du compte non envoyé");
+				}
+			} else { 
+				if (logger.isDebugEnabled()) {
+					logger.warn("Error Quota, SMS de validation du compte non envoyé");
+				}
 			}
 		}
 		return null;
