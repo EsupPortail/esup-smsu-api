@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
+import org.apache.commons.lang.CharSet;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
@@ -55,7 +56,12 @@ public class SMSSenderOlmImpl implements ISMSSender {
 		}
 		
 		try {
-			final SMText smText = RequestFactory.createSMText(smsId, smsRecipient, smsMessge);
+			final String messageISOLatin = new String(smsMessge.getBytes(),"ISO-8859-1");
+			if (logger.isDebugEnabled()) {
+				logger.debug("sending encoded message : " + messageISOLatin);
+			}
+
+			final SMText smText = RequestFactory.createSMText(smsId, smsRecipient, messageISOLatin);
 			smText.setNotificationLevel(NOTIFICATION_LEVEL);
 			
 			// only send the message if required
