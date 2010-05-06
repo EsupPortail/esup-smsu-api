@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.business;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.esupportail.commons.services.logging.Logger;
@@ -77,7 +78,7 @@ public class SendSmsManager {
 		} else {
 			Account acc = daoService.getAccByLabel(labelAccount);
 			if (acc == null) { 
-				// - créer nouveau account
+				// - crï¿½er nouveau account
 				Account newacc = new Account();
 				newacc.addToApplications(app);
 				newacc.setLabel(labelAccount);
@@ -152,17 +153,20 @@ public class SendSmsManager {
 		String clientName = clientManager.getClientName();
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 		// chech if the sms already exists (in case of FO problem...)
-		List<Sms> lstSms = daoService.getSms(app, msgId, smsPhone);
+		List<Sms> lstSms = new LinkedList<Sms>();
+		if (msgId != null) {
+			daoService.getSms(app, msgId, smsPhone);
+		}
 		if (!lstSms.isEmpty()) {
 			logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
 		} else {
 			// Application app = daoService.getApplicationByName(clientName);
 			SMSBroker smsMessage;
 
-			// Pour la validation de l'adhésion
+			// Pour la validation de l'adhï¿½sion
 			Account acc = daoService.getAccByLabel(labelAccount);
 			if (acc == null) { 
-				// - créer nouveau account
+				// - crï¿½er nouveau account
 				Account newacc = new Account();
 				newacc.addToApplications(app);
 				newacc.setLabel(labelAccount);
@@ -199,9 +203,9 @@ public class SendSmsManager {
 					// add sms
 					daoService.addSms(sms);
 
-					// - vérifier le num est backlisté ou pas 
+					// - vï¿½rifier le num est backlistï¿½ ou pas 
 					int bla = daoService.getBlackLListByPhone(smsPhone);
-					// - si backlist, alors "SMS_STATE" à jour
+					// - si backlist, alors "SMS_STATE" ï¿½ jour
 					if (bla != 0) {
 						// state ERROR PRE BLACKLISTE	
 						sms.setStateAsEnum(SmsStatus.ERROR_PRE_BL);
@@ -230,7 +234,7 @@ public class SendSmsManager {
 				}
 			} else { 
 				if (logger.isDebugEnabled()) {
-					logger.warn("Error Quota, SMS de validation du compte non envoyé");
+					logger.warn("Error Quota, SMS de validation du compte non envoyï¿½");
 				}
 			}
 		}
