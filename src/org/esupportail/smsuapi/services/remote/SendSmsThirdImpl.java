@@ -33,14 +33,14 @@ public class SendSmsThirdImpl extends SendSmsImpl implements SendSmsThird {
 			final String msgContent, final int msgId) throws UnknownIdentifierApplicationException, 
 			InsufficientQuotaException {
 		
-		if (logger.isDebugEnabled()) {
+		{
 			final StringBuilder sb = new StringBuilder(200);
 			sb.append("Receive from SendSmsThird client message : ");
 			for (String phone : smsPhoneList) {
 			    sb.append(" - recipient phone number = ").append(phone);	
 			}
 			sb.append(" - message = ").append(msgContent);
-			logger.debug(sb.toString());
+			logger.info(sb.toString());
 		}
 		
 		domainService.sendSMSByThird(smsPhoneList, msgContent, msgId);

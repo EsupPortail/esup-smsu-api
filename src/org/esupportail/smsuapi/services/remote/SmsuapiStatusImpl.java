@@ -71,11 +71,11 @@ public class SmsuapiStatusImpl extends AbstractIpProtectedWebService implements 
 	 * @throws UnknownIdentifierApplicationException 
 	 */
 	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone) throws UnknownIdentifierApplicationException {
-		if (logger.isDebugEnabled()) {
+		{
 			final StringBuilder sb = new StringBuilder(500);
-			logger.debug("Receive request for SmsuapiStatusImpl.getStatus:");
+			logger.info("Receive request for SmsuapiStatusImpl.getStatus:");
 			for (MsgIdAndPhone m : listMsgIdAndPhone) sb.append(" " + m);
-			logger.debug(sb.toString());
+			logger.info(sb.toString());
 		}
 		 
 		List<String> l = new LinkedList<String>();

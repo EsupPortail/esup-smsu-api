@@ -64,14 +64,13 @@ public class ReportingImpl extends AbstractIpProtectedWebService implements Repo
 
 	public ReportingInfos getStats(final int month, final int year) 
 				throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("getStats call method parameters : " + 
+		logger.info("getStats call method parameters : " + 
 				     " - month : " + month + 
 				     " - year : " + year);
-		}	
+
 		ReportingInfos reportingInfos = domainService.getStats(month, year);
 		
-		if (logger.isDebugEnabled()) {
+		{
 			final String s;
 			if (reportingInfos != null) {
 				s = "reportingInfos is : " + 
@@ -83,7 +82,7 @@ public class ReportingImpl extends AbstractIpProtectedWebService implements Repo
 			} else {
 				s = "reportingInfos is null ";
 			}
-			logger.debug(s);
+			logger.info(s);
 		}	
 	   return reportingInfos;	
 	}

@@ -68,18 +68,17 @@ public class ListPhoneNumbersInBlackListImpl extends AbstractIpProtectedWebServi
 	 * @return return true if the phone number is in the bl, false otherwise
 	 */
 	public Set<String> getListPhoneNumbersInBlackList() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Receive request for getListPhoneNumbersInBlackList");
-		}
+		logger.info("Receive request for getListPhoneNumbersInBlackList");
+
 		Set<String> listPhoneNumbersInBlackList = domainService.getListPhoneNumbersInBlackList();
 		 
-		 if (logger.isDebugEnabled()) {
+		 {
 				final StringBuilder sb = new StringBuilder(500);
 				sb.append("Response for getListPhoneNumbersInBlackList request :");
 				for (String phone : listPhoneNumbersInBlackList) {
 				sb.append(" - phone number in blacklist = ").append(phone);	
 				}
-				logger.debug(sb.toString());
+				logger.info(sb.toString());
 			}
 		return listPhoneNumbersInBlackList;
 	}

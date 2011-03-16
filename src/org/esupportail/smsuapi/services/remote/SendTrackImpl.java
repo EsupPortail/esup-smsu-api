@@ -64,9 +64,7 @@ public class SendTrackImpl extends AbstractIpProtectedWebService implements Send
 	
 	public TrackInfos getTrackInfos(final Integer msgId) 
 			throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {
-		if (logger.isDebugEnabled()) {
-		logger.debug("WS SendTrack receives the client request with parameter msgId = " + msgId);
-		}
+		logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
 		TrackInfos infos = new TrackInfos();
 		infos.setNbDestTotal(domainService.getNbDest(msgId));
 		infos.setNbDestBlackList(domainService.getNbDestBlackList(msgId));
@@ -75,8 +73,7 @@ public class SendTrackImpl extends AbstractIpProtectedWebService implements Send
 		infos.setNbErrorSMS(domainService.getNbErrorSMS(msgId));
 		infos.setListNumErreur(domainService.getListNumErreur(msgId));
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("Response TrackInfos object, for the client of WS SendTrack : " + 
+		logger.info("Response TrackInfos object, for the client of WS SendTrack : " + 
 				     "TrackInfos.NbDestTotal : " + infos.getNbDestTotal().toString() + 
 				     "TrackInfos.NbSentSMS : " + infos.getNbSentSMS().toString() + 
 				     "TrackInfos.NbProgressSMS : " + infos.getNbProgressSMS().toString() + 
@@ -85,10 +82,9 @@ public class SendTrackImpl extends AbstractIpProtectedWebService implements Send
 		
 		Set<String> listnums = infos.getListNumErreur();
 		for (String phone : listnums) {
-	    	logger.debug("TrackInfos.NumErreur : " + phone);
+			logger.info("TrackInfos.NumErreur : " + phone);
 	    	}
 	    
-	    }
 		return infos;
 	}
 	

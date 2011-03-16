@@ -65,15 +65,10 @@ public class NotificationPhoneNumberInBlackListImpl extends AbstractIpProtectedW
 	 * @return return true if the phone number is in the bl, false otherwise
 	 */
 	public boolean isPhoneNumberInBlackList(final String phoneNumber) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Receive request for isPhoneNumberInBlackList : " + phoneNumber);
-		}
+		logger.info("Receive request for isPhoneNumberInBlackList : " + phoneNumber);
 		Boolean retVal = domainService.isPhoneNumberInBlackList(phoneNumber); 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Response for getListPhoneNumbersInBlackList request : " 
-						 + phoneNumber + " is : " + retVal);
-		}
-		
+		logger.info("Response for getListPhoneNumbersInBlackList request : " 
+						 + phoneNumber + " is : " + retVal);		
 		return retVal;
 	}
 	

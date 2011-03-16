@@ -67,11 +67,9 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 	public void mayCreateAccountCheckQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("isQuotaOK method with parameters : " + 
+		logger.info("isQuotaOK method with parameters : " + 
 				     " - nbDest = " + nbDest + 
 				     " - labelAccount = " + labelAccount);
-		}
 		domainService.mayCreateAccountCheckQuotaOk(nbDest, labelAccount);
 	}
 
@@ -98,8 +96,7 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 			final Integer svcId, final String smsPhone,
 			final String labelAccount, final String msgContent) {
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("Receive from SendSms client message : " + 
+		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
 				     " - sender id = " + perId + 
 				     " - group sender id = " + bgrId + 
@@ -107,7 +104,6 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 				     " - recipient phone number = " + smsPhone + 
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
-		}
 		
 		domainService.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
 		
