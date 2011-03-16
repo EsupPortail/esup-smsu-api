@@ -67,8 +67,10 @@ public class SendSmsManager {
 		} else {
 			if (account == null) account = app.getAcc();
 
-			if (!account.checkQuota(nbDest) || !app.checkQuota(nbDest))
-				throw new InsufficientQuotaException("Quota error");
+			if (!account.checkQuota(nbDest))
+				throw new InsufficientQuotaException("Quota error: can not send " + nbDest + " sms with " + account);
+			if (!app.checkQuota(nbDest))
+				throw new InsufficientQuotaException("Quota error: can not send " + nbDest + " sms with " + app);
 		}
 	}
 
@@ -88,7 +90,7 @@ public class SendSmsManager {
 				// - créer nouveau account
 				acc = Account.createDefault(app, labelAccount);
 				daoService.addAccount(acc);
-				throw new InsufficientQuotaException("Quota error");
+				throw new InsufficientQuotaException("Quota error: account " + labelAccount + " has been created with quota of 0");
 			}		
 			checkQuotaOk(nbDest, acc);
 			return acc;
@@ -144,7 +146,7 @@ public class SendSmsManager {
 			return null;
 		} catch (InsufficientQuotaException e) {
 			if (logger.isDebugEnabled()) {
-				logger.warn("Error Quota, SMS de validation du compte non envoyé");
+				logger.warn("Error Quota, SMS de validation du compte non envoyé", e);
 			}
 			return null;
 		}
