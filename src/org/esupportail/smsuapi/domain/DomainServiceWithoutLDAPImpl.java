@@ -6,7 +6,6 @@ package org.esupportail.smsuapi.domain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -408,10 +407,8 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		if (app != null) {
 			// Retrieve list of phones numbers 	
 			smslist = daoService.getListNumErreur(msgId, app, list);
-			Iterator<Sms> iter = smslist.iterator();
-			while (iter.hasNext()) {
+			for (Sms sms : smslist) {
 				// add phone number to nums Set
-				Sms sms = (Sms) iter.next();
 				nums.add(sms.getPhone());
 			}
 		}
@@ -499,9 +496,8 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		if (logger.isDebugEnabled()) {
 			final StringBuilder sb = new StringBuilder(500);
 			sb.append("Response in domainService for ListPhoneNumbersInBlackList :");
-			Iterator<String> iter = listPhoneNumbersInBlackList.iterator();
-			while (iter.hasNext()) {
-				sb.append(" - phone number in blacklist = ").append(iter.next());	
+			for (String nb : listPhoneNumbersInBlackList) {
+				sb.append(" - phone number in blacklist = ").append(nb);	
 			}
 			logger.debug(sb.toString());
 		}

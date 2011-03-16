@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.business;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.esupportail.commons.services.logging.Logger;
@@ -81,10 +80,9 @@ public class SendSmsThirdManager {
 				if (!retVal) {
 					throw new InsufficientQuotaException("Quota error");
 				} else {
-					Iterator<String> iter = smsPhoneList.iterator();
 					List<SMSBroker> smsMessageList = new ArrayList();
-					while (iter.hasNext()) {
-						SMSBroker smsMessage = saveSMSByThird(app, iter.next(), labelAccount, msgContent, msgId);
+					for (String phone : smsPhoneList) {
+						SMSBroker smsMessage = saveSMSByThird(app, phone, labelAccount, msgContent, msgId);
 						// créer toute la liste
 						if (smsMessage != null) {
 							if (logger.isDebugEnabled()) {

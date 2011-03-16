@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.business;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -60,9 +59,8 @@ public class BlackListManager {
 	public Set<String> getListPhoneNumbersInBlackList() {
 		 List<Blacklist> listPhoneNumbersInBlackList = daoService.getListPhoneNumbersInBlackList();
 		 Set<String> setPhoneNumbersInBlackList = new HashSet();
-		 Iterator<Blacklist> iter = listPhoneNumbersInBlackList.iterator();
-			while (iter.hasNext()) {
-				setPhoneNumbersInBlackList.add(iter.next().getPhone());
+		 for (Blacklist bl : listPhoneNumbersInBlackList) {
+				setPhoneNumbersInBlackList.add(bl.getPhone());
 			}
 		return setPhoneNumbersInBlackList;
 	}

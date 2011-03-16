@@ -4,7 +4,6 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.esupportail.commons.services.application.ApplicationService;
@@ -77,9 +76,8 @@ public class ListPhoneNumbersInBlackListImpl extends AbstractIpProtectedWebServi
 		 if (logger.isDebugEnabled()) {
 				final StringBuilder sb = new StringBuilder(500);
 				sb.append("Response for getListPhoneNumbersInBlackList request :");
-				Iterator<String> iter = listPhoneNumbersInBlackList.iterator();
-				while (iter.hasNext()) {
-				sb.append(" - phone number in blacklist = ").append(iter.next());	
+				for (String phone : listPhoneNumbersInBlackList) {
+				sb.append(" - phone number in blacklist = ").append(phone);	
 				}
 				logger.debug(sb.toString());
 			}

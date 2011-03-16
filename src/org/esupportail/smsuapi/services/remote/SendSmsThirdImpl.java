@@ -4,7 +4,6 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.esupportail.commons.services.application.ApplicationService;
@@ -80,9 +79,8 @@ public class SendSmsThirdImpl extends AbstractIpProtectedWebService implements S
 		if (logger.isDebugEnabled()) {
 			final StringBuilder sb = new StringBuilder(200);
 			sb.append("Receive from SendSmsThird client message : ");
-			Iterator<String> iter = smsPhoneList.iterator();
-			while (iter.hasNext()) {
-			sb.append(" - recipient phone number = ").append(iter.next());	
+			for (String phone : smsPhoneList) {
+			    sb.append(" - recipient phone number = ").append(phone);	
 			}
 			sb.append(" - message = ").append(msgContent);
 			logger.debug(sb.toString());

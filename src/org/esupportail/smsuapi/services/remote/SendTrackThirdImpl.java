@@ -4,7 +4,6 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import java.util.Iterator;
 import java.util.Set;
 
 import org.esupportail.commons.services.application.ApplicationService;
@@ -88,9 +87,7 @@ public class SendTrackThirdImpl extends AbstractIpProtectedWebService implements
 				     "TrackInfos.NbErrorSMS : " + infosToThird.getNbErrorSMS().toString());
 		
 		Set<String> listnums = infosToThird.getListNumErreur();
-		Iterator<String> iter = listnums.iterator();
-	    while (iter.hasNext()) {
-	    	String phone = (String) iter.next();
+		for (String phone : listnums) {
 	    	logger.debug("TrackInfosToThird.NumErreur : " + phone);
 	    	}
 		}
