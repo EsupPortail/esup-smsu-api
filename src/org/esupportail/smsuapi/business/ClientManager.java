@@ -143,6 +143,9 @@ public class ClientManager implements InitializingBean {
 		
 	}
 	
+	public Application getApplication() {
+		return getApplicationByCertificateCN(getClientName());
+	}
 	
 	/**
 	 * Extract the CN from the X509 certificate.

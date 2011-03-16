@@ -65,9 +65,7 @@ public class SendSmsManager {
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
 
-		String clientName = clientManager.getClientName();
-		Application app = clientManager.getApplicationByCertificateCN(clientName);
-		//Application app = daoService.getApplicationByName(clientName);
+		Application app = clientManager.getApplication();
 		long quotaAcc = 0;
 		long quotaApp = 0;
 		Boolean retVal = false;
@@ -117,11 +115,10 @@ public class SendSmsManager {
 			final Integer svcId, final String smsPhone, 
 			final String labelAccount, final String msgContent) {
 
-		String clientName = clientManager.getClientName();
-		Application app = clientManager.getApplicationByCertificateCN(clientName);
+		Application app = clientManager.getApplication();
 
 		if (app == null) { 
-			logger.error("An unknown application tries to send a SMS : [" + clientName + "]");
+			logger.error("An unknown application tries to send a SMS : [" + clientManager.getClientName() + "]");
 		} else {
 			SMSBroker smsMessage = saveSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
 			// TO DE-COMMENT

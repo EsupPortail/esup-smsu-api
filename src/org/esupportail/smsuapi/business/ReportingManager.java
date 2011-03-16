@@ -55,10 +55,7 @@ public class ReportingManager {
 	
 	public ReportingInfos getStats(final int month, final int year) 
 			throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
-		// Retrieve application by Name found in certificat
-		String clientName = clientManager.getClientName();
-		Application app = clientManager.getApplicationByCertificateCN(clientName);
-		// Application app = daoService.getApplicationByName(clientName);
+		Application app = clientManager.getApplication();
 		
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
