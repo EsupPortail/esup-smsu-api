@@ -1,6 +1,5 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
-import org.apache.commons.lang.CharSet;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
