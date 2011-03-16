@@ -88,6 +88,15 @@ public class Account implements Serializable {
 		this.setConsumedSms(consumedSms);
 	}
 
+	static public Account createDefault(Application app, java.lang.String label) {
+		Account acc = new Account();
+		acc.addToApplications(app);
+		acc.setLabel(label);
+		acc.setQuota((long) 0);
+		acc.setConsumedSms((long) 0);
+		return acc;
+	}
+	
 	/**
 	 * Return the unique identifier of this class.
      * @hibernate.id
