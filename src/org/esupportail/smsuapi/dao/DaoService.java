@@ -304,5 +304,5 @@ public interface DaoService extends Serializable {
 	 */
 	Statistic getStatisticByApplicationAndMonthAndYear(Application application, int month, int year);
 	
-	List<Map> getAppsAndCountsToTreat();
+	List<Map<String,?>> getAppsAndCountsToTreat();
 }

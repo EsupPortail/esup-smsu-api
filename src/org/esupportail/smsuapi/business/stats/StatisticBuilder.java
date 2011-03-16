@@ -39,9 +39,9 @@ public class StatisticBuilder {
 	 */
 	public void buildAllStatistics() {
 
-		final List<Map> list = daoService.getAppsAndCountsToTreat();
+		final List<Map<String,?>> list = daoService.getAppsAndCountsToTreat();
 		
-		for (Map map : list) {
+		for (Map<String,?> map : list) {
 			
 			// get the date of older SMS for this app and account
 			final Application application = (Application) map.get(Sms.PROP_APP);
@@ -94,10 +94,11 @@ public class StatisticBuilder {
 			logger.debug("Start build all statistique with parameter : \n" + " - month : " + month);
 		}
 
+		@SuppressWarnings("unused")
 		final List<Application> applicationList = daoService.getAllApplications();
-		final List<Map> list = daoService.getAppsAndCountsToTreat();
+		final List<Map<String,?>> list = daoService.getAppsAndCountsToTreat();
 
-		for (Map map : list) {
+		for (Map<String,?> map : list) {
 			
 			final Application application = (Application) map.get(Sms.PROP_APP);
 			final Account account = (Account) map.get(Sms.PROP_ACC);

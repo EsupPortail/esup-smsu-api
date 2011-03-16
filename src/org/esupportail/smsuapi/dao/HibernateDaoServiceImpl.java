@@ -655,7 +655,8 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	}
 	
 
-	public List<Map> getAppsAndCountsToTreat() {
+	@SuppressWarnings("unchecked")
+	public List<Map<String,?>> getAppsAndCountsToTreat() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
 		
 		criteria.setProjection(Projections.projectionList()
@@ -665,7 +666,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 		
 		criteria.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
 		
-		List<Map> result = getHibernateTemplate().findByCriteria(criteria); 
+		List<Map<String,?>> result = getHibernateTemplate().findByCriteria(criteria); 
 		
 		return result;
 	}
