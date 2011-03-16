@@ -31,7 +31,6 @@ import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.esupportail.ws.remote.beans.ReportingInfos;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -53,12 +52,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
-
-	/**
-	 * {@link ISMSSender}.
-	 */
-	@SuppressWarnings("unused")
-	private ISMSSender smsSender;
 
 	/**
 	 * {@link SendSmsManager}.
@@ -281,13 +274,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 */
 	public void setDaoService(final DaoService daoService) {
 		this.daoService = daoService;
-	}
-
-	/**
-	 * @param smsSender the smsSender to set
-	 */
-	public void setSmsSender(final ISMSSender smsSender) {
-		this.smsSender = smsSender;
 	}
 
 	//////////////////////////////////////////////////////////////
