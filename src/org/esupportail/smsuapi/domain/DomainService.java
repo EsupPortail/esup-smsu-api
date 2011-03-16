@@ -160,9 +160,8 @@ public interface DomainService extends Serializable {
 	/**
 	 * @param nbDest 
 	 * @param labelAccount 
-	 * @return the Quota.
 	 */
-	Boolean isQuotaOk(Integer nbDest, String labelAccount) 
+	void mayCreateAccountCheckQuotaOk(Integer nbDest, String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException;
 	

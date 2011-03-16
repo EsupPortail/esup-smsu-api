@@ -390,11 +390,10 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	public Boolean isQuotaOk(final Integer nbDest, final String labelAccount) 
+	public void mayCreateAccountCheckQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
-		Boolean retVal = sendSmsManager.isQuotaOk(nbDest, labelAccount);
-		return retVal;
+		sendSmsManager.mayCreateAccountAndCheckQuotaOk(nbDest, labelAccount);
 	}
 
 	/**

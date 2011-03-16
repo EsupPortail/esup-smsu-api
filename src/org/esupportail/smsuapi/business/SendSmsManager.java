@@ -58,15 +58,28 @@ public class SendSmsManager {
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	public Boolean isQuotaOk(final Integer nbDest, final String labelAccount) 
+	public void checkQuotaOk(final Integer nbDest, Account account) 
+	throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+
+		Application app = clientManager.getApplication();
+		if (app == null) { 
+			throw new UnknownIdentifierApplicationException("Unknown application");
+		} else {
+			if (account == null) account = app.getAcc();
+
+			if (!account.checkQuota(nbDest) || !app.checkQuota(nbDest))
+				throw new InsufficientQuotaException("Quota error");
+		}
+	}
+
+		/**
+	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
+	 */
+	public Account mayCreateAccountAndCheckQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
 
 		Application app = clientManager.getApplication();
-		long quotaAcc = 0;
-		long quotaApp = 0;
-		Boolean retVal = false;
-
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
 		} else {
@@ -76,21 +89,10 @@ public class SendSmsManager {
 				acc = Account.createDefault(app, labelAccount);
 				daoService.addAccount(acc);
 				throw new InsufficientQuotaException("Quota error");
-			} else {
-				quotaAcc = acc.getQuota() - acc.getConsumedSms();
-				if (quotaAcc > nbDest) { 
-					quotaApp = app.getQuota() - app.getConsumedSms();
-					if (quotaApp > nbDest) {
-						retVal = true;
-					} else {
-						throw new InsufficientQuotaException("Quota error");
-					}
-				} else {
-					throw new InsufficientQuotaException("Quota error");
-				}
-			}
+			}		
+			checkQuotaOk(nbDest, acc);
+			return acc;
 		}
-		return retVal;
 	}
 
 	/**
@@ -108,19 +110,12 @@ public class SendSmsManager {
 			final Integer svcId, final String smsPhone, 
 			final String labelAccount, final String msgContent) {
 
-		Application app = clientManager.getApplication();
-
-		if (app == null) { 
-			logger.error("An unknown application tries to send a SMS : [" + clientManager.getClientName() + "]");
-		} else {
 			SMSBroker smsMessage = saveSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
-			// TO DE-COMMENT
+
 			if (smsMessage != null) { 
 				// launch the task witch manage the sms sending
 				schedulerUtils.launchSuperviseSmsSending(smsMessage);
-				//smsSender.sendMessage(smsMessage); 
 			}
-		}
 	}
 
 
@@ -132,42 +127,33 @@ public class SendSmsManager {
 			final String labelAccount, final String msgContent) {
 
 		Application app = clientManager.getApplication();
+		
 		// chech if the sms already exists (in case of FO problem...)
-		if (msgId != null) {
+		if (msgId != null && app != null) {
 			if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
 				logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
 				return null;
 			}
 		}
-			SMSBroker smsMessage = null;
 
-			// Pour la validation de l'adhésion
-			Account acc = daoService.getAccByLabel(labelAccount);
-			if (acc == null) { 
-				// - créer nouveau account
-				acc = Account.createDefault(app, labelAccount);
-				daoService.addAccount(acc);
+		try {
+			Account account = mayCreateAccountAndCheckQuotaOk(1, labelAccount);
+			return saveSMSNoCheck(msgId, perId, bgrId, svcId, smsPhone, account, msgContent, app);
+		} catch (UnknownIdentifierApplicationException e) {
+			logger.error("An unknown application tries to send a SMS : [" + clientManager.getClientName() + "]");
+			return null;
+		} catch (InsufficientQuotaException e) {
+			if (logger.isDebugEnabled()) {
+				logger.warn("Error Quota, SMS de validation du compte non envoyé");
 			}
-			if (acc.checkQuota(1) && app.checkQuota(1)) {
-				if (app != null) { 
-					smsMessage = saveSMSNoCheck(msgId, perId, bgrId, svcId,
-							smsPhone, labelAccount, msgContent, app);	
-
-				}
-			} else { 
-				if (logger.isDebugEnabled()) {
-					logger.warn("Error Quota, SMS de validation du compte non envoyé");
-				}
-			}
-		return smsMessage;
-
+			return null;
+		}
 	}
 
 	protected SMSBroker saveSMSNoCheck(final Integer msgId, final Integer perId,
 			final Integer bgrId, final Integer svcId, final String smsPhone,
-			final String labelAccount, final String msgContent,
+			Account account, final String msgContent,
 			Application app) {	
-		Account account = daoService.getAccByLabel(labelAccount);
 		
 		boolean isBlacklisted = daoService.getBlackLListByPhone(smsPhone) != 0;
 		

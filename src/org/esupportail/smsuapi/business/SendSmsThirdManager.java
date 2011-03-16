@@ -3,6 +3,7 @@ package org.esupportail.smsuapi.business;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
@@ -32,54 +33,28 @@ public class SendSmsThirdManager extends SendSmsManager {
 	public void sendSMSByThird(final List<String> smsPhoneList, final String msgContent, final int msgId)
 						throws UnknownIdentifierApplicationException, 
 						InsufficientQuotaException {
-		
-		// Retrieve application by Name found in certificat
+				
 		Application app = clientManager.getApplication();
-		
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else {
-				String labelAccount = app.getAcc().getLabel();
-				Boolean retVal = checkQuotaForThird(app, smsPhoneList.size());
-				if (!retVal) {
-					throw new InsufficientQuotaException("Quota error");
-				} else {
-					List<SMSBroker> smsMessageList = new ArrayList();
-					for (String phone : smsPhoneList) {
-						SMSBroker smsMessage = saveSMSByThird(app, phone, labelAccount, msgContent, msgId);
-						// créer toute la liste
-						if (smsMessage != null) {
-							if (logger.isDebugEnabled()) {
-								logger.debug("smsMessage is : " + 
-									     " - smsMessage id is : " + smsMessage.getId() + 
-									     " - smsMessage content is : " + smsMessage.getMessage() + 
-									     " - smsMessage phone is : " + smsMessage.getRecipient());
-							}
-							smsMessageList.add(smsMessage);
-							
-						}
-					}
-					// launch the task witch manage the sms sending
-					schedulerUtils.launchSuperviseSmsSending(smsMessageList);
+		Account account = app == null ? null : app.getAcc();
+		checkQuotaOk(smsPhoneList.size(), account); 
+
+		List<SMSBroker> smsMessageList = new ArrayList();
+
+		for (String phone : smsPhoneList) {
+			SMSBroker smsMessage = saveSMSNoCheck(msgId, null, null, null, phone, account, msgContent, app);
+			// créer toute la liste
+			if (smsMessage != null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("smsMessage is : " + 
+							" - smsMessage id is : " + smsMessage.getId() + 
+							" - smsMessage content is : " + smsMessage.getMessage() + 
+							" - smsMessage phone is : " + smsMessage.getRecipient());
 				}
+				smsMessageList.add(smsMessage);				
+			}
 		}
-	}
-	
-	/**
-	 * @throws NumberPhoneInBlackListException 
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
-	 */
-	private SMSBroker saveSMSByThird(final Application app, final String smsPhone, final String labelAccount, 
-			final String msgContent, final int msgId) {
-		return saveSMSNoCheck(msgId, null, null, null, smsPhone, labelAccount, msgContent, app);
+		// launch the task witch manage the sms sending
+		schedulerUtils.launchSuperviseSmsSending(smsMessageList);
 	}
 
-	/**
-	 * both Account and Application quota must be longer than nbDest.
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
-	 */
-	private Boolean checkQuotaForThird(final Application app, final Integer nbDest) {
-		return app.getAcc().checkQuota(nbDest) && app.checkQuota(nbDest);
-	}
-	
 }
