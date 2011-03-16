@@ -35,7 +35,14 @@ public class SMSBroker implements Serializable {
 	public SMSBroker() {
 		super();
 	}
-	
+
+	public SMSBroker(final int id, final String recipient, final String message) {
+		super();
+		setId(id);
+		setRecipient(recipient);
+		setMessage(message);
+	}
+
 	public int getId() {
 		return id;
 	}
