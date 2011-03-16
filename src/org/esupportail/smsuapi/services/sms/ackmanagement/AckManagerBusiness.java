@@ -36,21 +36,16 @@ public class AckManagerBusiness {
 		final SmsStatus smsStatus = acknowledgment.getSmsStatus();
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("Manage ack with : ");
-			stringBuilder.append(" - smid : ").append(smid);
-			stringBuilder.append(" - ack status : ").append(smsStatus);
-			logger.debug(stringBuilder.toString());
+			logger.debug("Manage ack with : " + 
+				     " - smid : " + smid + 
+				     " - ack status : " + smsStatus);
 		}
 			
 		final Sms sms = daoService.getSms(smid);
 		
 		if (sms != null) {
 			if (logger.isDebugEnabled()) {
-				final StringBuilder message = new StringBuilder();
-				message.append("Updating in DB SMS with : ");
-				message.append(" - sms_id : ").append(smid);
-				logger.debug(message.toString());
+				logger.debug("Updating in DB SMS with : " + " - sms_id : " + smid);
 			}
 			
 			sms.setStateAsEnum(smsStatus);
@@ -64,11 +59,9 @@ public class AckManagerBusiness {
 			}
 			
 		} else {
-			final StringBuilder message = new StringBuilder();
-			message.append("unable to find in db sms with : ");
-			message.append(" - sms_id : ").append(smid);
-			message.append("In order to update is state in DB").append(smid);
-			logger.error(message.toString());
+			logger.error("unable to find in db sms with : " + 
+				     " - sms_id : " + smid + 
+				     "In order to update is state in DB" + smid);
 		}
 		
 	}
@@ -92,12 +85,10 @@ public class AckManagerBusiness {
 			blackList.setPhone(phoneNumber);
 						
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Adding to black list : \n");
-				sb.append(" - Phone number : ").append(phoneNumber).append("\n");
-				sb.append(" - Application id : ").append(application.getId()).append("\n");
-				sb.append(" - Date : ").append(currentDate);
-				logger.debug(sb.toString());
+				logger.debug("Adding to black list : \n" + 
+					     " - Phone number : " + phoneNumber + "\n" + 
+					     " - Application id : " + application.getId() + "\n" + 
+					     " - Date : " + currentDate);
 			}
 			
 			daoService.addBlacklist(blackList);

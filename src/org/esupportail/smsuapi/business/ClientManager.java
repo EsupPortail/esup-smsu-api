@@ -78,9 +78,7 @@ public class ClientManager implements InitializingBean {
 	 */
 	public String getClientName() throws IllegalArgumentException {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("Client connexion. get Client Name.");			
-			logger.debug(sb.toString());
+			logger.debug("Client connexion. get Client Name.");
 		}
 		
 		String name = "";
@@ -127,27 +125,17 @@ public class ClientManager implements InitializingBean {
 						found = true;
 						
 						if (logger.isDebugEnabled()) {
-							final StringBuilder sb = new StringBuilder(200);
-							sb.append("CN in db : [").append(cn);
-							sb.append("] matches with CN in request : [").append(certificateCN);
-							sb.append("]");
-							logger.debug(sb.toString());
+							logger.debug("CN in db : [" + cn + "] matches with CN in request : [" + certificateCN + "]");
 						}
 					} else {
 						if (logger.isDebugEnabled()) {
-							final StringBuilder sb = new StringBuilder(200);
-							sb.append("CN in db : [").append(cn);
-							sb.append("] does not match with CN in request : [").append(certificateCN);
-							sb.append("]");
-							logger.debug(sb.toString());
+							logger.debug("CN in db : [" + cn + "] does not match with CN in request : [" + certificateCN + "]");
 						}
 					}
 
 				} catch (CertificateException e) {
-					final StringBuilder sb = new StringBuilder(200);
-					sb.append("An error occurs getting the certificate from db for application with : \n");
-					sb.append(" - id : ").append(application.getId());
-					logger.warn(sb.toString(), e);
+					logger.warn("An error occurs getting the certificate from db for application with : \n" + 
+						    " - id : " + application.getId(), e);
 				}
 			}
 		}
@@ -165,9 +153,7 @@ public class ClientManager implements InitializingBean {
 		String name = "";
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb1 = new StringBuilder(5000);
-			sb1.append("Client connexion. SubjectDN = ").append(subjectDN);			
-			logger.debug(sb1.toString());
+			logger.debug("Client connexion. SubjectDN = " + subjectDN);
 		}
 
 		PatternMatcher matcher = new Perl5Matcher();
@@ -188,9 +174,7 @@ public class ClientManager implements InitializingBean {
 		name = match.group(1);
 
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb2 = new StringBuilder(100);
-			sb2.append("Client connexion. name = ").append(name);			
-			logger.debug(sb2.toString());
+			logger.debug("Client connexion. name = " + name);
 		}
 		
 		return name;

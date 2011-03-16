@@ -69,9 +69,7 @@ public class StatisticBuilder {
 	public void buildAllStatisticForThePreviousMonth() {
 
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Calling buildAllStatisticForThePreviousMonth");
-			logger.debug(sb.toString());
+			logger.debug("Calling buildAllStatisticForThePreviousMonth");
 		}
 
 		final long nowInMillis = System.currentTimeMillis();
@@ -93,10 +91,7 @@ public class StatisticBuilder {
 	public void buildAllStatisticForAMonth(final Date month) {
 
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Start build all statistique with parameter : \n");
-			sb.append(" - month : ").append(month);
-			logger.debug(sb.toString());
+			logger.debug("Start build all statistique with parameter : \n" + " - month : " + month);
 		}
 
 		final List<Application> applicationList = daoService.getAllApplications();
@@ -108,12 +103,10 @@ public class StatisticBuilder {
 			final Account account = (Account) map.get(Sms.PROP_ACC);
 
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Calling statistic builder with parameters : \n");
-				sb.append(" - application id : ").append(application.getId()).append("\n");
-				sb.append(" - account id : ").append(account.getId()).append("\n");
-				sb.append(" - month : ").append(month);
-				logger.debug(sb.toString());
+				logger.debug("Calling statistic builder with parameters : \n" + 
+					     " - application id : " + application.getId() + "\n" + 
+					     " - account id : " + account.getId() + "\n" + 
+					     " - month : " + month);
 			}
 
 			buildStatisticForAMonth(application, account, month);
@@ -149,14 +142,12 @@ public class StatisticBuilder {
 			final Date beginDate, final Date endDate, 
 			final Date markerDate) {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Start building statistic with parameters : \n");
-			sb.append(" - application id : ").append(application.getId()).append("\n");
-			sb.append(" - account id : ").append(account.getId()).append("\n");
-			sb.append(" - begin date : ").append(beginDate).append("\n");
-			sb.append(" - end date : ").append(endDate).append("\n");
-			sb.append(" - marker date : ").append(markerDate);
-			logger.debug(sb.toString());
+			logger.debug("Start building statistic with parameters : \n" + 
+				     " - application id : " + application.getId() + "\n" + 
+				     " - account id : " + account.getId() + "\n" + 
+				     " - begin date : " + beginDate + "\n" + 
+				     " - end date : " + endDate + "\n" + 
+				     " - marker date : " + markerDate);
 		}
 
 		// get stat values from DB
@@ -183,25 +174,20 @@ public class StatisticBuilder {
 			daoService.addStatistic(statistic);
 
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("End of building statistic, result : \n");
-				sb.append(" - application id : ").append(application.getId()).append("\n");
-				sb.append(" - account id : ").append(account.getId()).append("\n");
-				sb.append(" - marker date : ").append(markerDate).append("\n");
-				sb.append(" - Nb sms : ").append(nbSmsAsLong).append("\n");
-				sb.append(" - Nb sms in error : ").append(nbSmsInErrorAsLong);
-				logger.debug(sb.toString());
+				logger.debug("End of building statistic, result : \n" + 
+					     " - application id : " + application.getId() + "\n" + 
+					     " - account id : " + account.getId() + "\n" + 
+					     " - marker date : " + markerDate + "\n" + 
+					     " - Nb sms : " + nbSmsAsLong + "\n" + 
+					     " - Nb sms in error : " + nbSmsInErrorAsLong);
 			}
 		} else {
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("No statistic result : \n");
-				sb.append(" - application id : ").append(application.getId()).append("\n");
-				sb.append(" - account id : ").append(account.getId()).append("\n");
-				sb.append(" - marker date : ").append(markerDate).append("\n");
-				sb.append(" - No SMS ");
-				
-				logger.debug(sb.toString());	
+				logger.debug("No statistic result : \n" + 
+					     " - application id : " + application.getId() + "\n" + 
+					     " - account id : " + account.getId() + "\n" + 
+					     " - marker date : " + markerDate + "\n" + 
+					     " - No SMS ");	
 			}
 		}
 	}

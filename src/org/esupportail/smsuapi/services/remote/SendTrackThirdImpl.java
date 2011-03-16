@@ -80,14 +80,12 @@ public class SendTrackThirdImpl extends AbstractIpProtectedWebService implements
 		infosToThird.setListNumErreur(domainService.getListNumErreur(msgId));
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(300);
-			sb.append("Response TrackInfosToThird object, for the client of WS SendTrackThird : ");
-			sb.append("TrackInfos.NbDestTotal : ").append(infosToThird.getNbDestTotal().toString());
-			sb.append("TrackInfos.NbSentSMS : ").append(infosToThird.getNbSentSMS().toString());
-			sb.append("TrackInfos.NbProgressSMS : ").append(infosToThird.getNbProgressSMS().toString());
-			sb.append("TrackInfos.NbDestBlackList :").append(infosToThird.getNbDestBlackList().toString());
-			sb.append("TrackInfos.NbErrorSMS : ").append(infosToThird.getNbErrorSMS().toString());
-			logger.debug(sb.toString());
+			logger.debug("Response TrackInfosToThird object, for the client of WS SendTrackThird : " + 
+				     "TrackInfos.NbDestTotal : " + infosToThird.getNbDestTotal().toString() + 
+				     "TrackInfos.NbSentSMS : " + infosToThird.getNbSentSMS().toString() + 
+				     "TrackInfos.NbProgressSMS : " + infosToThird.getNbProgressSMS().toString() + 
+				     "TrackInfos.NbDestBlackList :" + infosToThird.getNbDestBlackList().toString() + 
+				     "TrackInfos.NbErrorSMS : " + infosToThird.getNbErrorSMS().toString());
 		
 		Set<String> listnums = infosToThird.getListNumErreur();
 		Iterator<String> iter = listnums.iterator();

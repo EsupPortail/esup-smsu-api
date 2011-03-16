@@ -53,19 +53,14 @@ public class PurgeSms {
 	private void purgeSmsOlderThan(final Date date) {
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Starting purge of SMS table with parameter : \n");
-			sb.append(" - date : ").append(date);
-			logger.debug(sb.toString());
+			logger.debug("Starting purge of SMS table with parameter : \n" + " - date : " + date);
 		}
 		
 		final int nbSmsDeleted = daoService.deleteSmsOlderThan(date);
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("End purge of SMS table, result : \n");
-			sb.append(" - number of sms deleted : ").append(nbSmsDeleted);
-			logger.debug(sb.toString());
+			logger.debug("End purge of SMS table, result : \n" + 
+				     " - number of sms deleted : " + nbSmsDeleted);
 		}
 	}
 	

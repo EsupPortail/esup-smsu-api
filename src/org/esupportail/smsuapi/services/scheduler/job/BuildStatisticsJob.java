@@ -23,9 +23,7 @@ public class BuildStatisticsJob extends AbstractQuartzJob {
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext, final JobDataMap jobDataMap) {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("Launching Quartz task BuildStatisticsJob now");
-			logger.debug(sb.toString());
+			logger.debug("Launching Quartz task BuildStatisticsJob now");
 		}
 		
 		final StatisticBuilder statisticBuilder = (StatisticBuilder) applicationContext.getBean("statisticBuilder");
@@ -33,9 +31,7 @@ public class BuildStatisticsJob extends AbstractQuartzJob {
 
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("End of Quartz task BuildStatisticsJob");
-			logger.debug(sb.toString());
+			logger.debug("End of Quartz task BuildStatisticsJob");
 		}
 			
 	}

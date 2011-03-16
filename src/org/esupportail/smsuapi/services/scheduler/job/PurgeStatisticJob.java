@@ -22,9 +22,7 @@ public class PurgeStatisticJob extends AbstractQuartzJob {
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext, final JobDataMap jobDataMap) {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("Launching Quartz task PurgeStatisticJob now");
-			logger.debug(sb.toString());
+			logger.debug("Launching Quartz task PurgeStatisticJob now");
 		}
 		
 		final PurgeStatistic purgeStatistic = (PurgeStatistic) applicationContext.getBean("purgeStatistic");
@@ -32,9 +30,7 @@ public class PurgeStatisticJob extends AbstractQuartzJob {
 		
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("End of Quartz task PurgeStatisticJob");
-			logger.debug(sb.toString());
+			logger.debug("End of Quartz task PurgeStatisticJob");
 		} 
 	}
 	

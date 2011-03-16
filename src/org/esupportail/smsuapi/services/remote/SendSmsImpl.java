@@ -68,11 +68,9 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("isQuotaOK method with parameters : ");
-			sb.append(" - nbDest = ").append(nbDest);
-			sb.append(" - labelAccount = ").append(labelAccount);
-			logger.debug(sb.toString());
+			logger.debug("isQuotaOK method with parameters : " + 
+				     " - nbDest = " + nbDest + 
+				     " - labelAccount = " + labelAccount);
 		}
 		return domainService.isQuotaOk(nbDest, labelAccount);
 	}
@@ -94,16 +92,14 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 			final String labelAccount, final String msgContent) {
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Receive from SendSms client message : ");
-			sb.append(" - message id = ").append(msgId);
-			sb.append(" - sender id = ").append(perId);
-			sb.append(" - group sender id = ").append(bgrId);
-			sb.append(" - service id = ").append(svcId);
-			sb.append(" - recipient phone number = ").append(smsPhone);
-			sb.append(" - user label account = ").append(labelAccount);
-			sb.append(" - message = ").append(msgContent);
-			logger.debug(sb.toString());
+			logger.debug("Receive from SendSms client message : " + 
+				     " - message id = " + msgId + 
+				     " - sender id = " + perId + 
+				     " - group sender id = " + bgrId + 
+				     " - service id = " + svcId + 
+				     " - recipient phone number = " + smsPhone + 
+				     " - user label account = " + labelAccount + 
+				     " - message = " + msgContent);
 		}
 		
 		domainService.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);

@@ -52,18 +52,16 @@ public class OlmAckManager extends Manager {
 	public boolean manage(final DeliveryReceipt result) {
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder message = new StringBuilder();
-			message.append("Invoking manage with parameter DeliveryReceipt method");
-			message.append("  - smid : ").append(result.getSmid());
-			message.append("  - msmisdn : ").append(result.getMsisdn());
-			message.append("  - date : ").append(result.getDate());
-			message.append("  - status : ").append(result.getStatus());
-			message.append("  - message : ").append(result.getMessage());
-			message.append("  - cause : ").append(result.getCause());
-			message.append("  - country code : ").append(result.getCountryCode());
-			message.append("  - operator : ").append(result.getOperator());
-			message.append("  - pnm retry number : ").append(result.getPNMRetryNumber());
-			logger.debug(message.toString());
+			logger.debug("Invoking manage with parameter DeliveryReceipt method" + 
+				     "  - smid : " + result.getSmid() + 
+				     "  - msmisdn : " + result.getMsisdn() + 
+				     "  - date : " + result.getDate() + 
+				     "  - status : " + result.getStatus() + 
+				     "  - message : " + result.getMessage() + 
+				     "  - cause : " + result.getCause() + 
+				     "  - country code : " + result.getCountryCode() + 
+				     "  - operator : " + result.getOperator() + 
+				     "  - pnm retry number : " + result.getPNMRetryNumber());
 		}
 		
 		final int rcpSmid = result.getSmid();
@@ -123,25 +121,21 @@ public class OlmAckManager extends Manager {
 	public void manage(final Ack ack) {
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder message = new StringBuilder();
-			message.append("Receiving ack : ");
-			message.append("  - id : ").append(ack.getId());
-			message.append("  - type : ").append(ack.getType());
-			message.append("  - count : ").append(ack.getCount());
-			logger.debug(message.toString());
+			logger.debug("Receiving ack : " + 
+				     "  - id : " + ack.getId() + 
+				     "  - type : " + ack.getType() + 
+				     "  - count : " + ack.getCount());
 		}
 		
 		if (SMText.EXPECTED_ACK_TYPE.equalsIgnoreCase(ack.getType())) {
 			//
 			
 		} else {
-			final StringBuilder message = new StringBuilder();
-			message.append("Ack received is not and SMText ack : ");
-			message.append("  - id : ").append(ack.getId());
-			message.append("  - type : ").append(ack.getType());
-			message.append("  - count : ").append(ack.getCount());
-			message.append("Ack not managed ");
-			logger.error(message.toString());
+			logger.error("Ack received is not and SMText ack : " + 
+				     "  - id : " + ack.getId() + 
+				     "  - type : " + ack.getType() + 
+				     "  - count : " + ack.getCount() + 
+				     "Ack not managed ");
 		}
 		
 	 }

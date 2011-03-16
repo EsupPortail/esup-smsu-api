@@ -34,9 +34,7 @@ public class SuperviseSmsSending extends AbstractQuartzJob {
 	protected void executeJob(final ApplicationContext applicationContext, final JobDataMap jobDataMap) {
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("Launching Quartz task SuperviseSmsSending now");
-			logger.debug(sb.toString());
+			logger.debug("Launching Quartz task SuperviseSmsSending now");
 		}
 		
 		final SendSmsManager sendSmsManager = (SendSmsManager) applicationContext.getBean(SEND_SMS_MANAGER_BEAN_NAME);
@@ -46,9 +44,7 @@ public class SuperviseSmsSending extends AbstractQuartzJob {
 
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(100);
-			sb.append("End of Quartz task SuperviseSmsSending");
-			logger.debug(sb.toString());
+			logger.debug("End of Quartz task SuperviseSmsSending");
 		}
 	}
 

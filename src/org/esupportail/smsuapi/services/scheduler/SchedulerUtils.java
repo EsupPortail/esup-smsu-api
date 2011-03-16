@@ -44,12 +44,10 @@ public class SchedulerUtils {
    		
 		try {
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(300);
-				sb.append("smsMessage in launchSuperviseSmsSending is : ");
-				sb.append(" - smsMessage id is : ").append(smsMessage.getId());	
-				sb.append(" - smsMessage content is : ").append(smsMessage.getMessage());
-				sb.append(" - smsMessage phone is : ").append(smsMessage.getRecipient());
-				logger.debug(sb.toString());
+				logger.debug("smsMessage in launchSuperviseSmsSending is : " + 
+					     " - smsMessage id is : " + smsMessage.getId() + 
+					     " - smsMessage content is : " + smsMessage.getMessage() + 
+					     " - smsMessage phone is : " + smsMessage.getRecipient());
 			 }
 			
 			// create DataMap
@@ -65,11 +63,9 @@ public class SchedulerUtils {
 
 			
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Launching job with parameter : \n");
-				sb.append(" - jobName : ").append(jobName).append("\n");
-				sb.append(" - groupName : ").append(groupName).append("\n");
-				logger.debug(sb.toString());
+				logger.debug("Launching job with parameter : \n" + 
+					     " - jobName : " + jobName + "\n" + 
+					     " - groupName : " + groupName + "\n");
 			}
 			
 			JobDetail jobDetail = new JobDetail(jobName, groupName, SuperviseSmsSending.class);
@@ -78,18 +74,13 @@ public class SchedulerUtils {
 			scheduler.scheduleJob(jobDetail, trigger);
 			
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Job successfully launched");
-				logger.debug(sb.toString());
+				logger.debug("Job successfully launched");
 				
 			}
 		} catch (SchedulerException e) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("An error occurs launching the job with parameter : \n");
-			sb.append(" - jobName : ").append(jobName).append("\n");
-			sb.append(" - groupName : ").append(groupName).append("\n");
-			
-			logger.warn(sb.toString());
+			logger.warn("An error occurs launching the job with parameter : \n" + 
+				    " - jobName : " + jobName + "\n" + 
+				    " - groupName : " + groupName + "\n");
 		}
 	}
 
@@ -107,12 +98,10 @@ public class SchedulerUtils {
 			
 			for (SMSBroker smsMessage : smsMessageList) {
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(300);
-				sb.append("smsMessage in launchSuperviseSmsSendingByThird is : ");
-				sb.append(" - smsMessage id is : ").append(smsMessage.getId());	
-				sb.append(" - smsMessage content is : ").append(smsMessage.getMessage());
-				sb.append(" - smsMessage phone is : ").append(smsMessage.getRecipient());
-				logger.debug(sb.toString());
+				logger.debug("smsMessage in launchSuperviseSmsSendingByThird is : " + 
+					     " - smsMessage id is : " + smsMessage.getId() + 
+					     " - smsMessage content is : " + smsMessage.getMessage() + 
+					     " - smsMessage phone is : " + smsMessage.getRecipient());
 			 }
 			}
 			
@@ -129,11 +118,9 @@ public class SchedulerUtils {
 
 			
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Launching job with parameter : \n");
-				sb.append(" - jobName : ").append(jobName).append("\n");
-				sb.append(" - groupName : ").append(groupName).append("\n");
-				logger.debug(sb.toString());
+				logger.debug("Launching job with parameter : \n" + 
+					     " - jobName : " + jobName + "\n" + 
+					     " - groupName : " + groupName + "\n");
 			}
 			
 			JobDetail jobDetail = new JobDetail(jobName, groupName, SuperviseSmsSendingByThird.class);
@@ -142,18 +129,13 @@ public class SchedulerUtils {
 			scheduler.scheduleJob(jobDetail, trigger);
 			
 			if (logger.isDebugEnabled()) {
-				final StringBuilder sb = new StringBuilder(200);
-				sb.append("Job successfully launched");
-				logger.debug(sb.toString());
+				logger.debug("Job successfully launched");
 				
 			}
 		} catch (SchedulerException e) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("An error occurs launching the job with parameter : \n");
-			sb.append(" - jobName : ").append(jobName).append("\n");
-			sb.append(" - groupName : ").append(groupName).append("\n");
-			
-			logger.warn(sb.toString());
+			logger.warn("An error occurs launching the job with parameter : \n" + 
+				    " - jobName : " + jobName + "\n" + 
+				    " - groupName : " + groupName + "\n");
 		}
 	}
 	

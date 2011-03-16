@@ -65,27 +65,25 @@ public class ReportingImpl extends AbstractIpProtectedWebService implements Repo
 	public ReportingInfos getStats(final int month, final int year) 
 				throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(300);
-			sb.append("getStats call method parameters : ");
-			sb.append(" - month : ").append(month);	
-			sb.append(" - year : ").append(year);
-			logger.debug(sb.toString());
+			logger.debug("getStats call method parameters : " + 
+				     " - month : " + month + 
+				     " - year : " + year);
 		}	
 		ReportingInfos reportingInfos = domainService.getStats(month, year);
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(300);
+			final String s;
 			if (reportingInfos != null) {
-			sb.append("reportingInfos is : ");
-			sb.append(" - reportingInfos account is : ").append(reportingInfos.getAccountLabel());	
-			sb.append(" - reportingInfos nbSms is : ").append(reportingInfos.getNbSms());
-			sb.append(" - reportingInfos nbSmsInError is : ").append(reportingInfos.getNbSmsInError());
-			sb.append(" - reportingInfos month is : ").append(reportingInfos.getMonth());
-			sb.append(" - reportingInfos year is : ").append(reportingInfos.getYear());
+				s = "reportingInfos is : " + 
+					" - reportingInfos account is : " + reportingInfos.getAccountLabel() + 
+					" - reportingInfos nbSms is : " + reportingInfos.getNbSms() + 
+					" - reportingInfos nbSmsInError is : " + reportingInfos.getNbSmsInError() + 
+					" - reportingInfos month is : " + reportingInfos.getMonth() + 
+					" - reportingInfos year is : " + reportingInfos.getYear();
 			} else {
-				sb.append("reportingInfos is null ");
+				s = "reportingInfos is null ";
 			}
-			logger.debug(sb.toString());
+			logger.debug(s);
 		}	
 	   return reportingInfos;	
 	}

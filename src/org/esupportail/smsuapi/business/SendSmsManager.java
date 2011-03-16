@@ -122,11 +122,7 @@ public class SendSmsManager {
 		Application app = clientManager.getApplicationByCertificateCN(clientName);
 
 		if (app == null) { 
-			StringBuffer sb = new StringBuffer();
-			sb.append("An unknown application tries to send a SMS : [");
-			sb.append(clientName);
-			sb.append("]");
-			logger.error(sb.toString());
+			logger.error("An unknown application tries to send a SMS : [" + clientName + "]");
 		} else {
 			SMSBroker smsMessage = saveSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
 			// TO DE-COMMENT

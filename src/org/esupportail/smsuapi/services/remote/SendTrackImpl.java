@@ -77,14 +77,12 @@ public class SendTrackImpl extends AbstractIpProtectedWebService implements Send
 		infos.setListNumErreur(domainService.getListNumErreur(msgId));
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(300);
-			sb.append("Response TrackInfos object, for the client of WS SendTrack : ");
-			sb.append("TrackInfos.NbDestTotal : ").append(infos.getNbDestTotal().toString());
-			sb.append("TrackInfos.NbSentSMS : ").append(infos.getNbSentSMS().toString());
-			sb.append("TrackInfos.NbProgressSMS : ").append(infos.getNbProgressSMS().toString());
-			sb.append("TrackInfos.NbDestBlackList :").append(infos.getNbDestBlackList().toString());
-			sb.append("TrackInfos.NbErrorSMS : ").append(infos.getNbErrorSMS().toString());
-			logger.debug(sb.toString());
+			logger.debug("Response TrackInfos object, for the client of WS SendTrack : " + 
+				     "TrackInfos.NbDestTotal : " + infos.getNbDestTotal().toString() + 
+				     "TrackInfos.NbSentSMS : " + infos.getNbSentSMS().toString() + 
+				     "TrackInfos.NbProgressSMS : " + infos.getNbProgressSMS().toString() + 
+				     "TrackInfos.NbDestBlackList :" + infos.getNbDestBlackList().toString() + 
+				     "TrackInfos.NbErrorSMS : " + infos.getNbErrorSMS().toString());
 		
 		Set<String> listnums = infos.getListNumErreur();
 		Iterator<String> iter = listnums.iterator();

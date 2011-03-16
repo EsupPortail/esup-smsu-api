@@ -88,12 +88,10 @@ public class SendSmsThirdManager {
 						// créer toute la liste
 						if (smsMessage != null) {
 							if (logger.isDebugEnabled()) {
-								final StringBuilder sb = new StringBuilder(300);
-								sb.append("smsMessage is : ");
-								sb.append(" - smsMessage id is : ").append(smsMessage.getId());	
-								sb.append(" - smsMessage content is : ").append(smsMessage.getMessage());
-								sb.append(" - smsMessage phone is : ").append(smsMessage.getRecipient());
-								logger.debug(sb.toString());
+								logger.debug("smsMessage is : " + 
+									     " - smsMessage id is : " + smsMessage.getId() + 
+									     " - smsMessage content is : " + smsMessage.getMessage() + 
+									     " - smsMessage phone is : " + smsMessage.getRecipient());
 							}
 							smsMessageList.add(smsMessage);
 							

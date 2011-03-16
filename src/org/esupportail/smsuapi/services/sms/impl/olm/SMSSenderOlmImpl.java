@@ -68,27 +68,19 @@ public class SMSSenderOlmImpl implements ISMSSender {
 			if (!simulateMessageSending) {
 				olmConnector.submit(smText);
 				if (logger.isDebugEnabled()) {
-					final StringBuilder sb = new StringBuilder();
-					sb.append("message with : ");
-					sb.append(" - id : ").append(smsId);
-					sb.append("successfully sent");
-					logger.debug(sb.toString());
+					logger.debug("message with : " + 
+						  " - id : " + smsId + "successfully sent");
 				}
 			} else {
-				final StringBuilder sb = new StringBuilder();
-				sb.append("Message with id : ").append(smsId);
-				sb.append(" not sent because simlation mode is enable");
-				logger.warn(sb.toString());
+				logger.warn("Message with id : " + smsId + " not sent because simlation mode is enable");
 			}
 
 			
 		} catch (Throwable t) {
-			final StringBuilder message = new StringBuilder();
-			message.append("An error occurs sending SMS : ");
-			message.append(" - id : ").append(smsId);
-			message.append(" - recipient : ").append(smsRecipient);
-			message.append(" - message : ").append(smsMessge);
-			logger.error(message.toString());
+			logger.error("An error occurs sending SMS : " + 
+				     " - id : " + smsId + 
+				     " - recipient : " + smsRecipient + 
+				     " - message : " + smsMessge);
 		}		
 
 	}

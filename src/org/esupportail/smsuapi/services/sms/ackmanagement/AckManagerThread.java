@@ -45,11 +45,9 @@ public class AckManagerThread extends Thread {
 
 
 			if (logger.isDebugEnabled()) {
-				final StringBuilder stringBuilder = new StringBuilder();
-				stringBuilder.append("Starting new Thread to manage ack with : ");
-				stringBuilder.append(" - smid : ").append(acknowledgment.getSmsId());
-				stringBuilder.append(" - ack status : ").append(acknowledgment.getSmsStatus());
-				logger.debug(stringBuilder.toString());
+				logger.debug("Starting new Thread to manage ack with : " + 
+					     " - smid : " + acknowledgment.getSmsId() + 
+					     " - ack status : " + acknowledgment.getSmsStatus());
 			}
 
 			// Send the ack to the business layer 
@@ -60,9 +58,7 @@ public class AckManagerThread extends Thread {
 			DatabaseUtils.commit(); 
 		// error case, rollback
 		} catch (RuntimeException e) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Catching exception in AckManagerThread, now rollback : ");
-			logger.error(sb.toString(), e);
+			logger.error("Catching exception in AckManagerThread, now rollback : ", e);
 			DatabaseUtils.rollback(); 
 			throw e;
 		// close the session every time	

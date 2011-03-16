@@ -52,19 +52,15 @@ public class PurgeStatistic {
 	 */
 	private void purgeStatisticOlderThan(final Date date) {
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("Starting purge of statistic table with parameter : \n");
-			sb.append(" - date : ").append(date);
-			logger.debug(sb.toString());
+			logger.debug("Starting purge of statistic table with parameter : \n" + 
+				     " - date : " + date);
 		}
 		
 		final int nbStatisticDeleted = daoService.deleteStatisticOlderThan(date);
 		
 		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(200);
-			sb.append("End purge of statistic table, result : \n");
-			sb.append(" - number of statistic deleted : ").append(nbStatisticDeleted);
-			logger.debug(sb.toString());
+			logger.debug("End purge of statistic table, result : \n" + 
+				     " - number of statistic deleted : " + nbStatisticDeleted);
 		}
 	}
 	
