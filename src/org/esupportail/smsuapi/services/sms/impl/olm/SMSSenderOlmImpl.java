@@ -45,17 +45,17 @@ public class SMSSenderOlmImpl implements ISMSSender {
 		
 		final int smsId = sms.getId();
 		final String smsRecipient = sms.getRecipient();
-		final String smsMessge = sms.getMessage();
+		final String smsMessage = sms.getMessage();
 		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Entering into send message with parameter : ");
 			logger.debug("   - message id : " + smsId);
 			logger.debug("   - message recipient : " + smsRecipient);
-			logger.debug("   - message : " + smsMessge);
+			logger.debug("   - message : " + smsMessage);
 		}
 		
 		try {
-			final String messageISOLatin = new String(smsMessge.getBytes(),"ISO-8859-1");
+			final String messageISOLatin = new String(smsMessage.getBytes(),"ISO-8859-1");
 			if (logger.isDebugEnabled()) {
 				logger.debug("sending encoded message : " + messageISOLatin);
 			}
@@ -79,7 +79,7 @@ public class SMSSenderOlmImpl implements ISMSSender {
 			logger.error("An error occurs sending SMS : " + 
 				     " - id : " + smsId + 
 				     " - recipient : " + smsRecipient + 
-				     " - message : " + smsMessge);
+				     " - message : " + smsMessage);
 		}		
 
 	}
