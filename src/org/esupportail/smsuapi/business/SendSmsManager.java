@@ -26,7 +26,6 @@ public class SendSmsManager {
 	/**
 	 * Log4j logger.
 	 */
-	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(getClass());
 
 	/**
