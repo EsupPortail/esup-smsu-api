@@ -174,9 +174,12 @@
 				<property name="deploy.type" value="servlet" />
 				<echo>deploy.type=${deploy.type}</echo>
 				<if>
-					<isset property="deploy.home"/>
+					<and>
+						<isset property="deploy.home"/>
+						<not> <equals arg1="${basedir}/deploy" arg2="${deploy.home}"> </equals> </not>
+					</and>
 					<then>
-						<fail>Property deploy.home should not be set for quick start installations.</fail>
+						<fail>Property deploy.home should ${basedir}/deploy, not ${deploy.home} .</fail>
 					</then>
 				</if>
 				<property name="deploy.home" value="${basedir}/deploy" />

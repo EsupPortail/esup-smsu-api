@@ -34,8 +34,8 @@
 		</description>
 		<property name="olmAckManger" ref="olmAckManager"/>
 		<property name="errorManager" ref="oldErrorManager"/>
-		<property name="connectorName" value="${sms.connector.olm.name}"/>
-		<property name="olmConnectorPropertyFile" value="${sms.connector.olm.propertyFile}"/>
+		<property name="connectorName" value="smsuapi"/>
+		<property name="olmConnectorPropertyFile" value="${deploy.home}/WEB-INF/classes/properties/libmgs.properties"/>
 	</bean>
 
 	<bean id="oldErrorManager"
@@ -52,13 +52,13 @@
 		</description>
 		<property name="ackManager" ref="ackManager"/>
 		<property name="olmSentStatusCode"> 
-			<value type="int">${sms.connector.olm.olmSentStatusCode}</value>
+			<value type="int">0</value>
 		</property>
 		<property name="olmErrorStatusCode">
-			<value type="int">${sms.connector.olm.olmErrorStatusCode}</value>
+			<value type="int">1</value>
 		</property>
 		<property name="olmInvalidMSISDNCauseCode">
-			<value type="int">${sms.connector.olm.olmInvalidMSISDNCauseCode}</value>
+			<value type="int">10</value>
 		</property>
 	</bean>
 
