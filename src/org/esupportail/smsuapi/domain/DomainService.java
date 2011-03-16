@@ -118,7 +118,7 @@ public interface DomainService extends Serializable {
 	boolean userCanDeleteAdmin(User user, User admin);
 
 	//////////////////////////////////////////////////////////////
-	// WS SendTrack and SendTrackThird methods
+	// WS SendTrack methods
 	//////////////////////////////////////////////////////////////
 	/**
 	 * @param msgId 
@@ -138,9 +138,6 @@ public interface DomainService extends Serializable {
 	 */
 	int getNbSentSMS(Integer msgId) throws UnknownIdentifierApplicationException;
 
-	//////////////////////////////////////////////////////////////
-	// WS SendTrackThird methods
-	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS in progress.
 	 */

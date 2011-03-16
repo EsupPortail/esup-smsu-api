@@ -291,7 +291,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	}
 
 	//////////////////////////////////////////////////////////////
-	// WS SendTrack and SendTrackThird methods
+	// WS SendTrack methods
 	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS recipients.
@@ -343,9 +343,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 
 	}
 
-	//////////////////////////////////////////////////////////////
-	// WS SendTrackThird methods
-	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS in progress.
 	 * @throws UnknownIdentifierApplicationException 

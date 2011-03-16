@@ -35,21 +35,6 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 
-	<bean id="sendtrackthirdXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="sendtrackthird" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SendTrackThird" />
-		
-	</bean>
-	
-	<bean 
-		id="sendtrackthird" 
-		class="org.esupportail.smsuapi.services.remote.SendTrackThirdImpl"
-		>
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
-	</bean>
-	
 	<bean id="sendsmsXFire"
 		parent="abstractXFire" >
 		<property name="serviceBean" ref="sendsms" />

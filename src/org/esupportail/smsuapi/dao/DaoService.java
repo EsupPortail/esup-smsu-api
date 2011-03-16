@@ -193,7 +193,7 @@ public interface DaoService extends Serializable {
 	int getBlackLListByPhone(final String phone);
 	
 	//////////////////////////////////////////////////////////////
-	// WS SendTrack and SendTrackThird methods
+	// WS SendTrack methods
 	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS recipients.
@@ -209,10 +209,6 @@ public interface DaoService extends Serializable {
 	 * @return the number of sent SMS.
 	 */
 	int getNbSentSMS(Integer msgId, Application app);
-	
-	//////////////////////////////////////////////////////////////
-	// WS SendTrackThird methods
-	//////////////////////////////////////////////////////////////
 	
 	/**
 	 * @return the number of SMS in progress.

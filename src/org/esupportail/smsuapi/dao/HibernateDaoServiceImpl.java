@@ -206,7 +206,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	}
 
 	//////////////////////////////////////////////////////////////
-	// WS SendTrack and SendTrackThird methods
+	// WS SendTrack methods
 	//////////////////////////////////////////////////////////////
 
 	/**
@@ -251,9 +251,6 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 
 	}
 	
-	//////////////////////////////////////////////////////////////
-	// WS SendTrackThird methods
-	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS in progress.
 	 */

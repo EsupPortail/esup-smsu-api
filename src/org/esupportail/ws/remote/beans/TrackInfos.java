@@ -149,11 +149,11 @@ public class TrackInfos implements Serializable {
 		if (!(obj instanceof TrackInfos)) {
 			return false;
 		} else {
-			TrackInfos trackInfosToThird = (TrackInfos) obj;
-			if (null == this.getNbDestTotal() || null == trackInfosToThird.getNbDestTotal()) {
+			TrackInfos trackInfos = (TrackInfos) obj;
+			if (null == this.getNbDestTotal() || null == trackInfos.getNbDestTotal()) {
 				return false;
 			} else {
-				return this.getNbDestTotal().equals(trackInfosToThird.getNbDestTotal());
+				return this.getNbDestTotal().equals(trackInfos.getNbDestTotal());
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class TrackInfos implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "TrackInfosToThird#" + hashCode() + "[total=[" + nbDestTotal + "]]";
+		return "TrackInfos#" + hashCode() + "[total=[" + nbDestTotal + "]]";
 	}
 
 
