@@ -387,7 +387,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		list.add(SmsStatus.ERROR_POST_BL.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 
-		Set<String> nums = new HashSet<String>();
 		List<Sms> smslist = new ArrayList<Sms>();
 
 		Application app = clientManager.getApplication();
@@ -395,12 +394,10 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		if (app != null) {
 			// Retrieve list of phones numbers 	
 			smslist = daoService.getListNumErreur(msgId, app, list);
-			for (Sms sms : smslist) {
-				// add phone number to nums Set
-				nums.add(sms.getPhone());
-			}
 		}
-
+		
+		Set<String> nums = new HashSet<String>();
+		for (Sms sms : smslist) nums.add(sms.getPhone());
 		return nums;
 	}
 
