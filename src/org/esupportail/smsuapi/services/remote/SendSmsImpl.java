@@ -26,17 +26,17 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 	/**
 	 * The application service.
 	 */
-	private ApplicationService applicationService;
+	protected ApplicationService applicationService;
 	
 	/**
 	 * The domain service.
 	 */
-	private DomainService domainService;
+	protected DomainService domainService;
 	
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(this.getClass());
+	protected final Logger logger = new LoggerImpl(this.getClass());
 	
 	
 	/**
