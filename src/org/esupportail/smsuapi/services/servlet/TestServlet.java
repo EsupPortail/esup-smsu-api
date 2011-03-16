@@ -139,7 +139,7 @@ public class TestServlet extends HttpServlet {
     	
     	List<SMSBroker> listSms = new LinkedList<SMSBroker>();
     	listSms.add(smsb);
-    	schedulerUtils.launchSuperviseSmsSendingByThird(listSms);
+    	schedulerUtils.launchSuperviseSmsSending(listSms);
     }
     
     @SuppressWarnings("deprecation")

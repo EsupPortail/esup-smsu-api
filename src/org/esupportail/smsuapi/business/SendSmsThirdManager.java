@@ -3,13 +3,10 @@ package org.esupportail.smsuapi.business;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
 
 /**
  * Business layer concerning smsu service.
@@ -63,7 +60,7 @@ public class SendSmsThirdManager extends SendSmsManager {
 						}
 					}
 					// launch the task witch manage the sms sending
-					schedulerUtils.launchSuperviseSmsSendingByThird(smsMessageList);
+					schedulerUtils.launchSuperviseSmsSending(smsMessageList);
 				}
 		}
 	}

@@ -1,5 +1,7 @@
 package org.esupportail.smsuapi.services.scheduler.job;
 
+import java.util.List;
+
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.business.SendSmsManager;
@@ -30,6 +32,7 @@ public class SuperviseSmsSending extends AbstractQuartzJob {
 	private static final String SEND_SMS_MANAGER_BEAN_NAME = "sendSmsManager";
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext, final JobDataMap jobDataMap) {
 		
@@ -39,8 +42,10 @@ public class SuperviseSmsSending extends AbstractQuartzJob {
 		
 		final SendSmsManager sendSmsManager = (SendSmsManager) applicationContext.getBean(SEND_SMS_MANAGER_BEAN_NAME);
 		
-		SMSBroker smsMessage = (SMSBroker)jobDataMap.get(SUPERVISE_SMS_BROKER_KEY);
-		sendSmsManager.sendWaitingForSendingSms(smsMessage);
+		List<SMSBroker> smsMessageList = (List<SMSBroker>)jobDataMap.get(SUPERVISE_SMS_BROKER_KEY);
+
+		for (SMSBroker smsMessage : smsMessageList)
+			sendSmsManager.sendWaitingForSendingSms(smsMessage);
 
 		
 		if (logger.isDebugEnabled()) {
