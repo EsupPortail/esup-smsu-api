@@ -116,10 +116,13 @@ public class TestServlet extends HttpServlet {
     		DatabaseUtils.begin();
     		
     		DaoService daoService = (DaoService) BeanUtils.getBean("daoService");
-    		final Application app = daoService.getApplicationByName("application name");
-    		final Account acc = daoService.getAccByLabel("account label");
+    		@SuppressWarnings("unused")
+			final Application app = daoService.getApplicationByName("application name");
+    		@SuppressWarnings("unused")
+			final Account acc = daoService.getAccByLabel("account label");
     		
-    		final Calendar begin = new GregorianCalendar(2009, 6, 11);
+    		@SuppressWarnings("unused")
+			final Calendar begin = new GregorianCalendar(2009, 6, 11);
 
     		StatisticBuilder statisticBuilder = (StatisticBuilder) BeanUtils.getBean("statisticBuilder");
     		statisticBuilder.buildAllStatistics();
@@ -145,7 +148,8 @@ public class TestServlet extends HttpServlet {
     	schedulerUtils.launchSuperviseSmsSendingByThird(listSms);
     }
     
-    private void testDao() {
+    @SuppressWarnings("deprecation")
+	private void testDao() {
     	ApplicationContextUtils.initApplicationContext();
     	try {
     		DatabaseUtils.open();
@@ -155,7 +159,8 @@ public class TestServlet extends HttpServlet {
     		final Application app = daoService.getApplicationByName("application name");
     		final Account acc = daoService.getAccByLabel("account label");
     		final Date theDate = new Date(109,6,1);
-    		final boolean bool = daoService.isStatisticExistsForApplicationAndAccountAndDate(app, acc, theDate);
+    		@SuppressWarnings("unused")
+			final boolean bool = daoService.isStatisticExistsForApplicationAndAccountAndDate(app, acc, theDate);
     		
     		
     		
@@ -177,7 +182,8 @@ public class TestServlet extends HttpServlet {
     		//logger.debug("ici : 0666666666");
     		//Boolean retVal = domainService.isPhoneNumberInBlackList("0665178942");
     		//logger.debug("ici reponse pour 0666666666 : " + retVal);
-    		Set<String> list = domainService.getListPhoneNumbersInBlackList();
+    		@SuppressWarnings("unused")
+			Set<String> list = domainService.getListPhoneNumbersInBlackList();
     	
     		DatabaseUtils.commit();
     	} catch (Throwable t) {

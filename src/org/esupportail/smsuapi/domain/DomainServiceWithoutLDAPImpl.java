@@ -58,6 +58,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	/**
 	 * {@link ISMSSender}.
 	 */
+	@SuppressWarnings("unused")
 	private ISMSSender smsSender;
 
 	/**

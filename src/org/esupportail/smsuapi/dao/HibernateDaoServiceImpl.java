@@ -67,6 +67,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	/**
 	 * A logger.
 	 */
+	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(getClass());
 	
 	/**
@@ -314,6 +315,7 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	 * 
 	 * @see org.esupportail.smsuapi.dao.DaoService#getSms(org.esupportail.smsuapi.dao.beans.Application, int, java.lang.String)
 	 */
+	@SuppressWarnings("unchecked")
 	public List<Sms> getSms(final Application app, final  int id, final String phoneNumber) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
 		criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID,id));

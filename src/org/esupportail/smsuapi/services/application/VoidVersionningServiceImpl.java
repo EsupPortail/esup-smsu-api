@@ -9,6 +9,7 @@ import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.web.controllers.AbstractDomainAwareBean;
 
 
+@SuppressWarnings("serial")
 public class VoidVersionningServiceImpl extends AbstractDomainAwareBean implements VersionningService {
 
 	/**
