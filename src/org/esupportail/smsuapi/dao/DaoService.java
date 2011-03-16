@@ -17,6 +17,7 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.VersionManager;
+import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 
 /**
  * The DAO service interface.
@@ -117,6 +118,15 @@ public interface DaoService extends Serializable {
 	 */
 	List<Sms> getSms(Application app, int id, String phoneNumber);
 	
+	/**
+	 * Get the sms by status
+	 * @param app 
+	 * @param id 
+	 * @param phoneNumber 
+	 * @return the list of Sms
+	 */
+	List<Sms> getSms(SmsStatus status);
+
 	/**
 	 * @param sms
 	 */

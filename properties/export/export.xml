@@ -61,6 +61,19 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
+	<bean id="smsuapiStatusXFire"
+		parent="abstractXFire" >
+		<property name="serviceBean" ref="smsuapiStatus" />
+		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SmsuapiStatus" />
+	</bean>
+
+	<bean 
+		id="smsuapiStatus" 
+		class="org.esupportail.smsuapi.services.remote.SmsuapiStatusImpl">
+		<property name="applicationService" ref="applicationService" />
+		<property name="domainService" ref="domainService" />
+	</bean>
+	
 	<bean id="notificationPhoneNumberInBlackListXFire"
 		parent="abstractXFire" >
 		<property name="serviceBean" ref="notificationPhoneNumberInBlackList" />

@@ -384,6 +384,22 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		return nums;
 	}
 
+	public Sms getSms(Integer msgId, String phoneNumber) throws UnknownIdentifierApplicationException {
+		Application app = clientManager.getApplication();
+		if (app == null)
+			throw new UnknownIdentifierApplicationException("Unknown application");
+		
+		List<Sms> l = daoService.getSms(app, msgId, phoneNumber);
+		if (l.size() == 0) {
+			return null;
+		} else if (l.size() > 1) {
+			logger.error("internal error: more than one sms corresponds to " + msgId + ":" + phoneNumber);
+			return null;
+		} else {
+			return l.get(0);
+		}
+	}
+
 	//////////////////////////////////////////////////////////////
 	// WS SendSms methods
 	//////////////////////////////////////////////////////////////

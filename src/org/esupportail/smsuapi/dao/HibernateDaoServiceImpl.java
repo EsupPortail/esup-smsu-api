@@ -322,6 +322,14 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 		
 		return lstSms;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Sms> getSms(SmsStatus status) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
+		criteria.add(Restrictions.eq(Sms.PROP_STATE, status.name()));
+		List<Sms> lstSms = getHibernateTemplate().findByCriteria(criteria);		
+		return lstSms;
+	}
 
 	/**
 	 * @see org.esupportail.smsuapi.dao.DaoService#getUsers()

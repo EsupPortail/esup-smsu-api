@@ -14,6 +14,7 @@ import org.esupportail.commons.services.application.Version;
 import org.esupportail.commons.web.beans.Paginator;
 
 import org.esupportail.smsuapi.dao.beans.Application;
+import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
@@ -153,6 +154,11 @@ public interface DomainService extends Serializable {
 	 */
 	Set<String> getListNumErreur(Integer msgId);
 
+	/**
+	 * @return the sms object corresponding to msgId & phoneNumber
+	 * @throws UnknownIdentifierApplicationException 
+	 */
+	Sms getSms(Integer msgId, String phoneNumber) throws UnknownIdentifierApplicationException;
 
 	//////////////////////////////////////////////////////////////
 	// WS SendSms methods
