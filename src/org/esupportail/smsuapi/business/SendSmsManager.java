@@ -85,7 +85,8 @@ public class SendSmsManager {
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
 		} else {
-			Account acc = daoService.getAccByLabel(labelAccount);
+			Account acc = labelAccount == null ? app.getAcc() :
+				daoService.getAccByLabel(labelAccount);
 			if (acc == null) {
 				// - créer nouveau account
 				acc = Account.createDefault(app, labelAccount);
