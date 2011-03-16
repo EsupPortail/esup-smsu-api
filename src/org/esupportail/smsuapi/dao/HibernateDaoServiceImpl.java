@@ -222,10 +222,10 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	}
 	
 	/**
-	 * @return the non-authorized phone numbers (in back list).
+	 * @return the number of sms having one of the wanted states
 	 */
 	@SuppressWarnings("unchecked")
-	public int getNbDestBackList(final Integer msgId, final Application app, final List<String> list) {
+	public int getNbSmsWithState(final Integer msgId, final Application app, final List<String> list) {
 			DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
 			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
 			criteria.add(Restrictions.eq(Sms.PROP_APP, app));

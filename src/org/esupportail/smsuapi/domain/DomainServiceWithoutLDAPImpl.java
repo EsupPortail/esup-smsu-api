@@ -311,7 +311,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		Application app = clientManager.getApplication();
 		if (app == null) { 
 			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else { return daoService.getNbDestBackList(msgId, app, list); }
+		} else { return daoService.getNbSmsWithState(msgId, app, list); }
 
 
 	}

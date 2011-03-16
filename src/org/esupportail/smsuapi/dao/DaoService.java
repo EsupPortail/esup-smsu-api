@@ -201,9 +201,9 @@ public interface DaoService extends Serializable {
 	int getNbDest(Integer msgId, Application app);
 	
 	/**
-	 * @return the non-authorized phone numbers (in back list).
+	 * @return the number of sms having one of the wanted states
 	 */
-	int getNbDestBackList(Integer msgId, Application app, List<String> list);
+	int getNbSmsWithState(Integer msgId, Application app, List<String> list);
 	
 	/**
 	 * @return the number of sent SMS.
