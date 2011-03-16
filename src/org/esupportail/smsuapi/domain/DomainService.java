@@ -128,9 +128,9 @@ public interface DomainService extends Serializable {
 	
 	/**
 	 * @param msgId 
-	 * @return the non-authorized phone numbers (in back list).
+	 * @return the non-authorized phone numbers (in black list).
 	 */
-	int getNbDestBackList(Integer msgId) throws UnknownIdentifierApplicationException;
+	int getNbDestBlackList(Integer msgId) throws UnknownIdentifierApplicationException;
 	
 	/**
 	 * @param msgId 

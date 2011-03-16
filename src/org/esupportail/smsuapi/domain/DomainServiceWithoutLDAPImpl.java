@@ -299,11 +299,11 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	}
 
 	/**
-	 * @return the non-authorized phone numbers (in back list).
+	 * @return the non-authorized phone numbers (in black list).
 	 * @throws UnknownIdentifierApplicationException 
 	 */
 	@SuppressWarnings("unchecked")
-	public int getNbDestBackList(final Integer msgId) throws UnknownIdentifierApplicationException {
+	public int getNbDestBlackList(final Integer msgId) throws UnknownIdentifierApplicationException {
 		List<String> list = new ArrayList();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());

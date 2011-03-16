@@ -18,7 +18,7 @@ public interface SendTrack extends Serializable {
 	/**
 	 * @return list of :
 	 *  - the number of SMS recipients.
-	 *  - the non-authorized phone numbers (in back list).
+	 *  - the non-authorized phone numbers (in black list).
 	 *  - the number of sent SMS.
 	 */
 	

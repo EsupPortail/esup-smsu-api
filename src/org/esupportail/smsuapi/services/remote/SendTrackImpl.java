@@ -69,7 +69,7 @@ public class SendTrackImpl extends AbstractIpProtectedWebService implements Send
 		}
 		TrackInfos infos = new TrackInfos();
 		infos.setNbDestTotal(domainService.getNbDest(msgId));
-		infos.setNbDestBlackList(domainService.getNbDestBackList(msgId));
+		infos.setNbDestBlackList(domainService.getNbDestBlackList(msgId));
 		infos.setNbSentSMS(domainService.getNbSentSMS(msgId));
 		infos.setNbProgressSMS(domainService.getNbProgressSMS(msgId));
 		infos.setNbErrorSMS(domainService.getNbErrorSMS(msgId));
