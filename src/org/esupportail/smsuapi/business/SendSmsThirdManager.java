@@ -155,14 +155,7 @@ public class SendSmsThirdManager {
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
 	private Boolean checkQuotaForThird(final Application app, final Integer nbDest) {
-		Account acc = app.getAcc();
-		long quotaAcc = acc.getQuota() - acc.getConsumedSms(); 
-		
-		if (quotaAcc < nbDest) { return false; 
-		} else {
-			long quotaApp = app.getQuota() - app.getConsumedSms();
-			return !(quotaApp < nbDest);
-		}
+		return app.getAcc().checkQuota(nbDest) && app.checkQuota(nbDest);
 	}
 
 	/**

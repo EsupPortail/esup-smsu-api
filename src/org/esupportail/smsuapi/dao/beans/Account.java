@@ -149,6 +149,14 @@ public class Account implements Serializable {
 	}
 
 	/**
+	 * Check whether the account is allowed to send nbSms
+	 */
+	public boolean checkQuota(int nbToSend) {
+		long nbAvailable = getQuota() - getConsumedSms(); 		
+		return nbAvailable >= nbToSend;
+	}
+	
+	/**
 	 * Set the value related to the column: ACC_CONSUMED_SMS.
 	 * @param consumedSms the ACC_CONSUMED_SMS value
 	 */
