@@ -91,7 +91,7 @@ public class TestServlet extends HttpServlet {
    
     
     private void testSms() {
-    	ISMSSender smsSender = (ISMSSender) BeanUtils.getBean("smsSenderOlmImpl");
+    	ISMSSender smsSender = (ISMSSender) BeanUtils.getBean("smsSenderImpl");
     	final SMSBroker smsMessage = new SMSBroker(1, "0699999999", "coucou");
     	smsSender.sendMessage(smsMessage);
     }

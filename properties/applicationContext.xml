@@ -20,6 +20,7 @@
 	      	<value>classpath:/properties/defaults.properties</value>
             <value>classpath:/properties/defaults-${deploy.type}.properties</value>
 	      	<value>classpath:/properties/config.properties</value>
+		<value>classpath:/properties/broker/${sms.connector.name}/${sms.connector.name}.properties</value>
 	      </list>
 	  </property>
 	</bean>
@@ -39,7 +40,7 @@
 	<import resource="smtp/smtp.xml" />
 	<import resource="init/init.xml" />
 	<import resource="scheduler/scheduler.xml" />
-	<import resource="sms/sms.xml" />
+	<import resource="broker/${sms.connector.name}/${sms.connector.name}.xml" />
 	<import resource="tags/tags.xml" />
 	<import resource="web/controllers.xml" />
 	<import resource="web/converters.xml" />

@@ -9,12 +9,12 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 	<!-- 
-		/properties/sms/sms.xml
+		/properties/broker/olm/olm.xml
 		The configuration file for sms services.
 		This file is referenced by /properties/applicationContext.xml.
 	-->
 
-	<bean id="smsSenderOlmImpl"
+	<bean id="smsSenderImpl"
 		class="org.esupportail.smsuapi.services.sms.impl.olm.SMSSenderOlmImpl">
 		<description>
 			Olm implementation of the broker, this class manage the sms sending
