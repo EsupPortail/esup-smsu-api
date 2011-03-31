@@ -35,7 +35,7 @@
 		<property name="olmAckManger" ref="olmAckManager"/>
 		<property name="errorManager" ref="oldErrorManager"/>
 		<property name="connectorName" value="smsuapi"/>
-		<property name="olmConnectorPropertyFile" value="${deploy.home}/WEB-INF/classes/properties/libmgs.properties"/>
+		<property name="olmConnectorPropertyFile" value="${deploy.home}/WEB-INF/classes/properties/broker/olm/libmgs.properties"/>
 	</bean>
 
 	<bean id="oldErrorManager"
