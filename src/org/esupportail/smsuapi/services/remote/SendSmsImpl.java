@@ -62,22 +62,15 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 	
 
 	/**
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#isQuotaOk(java.lang.Integer, java.lang.String)
+	 * @see org.esupportail.smsuapi.services.remote.SendSms#mayCreateAccountCheckQuotaOk(java.lang.Integer, java.lang.String)
 	 */
 	public void mayCreateAccountCheckQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException {
-		logger.info("isQuotaOK method with parameters : " + 
+		logger.info("mayCreateAccountCheckQuotaOk method with parameters : " + 
 				     " - nbDest = " + nbDest + 
 				     " - labelAccount = " + labelAccount);
 		domainService.mayCreateAccountCheckQuotaOk(nbDest, labelAccount);
-	}
-
-	@Deprecated
-	public Boolean isQuotaOk(final Integer nbDest, final String labelAccount) 
-	throws UnknownIdentifierApplicationException, InsufficientQuotaException {
-		mayCreateAccountCheckQuotaOk(nbDest, labelAccount);
-		return true;
 	}
 		
 

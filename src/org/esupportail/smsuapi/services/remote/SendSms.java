@@ -25,11 +25,6 @@ public interface SendSms extends Serializable {
 	void mayCreateAccountCheckQuotaOk(Integer nbDest, String labelAccount)
 	throws UnknownIdentifierApplicationException, 
 	InsufficientQuotaException;
-
-	@Deprecated
-	Boolean isQuotaOk(Integer nbDest, String labelAccount)
-	throws UnknownIdentifierApplicationException, 
-	InsufficientQuotaException;
 	
 	/**
 	 * send SMS.
