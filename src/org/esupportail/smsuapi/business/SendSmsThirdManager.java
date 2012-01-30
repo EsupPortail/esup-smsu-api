@@ -42,7 +42,7 @@ public class SendSmsThirdManager extends SendSmsManager {
 
 		for (String phone : smsPhoneList) {
 			SMSBroker smsMessage = saveSMSNoCheck(msgId, null, null, null, phone, account, msgContent, app);
-			// créer toute la liste
+			// creer toute la liste
 			if (smsMessage != null) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("smsMessage is : " + 

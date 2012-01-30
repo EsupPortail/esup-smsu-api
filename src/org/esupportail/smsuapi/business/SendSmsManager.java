@@ -88,7 +88,7 @@ public class SendSmsManager {
 			Account acc = labelAccount == null ? app.getAcc() :
 				daoService.getAccByLabel(labelAccount);
 			if (acc == null) {
-				// - créer nouveau account
+				// - create new account
 				acc = Account.createDefault(app, labelAccount);
 				daoService.addAccount(acc);
 				throw new InsufficientQuotaException("Quota error: account " + labelAccount + " has been created with quota of 0");
@@ -147,7 +147,7 @@ public class SendSmsManager {
 			return null;
 		} catch (InsufficientQuotaException e) {
 			if (logger.isDebugEnabled()) {
-				logger.warn("Error Quota, SMS de validation du compte non envoyé", e);
+				logger.warn("Error Quota, SMS de validation du compte not sent", e);
 			}
 			return null;
 		}

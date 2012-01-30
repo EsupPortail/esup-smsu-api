@@ -24,7 +24,7 @@ public class ReportingManager {
 	private static final  int JANUARY = 1;
 	
 	/**
-	 * Décember.
+	 * December.
 	 */
 	private static final  int DECEMBER = 12;
 	/**
