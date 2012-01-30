@@ -131,7 +131,7 @@ public class SendSmsManager {
 
 		Application app = clientManager.getApplication();
 		
-		// chech if the sms already exists (in case of FO problem...)
+		// check if the sms already exists (in case of FO problem...)
 		if (msgId != null && app != null) {
 			if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
 				logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
