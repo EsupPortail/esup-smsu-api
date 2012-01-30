@@ -48,7 +48,7 @@ create table blacklist
    BLA_ID               int not null auto_increment,
    APP_ID               int not null,
    BLA_DATE             datetime not null,
-   BLA_PHONE            char(10) not null,
+   BLA_PHONE            varchar(255) not null,
    primary key (BLA_ID)
 )
 type = InnoDB;
@@ -171,7 +171,7 @@ create table sms
    SMS_SVC_ID           int,
    SMS_STATE            varchar(32) not null,
    SMS_DATE             timestamp not null default CURRENT_TIMESTAMP,
-   SMS_PHONE            char(10),
+   SMS_PHONE            varchar(255),
    primary key (SMS_ID)
 )
 type = InnoDB;
