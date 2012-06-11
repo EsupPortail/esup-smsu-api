@@ -91,7 +91,7 @@ public class ClientManager implements InitializingBean {
 			final String subjectDN  = cert.getSubjectDN().getName();
 			name = getCNFromSubjectDN(subjectDN);
 		} else {
-			logger.error("no certificat found, check config of server.xml (clientAuth=true)");
+			logger.error("no certificate. Fix you configuration: you need clientAuth=true in server.xml (tomcat) or SSLCACertificateFile/SSLCACertificatePath in apache conf (if you use a frontal apache)");
 		}
 		
 		return name;
