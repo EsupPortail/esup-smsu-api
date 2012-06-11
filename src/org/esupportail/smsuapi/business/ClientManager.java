@@ -72,6 +72,10 @@ public class ClientManager implements InitializingBean {
 
 	}
 
+	public String getNoCertificateErrorMessage() {
+		return "no certificate received by smsuapi. Fix smsuapi configuration: you need clientAuth=true in server.xml (tomcat) or \"SSLVerifyClient require\" in apache conf (if you use a frontal apache)";
+	}
+
 	/**
 	 * @return the client name, "unknown" if the name can not be found.
 	 * @throws IllegalArgumentException
@@ -91,7 +95,7 @@ public class ClientManager implements InitializingBean {
 			final String subjectDN  = cert.getSubjectDN().getName();
 			name = getCNFromSubjectDN(subjectDN);
 		} else {
-			logger.error("no certificate. Fix you configuration: you need clientAuth=true in server.xml (tomcat) or \"SSLVerifyClient require\" in apache conf (if you use a frontal apache)");
+			logger.error(getNoCertificateErrorMessage());
 		}
 		
 		return name;

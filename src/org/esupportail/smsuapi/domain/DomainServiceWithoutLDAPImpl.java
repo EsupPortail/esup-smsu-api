@@ -520,7 +520,10 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		String sReturn = "Application reconnue : ";
 		String application = clientManager.getClientName();
 
-		return sReturn + application;
+		if (application.equals(""))
+		    return "ERROR : " + clientManager.getNoCertificateErrorMessage();
+		else 
+		    return sReturn + application;
 	}
 
 	///////////////////////////////////////
