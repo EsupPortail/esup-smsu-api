@@ -108,43 +108,25 @@ public class ClientManager implements InitializingBean {
 	 * @return
 	 */
 	public Application getApplicationByCertificateCN(final String certificateCN) {
-		Application retVal = null;
-		
-		if (certificateCN != null) {
-			final List<Application> allApplicationList = daoService.getAllApplications();
-			final Iterator<Application> allApplicationIte = allApplicationList.iterator();
+		if (certificateCN == null) return null;
 
-			boolean found = false;
-
-			while (allApplicationIte.hasNext() && !found) {
-				final Application application = allApplicationIte.next();
-				final byte[] certAsByteArray = application.getCertifcate();
-				try {
-					final javax.security.cert.X509Certificate certificate = 
-						  javax.security.cert.X509Certificate.getInstance(certAsByteArray);
-					final String cn = getCNFromCertificate(certificate);
-
-					if (certificateCN.equalsIgnoreCase(cn)) {
-						retVal = application;
-						found = true;
-						
-						if (logger.isDebugEnabled()) {
-							logger.debug("CN in db : [" + cn + "] matches with CN in request : [" + certificateCN + "]");
-						}
-					} else {
-						if (logger.isDebugEnabled()) {
-							logger.debug("CN in db : [" + cn + "] does not match with CN in request : [" + certificateCN + "]");
-						}
-					}
-
-				} catch (CertificateException e) {
-					logger.warn("An error occurs getting the certificate from db for application with : \n" + 
-						    " - id : " + application.getId(), e);
+		for (Application application : daoService.getAllApplications()) {
+			try {
+				String cn = getCNFromApplication(application);
+				if (certificateCN.equalsIgnoreCase(cn)) {					
+					if (logger.isDebugEnabled())
+						logger.debug("CN in db : [" + cn + "] matches with CN in request : [" + certificateCN + "]");
+					return application;
+				} else {
+					if (logger.isDebugEnabled())
+						logger.debug("CN in db : [" + cn + "] does not match with CN in request : [" + certificateCN + "]");
 				}
+			} catch (CertificateException e) {
+				logger.warn("An error occurs getting the certificate from db for application with : \n" + 
+					    " - id : " + application.getId(), e);
 			}
 		}
-		return retVal;
-		
+		return null;
 	}
 	
 	public Application getApplicationOrNull() {
@@ -156,6 +138,14 @@ public class ClientManager implements InitializingBean {
 		if (app == null)
 			throw new UnknownIdentifierApplicationException("Unknown application " + getClientName());
 		return app;
+	}
+
+
+	private String getCNFromApplication(Application application) throws CertificateException {
+		byte[] certAsByteArray = application.getCertifcate();
+		return getCNFromCertificate(
+			javax.security.cert.X509Certificate.getInstance(certAsByteArray)
+			);
 	}
 	
 	/**
