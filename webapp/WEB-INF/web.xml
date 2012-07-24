@@ -186,6 +186,17 @@
 	
 <!--END XFIRE-->
 
+	<servlet>
+		<servlet-name>rest</servlet-name>
+		<servlet-class>
+			org.esupportail.smsuapi.services.servlet.RestServlet
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>rest</servlet-name>
+		<url-pattern>/rest</url-pattern>
+	</servlet-mapping>
+
 	<filter>
 		<description>
 			This filter is needed to use some Tomahawk extentions.

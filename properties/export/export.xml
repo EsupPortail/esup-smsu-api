@@ -125,5 +125,15 @@
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
+
+
+	<bean id="restServletActions"
+	      class="org.esupportail.smsuapi.services.servlet.RestServletActions">
+		<property name="clientManager" ref="clientManager"/>
+
+		<property name="sendSms" ref="sendsms" />
+		<property name="sendTrack" ref="sendtrack" />
+		<property name="notificationPhoneNumberInBlackList" ref="notificationPhoneNumberInBlackList" />
+	</bean>
 	
 </beans>
