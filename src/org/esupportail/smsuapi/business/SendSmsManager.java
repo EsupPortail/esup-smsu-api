@@ -139,7 +139,7 @@ public class SendSmsManager {
 			Account account = mayCreateAccountAndCheckQuotaOk(1, labelAccount);
 			return saveSMSNoCheck(msgId, perId, bgrId, svcId, smsPhone, account, msgContent, app);
 		} catch (UnknownIdentifierApplicationException e) {
-			logger.error("An unknown application tries to send a SMS : [" + clientManager.getClientName() + "]");
+			logger.error(e);
 			return null;
 		} catch (InsufficientQuotaException e) {
 			if (logger.isDebugEnabled()) {

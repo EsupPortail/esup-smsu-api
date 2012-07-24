@@ -155,7 +155,7 @@ public class ClientManager implements InitializingBean {
 	public Application getApplication() throws UnknownIdentifierApplicationException {
 		Application app = getApplicationOrNull();
 		if (app == null)
-			throw new UnknownIdentifierApplicationException("Unknown application");
+			throw new UnknownIdentifierApplicationException("Unknown application " + getClientName());
 		return app;
 	}
 	
