@@ -13,9 +13,9 @@ import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.esupportail.commons.utils.HttpUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.web.servlet.XFireServletController;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
@@ -101,7 +101,7 @@ public class ClientManager implements InitializingBean {
 	}
 
 	private X509Certificate[] getClientX509Certificates() {
-		HttpServletRequest request = XFireServletController.getRequest();
+		HttpServletRequest request = HttpUtils.getHttpServletRequest();
 		return (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
 	}
 	
