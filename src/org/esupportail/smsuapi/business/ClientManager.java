@@ -165,33 +165,23 @@ public class ClientManager implements InitializingBean {
 	 * @return
 	 */
 	final String getCNFromSubjectDN(final String subjectDN) {
-		String name = "";
-		
 		if (logger.isDebugEnabled()) {
 			logger.debug("Client connexion. SubjectDN = " + subjectDN);
 		}
 
 		PatternMatcher matcher = new Perl5Matcher();
-
 		if (!matcher.contains(subjectDN, subjectDNPattern)) {
-			name = "unknown";
-			// throw new BadCredentialsException(messages.getMessage("DaoX509AuthoritiesPopulator.noMatching",
-			// new Object[] {subjectDN}, "No matching pattern was found in subjectDN: {0}"));
+			return "unknown";
 		}
 
 		MatchResult match = matcher.getMatch();
-
 		if (match.groups() != 2) { 
 			// 2 = 1 + the entire match
 			throw new IllegalArgumentException("Regular expression must contain a single group ");
 		}
 
-		name = match.group(1);
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("Client connexion. name = " + name);
-		}
-		
+		String name = match.group(1);
+		logger.debug("Client connexion. name = " + name);
 		return name;
 	}
 
