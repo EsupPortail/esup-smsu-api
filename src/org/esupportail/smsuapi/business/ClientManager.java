@@ -82,6 +82,10 @@ public class ClientManager implements InitializingBean {
 	 * @throws IllegalArgumentException
 	 */
 	public String getClientName() throws IllegalArgumentException {
+		return getCertificateCN();
+	}
+
+	private String getCertificateCN() throws IllegalArgumentException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Client connexion. get Client Name.");
 		}
@@ -149,7 +153,7 @@ public class ClientManager implements InitializingBean {
 	}
 	
 	public Application getApplicationOrNull() {
-		return getApplicationByCertificateCN(getClientName());
+		return getApplicationByCertificateCN(getCertificateCN());
 	}
 
 	public Application getApplication() throws UnknownIdentifierApplicationException {
