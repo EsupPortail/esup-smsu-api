@@ -1,18 +1,15 @@
 package org.esupportail.smsuapi.business;
 
-import java.security.cert.X509Certificate;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
+import java.security.cert.X509Certificate;
 import javax.security.cert.CertificateException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.oro.text.regex.MalformedPatternException;
-import org.apache.oro.text.regex.MatchResult;
-import org.apache.oro.text.regex.Pattern;
-import org.apache.oro.text.regex.PatternMatcher;
-import org.apache.oro.text.regex.Perl5Compiler;
-import org.apache.oro.text.regex.Perl5Matcher;
 import org.esupportail.commons.utils.HttpUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
@@ -26,11 +23,6 @@ import org.springframework.beans.factory.InitializingBean;
  *
  */
 public class ClientManager implements InitializingBean {
-
-	/**
-	 * pattern used to extract the client name.
-	 */
-	private Pattern subjectDNPattern;
 
 	/**
 	 * pattern as sting used to extract the client name.
@@ -60,17 +52,16 @@ public class ClientManager implements InitializingBean {
 	/**
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
-	public void afterPropertiesSet() throws IllegalArgumentException {
-		
-		Perl5Compiler compiler = new Perl5Compiler();
+	public void afterPropertiesSet() throws IllegalArgumentException {	
+		compileSubjectDNRegex();
+	}
 
-        try {
-            subjectDNPattern = compiler.compile(subjectDNRegex,
-                    Perl5Compiler.READ_ONLY_MASK | Perl5Compiler.CASE_INSENSITIVE_MASK);
-        } catch (MalformedPatternException mpe) {
-            throw new IllegalArgumentException("Malformed regular expression: " + subjectDNRegex);
-        }
-
+	public Pattern compileSubjectDNRegex() throws IllegalArgumentException {
+		try {
+			return Pattern.compile(subjectDNRegex, Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException e) {
+			throw new IllegalArgumentException("Malformed regular expression: " + subjectDNRegex);
+		}
 	}
 
 	public String getNoCertificateErrorMessage() {
@@ -169,19 +160,13 @@ public class ClientManager implements InitializingBean {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Client connexion. SubjectDN = " + subjectDN);
 		}
-
-		PatternMatcher matcher = new Perl5Matcher();
-		if (!matcher.contains(subjectDN, subjectDNPattern)) {
+		Matcher matcher = compileSubjectDNRegex().matcher(subjectDN);
+		if (!matcher.find()) 
 			return "unknown";
-		}
-
-		MatchResult match = matcher.getMatch();
-		if (match.groups() != 2) { 
-			// 2 = 1 + the entire match
+		if (matcher.groupCount() != 1)
 			throw new IllegalArgumentException("Regular expression must contain a single group ");
-		}
 
-		String name = match.group(1);
+		String name = matcher.group(1);
 		logger.debug("Client connexion. name = " + name);
 		return name;
 	}
