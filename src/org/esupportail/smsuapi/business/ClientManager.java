@@ -90,20 +90,16 @@ public class ClientManager implements InitializingBean {
 			logger.debug("Client connexion. get Client Name.");
 		}
 		
-		String name = "";
 		HttpServletRequest request = XFireServletController.getRequest();
 		
 		X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
 		
 		if ((certs != null) && (certs.length > 0)) {
-			final X509Certificate cert = certs[0];
-			final String subjectDN  = cert.getSubjectDN().getName();
-			name = getCNFromSubjectDN(subjectDN);
+			return getCNFromCertificate(certs[0]);
 		} else {
 			logger.error(getNoCertificateErrorMessage());
+			return "";
 		}
-		
-		return name;
 	}
 	
 	/**
@@ -126,8 +122,7 @@ public class ClientManager implements InitializingBean {
 				try {
 					final javax.security.cert.X509Certificate certificate = 
 						  javax.security.cert.X509Certificate.getInstance(certAsByteArray);
-					final String subjectDN = certificate.getSubjectDN().getName();
-					final String cn = getCNFromSubjectDN(subjectDN);
+					final String cn = getCNFromCertificate(certificate);
 
 					if (certificateCN.equalsIgnoreCase(cn)) {
 						retVal = application;
@@ -168,6 +163,15 @@ public class ClientManager implements InitializingBean {
 	 * @param certificate
 	 * @return
 	 */
+	private String getCNFromCertificate(final X509Certificate certificate) {
+		String subjectDN = certificate.getSubjectDN().getName();
+		return getCNFromSubjectDN(subjectDN);
+	}
+	private String getCNFromCertificate(final javax.security.cert.X509Certificate certificate) {
+		String subjectDN = certificate.getSubjectDN().getName();
+		return getCNFromSubjectDN(subjectDN);
+	}
+
 	final String getCNFromSubjectDN(final String subjectDN) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Client connexion. SubjectDN = " + subjectDN);
