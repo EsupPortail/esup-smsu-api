@@ -142,9 +142,7 @@ public class SendSmsManager {
 			logger.error(e);
 			return null;
 		} catch (InsufficientQuotaException e) {
-			if (logger.isDebugEnabled()) {
-				logger.warn("Error Quota, SMS de validation du compte not sent", e);
-			}
+			logger.info(e);
 			return null;
 		}
 	}
