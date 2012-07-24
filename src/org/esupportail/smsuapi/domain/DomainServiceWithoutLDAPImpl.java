@@ -509,7 +509,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		String application = clientManager.getClientName();
 
 		if (application.equals(""))
-		    return "ERROR : " + clientManager.getNoCertificateErrorMessage();
+		    return "ERROR : " + clientManager.getNoCertificateNorBasicAuthErrorMessage();
 		else 
 		    return sReturn + application;
 	}

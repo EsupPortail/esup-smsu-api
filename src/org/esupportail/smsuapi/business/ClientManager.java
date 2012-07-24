@@ -10,6 +10,7 @@ import java.security.cert.X509Certificate;
 import javax.security.cert.CertificateException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.codec.binary.Base64;
 import org.esupportail.commons.utils.HttpUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
@@ -34,6 +35,7 @@ public class ClientManager implements InitializingBean {
 	 */
 	private DaoService daoService;
 
+	private String PASSWORD_PREFIX_IN_CERTIFCATE = "PASSWORD:";
 	
 	/**
 	 * A logger.
@@ -64,8 +66,8 @@ public class ClientManager implements InitializingBean {
 		}
 	}
 
-	public String getNoCertificateErrorMessage() {
-		return "no certificate received by smsuapi. Fix smsuapi configuration: you need clientAuth=true in server.xml (tomcat) or \"SSLVerifyClient require\" in apache conf (if you use a frontal apache)";
+	public String getNoCertificateNorBasicAuthErrorMessage() {
+		return "no certificate nor basic auth received by smsuapi. Either fix smsuapi configuration: you need clientAuth=optional in server.xml (tomcat) or \"SSLVerifyClient optional\" in apache conf (if you use a frontal apache). Or use Basic Auth";
 	}
 
 	/**
@@ -73,7 +75,14 @@ public class ClientManager implements InitializingBean {
 	 * @throws IllegalArgumentException
 	 */
 	public String getClientName() throws IllegalArgumentException {
-		return getCertificateCN();
+		String cn = getCertificateCN();
+		if (cn == null) cn = getBasicAuthUser();
+		if (cn == null) { 
+			logger.error(getNoCertificateNorBasicAuthErrorMessage());
+			return "";
+		} else {
+			return cn;
+		}
 	}
 
 	private String getCertificateCN() throws IllegalArgumentException {
@@ -86,8 +95,7 @@ public class ClientManager implements InitializingBean {
 		if ((certs != null) && (certs.length > 0)) {
 			return getCNFromCertificate(certs[0]);
 		} else {
-			logger.error(getNoCertificateErrorMessage());
-			return "";
+			return null;
 		}
 	}
 
@@ -123,17 +131,30 @@ public class ClientManager implements InitializingBean {
 		return null;
 	}
 	
-	public Application getApplicationOrNull() {
-		return getApplicationByCertificateCN(getCertificateCN());
-	}
-
 	public Application getApplication() throws UnknownIdentifierApplicationException {
-		Application app = getApplicationOrNull();
-		if (app == null)
-			throw new UnknownIdentifierApplicationException("Unknown application " + getClientName());
-		return app;
+		String cn = getCertificateCN();
+		if (cn != null) {
+			Application app = getApplicationByCertificateCN(cn);
+			if (app == null)
+				throw new UnknownIdentifierApplicationException("Unknown application " + getClientName() + " or invalid password");
+			return app;
+		}
+
+		String[] basicAuth = getBasicAuth();
+		if (basicAuth != null) 
+			return getApplicationByBasicAuth(basicAuth);
+		
+		throw new UnknownIdentifierApplicationException(getNoCertificateNorBasicAuthErrorMessage());
 	}
 
+	public Application getApplicationOrNull() {
+		try {
+			return getApplication();
+		} catch (UnknownIdentifierApplicationException e) {
+			logger.error("" + e);
+			return null;
+		}
+	}
 
 	private String getCNFromApplication(Application application) throws CertificateException {
 		byte[] certAsByteArray = application.getCertifcate();
@@ -169,6 +190,55 @@ public class ClientManager implements InitializingBean {
 		String name = matcher.group(1);
 		logger.debug("Client connexion. name = " + name);
 		return name;
+	}
+
+
+	private Application getApplicationByBasicAuth(String[] userAndPassword) throws UnknownIdentifierApplicationException {
+		return getApplicationByBasicAuth(userAndPassword[0], userAndPassword[1]);
+	}
+	private Application getApplicationByBasicAuth(String user, String password) throws UnknownIdentifierApplicationException {
+		Application app = daoService.getApplicationByName(user);
+		if (app == null) {
+			throw new UnknownIdentifierApplicationException("unknown application " + user);
+		}
+		String wantedPassword = getPassword(app);
+		if (wantedPassword == null) {
+			throw new UnknownIdentifierApplicationException("application " + app.getName() + " must be used using certificate authentication");
+		} else if (password.equals(wantedPassword)) {
+			return app;
+		} else {
+			throw new UnknownIdentifierApplicationException("invalid password for application " + app.getName());
+		}
+	}
+
+	private String getPassword(Application app) {
+		return removePrefixOrNull(new String(app.getCertifcate()), PASSWORD_PREFIX_IN_CERTIFCATE);
+	}
+
+	private String removePrefixOrNull(String s, String prefix) {
+		return s.startsWith(prefix) ? s.substring(prefix.length()) : null;
+	}
+
+	private String[] getBasicAuth() {
+		HttpServletRequest request = HttpUtils.getHttpServletRequest();
+		String authHeader = request.getHeader("Authorization");
+		if (authHeader == null) return null;
+
+		Matcher matcher = Pattern.compile("Basic\\s+(.*)", Pattern.CASE_INSENSITIVE).matcher(authHeader);
+		if (!matcher.find()) return null;
+
+		String userPass = decodeBase64(matcher.group(1));
+		logger.debug("found basic auth " + userPass);
+		return userPass.split(":", 2);
+	}
+
+	private String getBasicAuthUser() {
+		String[] userAndPassword = getBasicAuth();
+		return userAndPassword == null ? null : userAndPassword[0];
+	}
+
+	private String decodeBase64(String s) {
+		return new String(Base64.decodeBase64(s.getBytes()));
 	}
 
 	/**
