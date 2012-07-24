@@ -90,9 +90,7 @@ public class ClientManager implements InitializingBean {
 			logger.debug("Client connexion. get Client Name.");
 		}
 		
-		HttpServletRequest request = XFireServletController.getRequest();
-		
-		X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+		X509Certificate[] certs = getClientX509Certificates();
 		
 		if ((certs != null) && (certs.length > 0)) {
 			return getCNFromCertificate(certs[0]);
@@ -100,6 +98,11 @@ public class ClientManager implements InitializingBean {
 			logger.error(getNoCertificateErrorMessage());
 			return "";
 		}
+	}
+
+	private X509Certificate[] getClientX509Certificates() {
+		HttpServletRequest request = XFireServletController.getRequest();
+		return (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
 	}
 	
 	/**
