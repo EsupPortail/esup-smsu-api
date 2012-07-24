@@ -62,9 +62,7 @@ public class SendSmsManager {
 	throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else {
+		{
 			if (account == null) account = app.getAcc();
 
 			if (!account.checkQuota(nbDest))
@@ -82,9 +80,7 @@ public class SendSmsManager {
 	InsufficientQuotaException {
 
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else {
+		{
 			Account acc = labelAccount == null ? app.getAcc() :
 				daoService.getAccByLabel(labelAccount);
 			if (acc == null) {
@@ -129,7 +125,7 @@ public class SendSmsManager {
 			final Integer svcId, final String smsPhone, 
 			final String labelAccount, final String msgContent) {
 
-		Application app = clientManager.getApplication();
+		Application app = clientManager.getApplicationOrNull();
 		
 		// check if the sms already exists (in case of FO problem...)
 		if (msgId != null && app != null) {

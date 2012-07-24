@@ -18,6 +18,7 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.web.servlet.XFireServletController;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
+import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -147,8 +148,15 @@ public class ClientManager implements InitializingBean {
 		
 	}
 	
-	public Application getApplication() {
+	public Application getApplicationOrNull() {
 		return getApplicationByCertificateCN(getClientName());
+	}
+
+	public Application getApplication() throws UnknownIdentifierApplicationException {
+		Application app = getApplicationOrNull();
+		if (app == null)
+			throw new UnknownIdentifierApplicationException("Unknown application");
+		return app;
 	}
 	
 	/**

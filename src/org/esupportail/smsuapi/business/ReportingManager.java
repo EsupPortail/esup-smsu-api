@@ -57,9 +57,7 @@ public class ReportingManager {
 			throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
 		Application app = clientManager.getApplication();
 		
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else {
+		{
 			if ((JANUARY <= month) && (month <= DECEMBER)) {
 			Statistic statistic = daoService.getStatisticByApplicationAndMonthAndYear(app, month, year);
 			if (statistic != null) {

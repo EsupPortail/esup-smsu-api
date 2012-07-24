@@ -34,7 +34,7 @@ public class SendSmsThirdManager extends SendSmsManager {
 						throws UnknownIdentifierApplicationException, 
 						InsufficientQuotaException {
 				
-		Application app = clientManager.getApplication();
+		Application app = clientManager.getApplicationOrNull();
 		Account account = app == null ? null : app.getAcc();
 		checkQuotaOk(smsPhoneList.size(), account); 
 

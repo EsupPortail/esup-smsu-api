@@ -287,9 +287,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	public int getNbDest(final Integer msgId) 
 	throws UnknownIdentifierMessageException, UnknownIdentifierApplicationException {
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application : " + clientManager.getClientName());
-		} else {
+		{
 			if (daoService.getNbDest(msgId, app) == 0) {
 				throw new UnknownIdentifierMessageException("Unknown message");
 			} else {
@@ -309,9 +307,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		list.add(SmsStatus.ERROR_POST_BL.name());
 
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else { return daoService.getNbSmsWithState(msgId, app, list); }
+		return daoService.getNbSmsWithState(msgId, app, list);
 
 
 	}
@@ -322,9 +318,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 */
 	public int getNbSentSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else { return daoService.getNbSentSMS(msgId, app); }
+		return daoService.getNbSentSMS(msgId, app);
 
 
 	}
@@ -335,9 +329,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	 */
 	public int getNbProgressSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else { return daoService.getNbProgressSMS(msgId, app); }
+		return daoService.getNbProgressSMS(msgId, app);
 	}
 
 	/**
@@ -353,9 +345,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		list.add(SmsStatus.ERROR_POST_BL.name());
 
 		Application app = clientManager.getApplication();
-		if (app == null) { 
-			throw new UnknownIdentifierApplicationException("Unknown application");
-		} else { return daoService.getNbErrorSMS(msgId, app, list); }
+		return daoService.getNbErrorSMS(msgId, app, list);
 
 	}
 
@@ -372,7 +362,7 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 
 		List<Sms> smslist = new ArrayList<Sms>();
 
-		Application app = clientManager.getApplication();
+		Application app = clientManager.getApplicationOrNull();
 
 		if (app != null) {
 			// Retrieve list of phones numbers 	
@@ -386,8 +376,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 
 	public Sms getSms(Integer msgId, String phoneNumber) throws UnknownIdentifierApplicationException {
 		Application app = clientManager.getApplication();
-		if (app == null)
-			throw new UnknownIdentifierApplicationException("Unknown application");
 		
 		List<Sms> l = daoService.getSms(app, msgId, phoneNumber);
 		if (l.size() == 0) {
