@@ -4,7 +4,8 @@ import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.services.remote.AbstractIpProtectedWebService;
-import org.esupportail.commons.utils.Assert;
+import org.esupportail.commons.utils.NotNull;
+import org.esupportail.commons.utils.AnnotationsChecker;
 import org.esupportail.smsuapi.domain.DomainService;
 
 /**
@@ -21,12 +22,12 @@ public class TestConnexionImpl extends AbstractIpProtectedWebService implements 
 	/**
 	 * The application service.
 	 */
-	private ApplicationService applicationService;
+	@NotNull private ApplicationService applicationService;
 	
 	/**
 	 * The domain service.
 	 */
-	private DomainService domainService;
+	@NotNull private DomainService domainService;
 	
 	/**
 	 * A logger.
@@ -48,12 +49,7 @@ public class TestConnexionImpl extends AbstractIpProtectedWebService implements 
 	@Override
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
-		Assert.notNull(applicationService, 
-				"property applicationService of class " + this.getClass().getName() 
-				+ " can not be null");
-		Assert.notNull(domainService, 
-				"property domainService of class " + this.getClass().getName() 
-				+ " can not be null");
+		AnnotationsChecker.check(this);
 	}
 	
 	
