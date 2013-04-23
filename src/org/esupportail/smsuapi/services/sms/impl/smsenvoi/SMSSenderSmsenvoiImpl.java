@@ -43,7 +43,8 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	private RequestSmsenvoi requestSmsenvoi;
 
 	private String sendsms_url;
-	
+
+	private JSONObject from;
 
 	/* (non-Javadoc)
 	 * @see org.esupportail.smsuapi.services.sms.ISMSSender
@@ -103,8 +104,16 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	}
 
 	private String computeSenderlabel(SMSBroker sms) {
-		// TODO
-		return null;
+		Object label = from.get(sms.getAccountLabel());
+		if (label == null) {
+			label = from.get("");
+			if (label == null)
+				logger.info("no default senderlabel (cf sms.connector.smsenvoi.from.mapJSON), no sender label will be used");
+			else
+				logger.debug("no senderlabel for " + sms.getAccountLabel() + " in " + from.toString() + ". Defaulting to " + label);
+		}
+		logger.debug("senderlabel: " + label);
+		return label == null ? null : (String) label;
 	}
 
 	private JSONObject realSendMessage(SMSBroker sms) throws IOException {
@@ -145,5 +154,11 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 
 	public void setSendsms_url(String sendsms_url) {
 		this.sendsms_url = sendsms_url;
+	}
+
+	public void setFrom_mapJSON(String from_mapJSON) {
+		this.from = RequestSmsenvoi.json_decode(from_mapJSON);
+		if (this.from == null)
+			logger.error("invalid from_mapJSON: " + from_mapJSON);
 	}
 }

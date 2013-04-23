@@ -172,7 +172,7 @@ public class SendSmsManager {
 			app.setConsumedSms(app.getConsumedSms() + 1);
 			daoService.updateApplication(app);
 
-			return new SMSBroker(sms.getId(), smsPhone, msgContent);
+			return new SMSBroker(sms.getId(), smsPhone, msgContent, sms.getAcc().getLabel());
 		}
 	}
 

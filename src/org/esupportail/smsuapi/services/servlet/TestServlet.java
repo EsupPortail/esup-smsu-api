@@ -92,7 +92,7 @@ public class TestServlet extends HttpServlet {
     
     private void testSms() {
     	ISMSSender smsSender = (ISMSSender) BeanUtils.getBean("smsSenderImpl");
-    	final SMSBroker smsMessage = new SMSBroker(1, "0699999999", "coucou");
+    	final SMSBroker smsMessage = new SMSBroker(1, "0699999999", "coucou", "");
     	smsSender.sendMessage(smsMessage);
     }
     
@@ -135,7 +135,7 @@ public class TestServlet extends HttpServlet {
     private void testQrtz() {
     	ApplicationContextUtils.initApplicationContext();
     	SchedulerUtils schedulerUtils = (SchedulerUtils) BeanUtils.getBean("schedulerUtils");
-    	SMSBroker smsb = new SMSBroker(0, "Un message", "0232323232");
+    	SMSBroker smsb = new SMSBroker(0, "Un message", "0232323232", "");
     	
     	List<SMSBroker> listSms = new LinkedList<SMSBroker>();
     	listSms.add(smsb);

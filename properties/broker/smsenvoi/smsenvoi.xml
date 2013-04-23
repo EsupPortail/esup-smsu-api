@@ -35,6 +35,7 @@
 		<property name="daoService" ref="daoService"/>
 		<property name="requestSmsenvoi" ref="requestSmsenvoi"/>
 		<property name="sendsms_url" value="http://www.smsenvoi.com/getapi/sendsms/" />
+		<property name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
 		<property name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
 		</property>

@@ -29,6 +29,8 @@ public class SMSBroker implements Serializable {
 	 */
 	private String message;
 	
+	private String accountLabel;
+
 	/**
 	 * Constructor.
 	 */
@@ -36,11 +38,12 @@ public class SMSBroker implements Serializable {
 		super();
 	}
 
-	public SMSBroker(final int id, final String recipient, final String message) {
+	public SMSBroker(final int id, final String recipient, final String message, final String accountLabel) {
 		super();
 		this.id = id;
 		this.recipient = recipient;
 		this.message  = message;
+		this.accountLabel = accountLabel;
 	}
 
 	public int getId() {
@@ -53,6 +56,10 @@ public class SMSBroker implements Serializable {
 
 	public String getMessage() {
 		return message;
+	}
+
+	public String getAccountLabel() {
+		return accountLabel;
 	}
 	
 }
