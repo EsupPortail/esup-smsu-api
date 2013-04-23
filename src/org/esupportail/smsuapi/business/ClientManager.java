@@ -113,6 +113,10 @@ public class ClientManager implements InitializingBean {
 		if (certificateCN == null) return null;
 
 		for (Application application : daoService.getAllApplications()) {
+
+			if (getPassword(application) != null) // skip apps configured for basic auth
+				continue;
+
 			try {
 				String cn = getCNFromApplication(application);
 				if (certificateCN.equalsIgnoreCase(cn)) {					
