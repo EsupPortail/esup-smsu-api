@@ -38,33 +38,21 @@ public class SMSBroker implements Serializable {
 
 	public SMSBroker(final int id, final String recipient, final String message) {
 		super();
-		setId(id);
-		setRecipient(recipient);
-		setMessage(message);
+		this.id = id;
+		this.recipient = recipient;
+		this.message  = message;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(final int id) {
-		this.id = id;
-	}
-
 	public String getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(final String recipient) {
-		this.recipient = recipient;
-	}
-
 	public String getMessage() {
 		return message;
-	}
-
-	public void setMessage(final String message) {
-		this.message = message;
 	}
 	
 }
