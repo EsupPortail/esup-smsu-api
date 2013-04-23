@@ -167,6 +167,7 @@ create table sms
    ACC_ID               int not null,
    SMS_INITIAL_ID       int,
    SMS_SENDER_ID        int,
+   BROKER_SMS_ID  	int,
    SMS_STATE            varchar(32) not null,
    SMS_DATE             timestamp not null default CURRENT_TIMESTAMP,
    SMS_PHONE            varchar(255),

@@ -20,6 +20,11 @@ public class Sms  implements Serializable {
 	 */
 
 	/**
+	 * Hibernate property for the sms id given by the broker (if any).
+	 */
+	public static final String PROP_BROKER_SMS_ID = "BrokerId";
+
+	/**
 	 * Hibernate property for the sender identifier.
 	 */
 	public static final String PROP_SENDER_ID = "SenderId";
@@ -78,6 +83,11 @@ public class Sms  implements Serializable {
 	 * Sender identifier of the sms (in the application source).
 	 */
 	private java.lang.Integer senderId;
+
+	/**
+	 * Broker id associated to the Sms.
+	 */
+	private java.lang.Integer brokerId;
 
 	/**
 	 * Sms state.
@@ -180,6 +190,23 @@ public class Sms  implements Serializable {
 	public void setSenderId(final java.lang.Integer senderId) {
 		this.senderId = senderId;
 	}
+
+	/**
+	 * Return the value associated with the column: BROKER_SMS_ID.
+	 */
+	public java.lang.Integer getBrokerId() {
+		return brokerId;
+	}
+
+	/**
+	 * Set the value related to the column: BROKER_SMS_ID.
+	 * @param brokerId the BROKER_SMS_ID value
+	 */
+	public void setBrokerId(final java.lang.Integer brokerId) {
+		this.brokerId = brokerId;
+	}
+
+
 
 	/**
 	 * Return the value associated with the column: SMS_STATE.
@@ -326,7 +353,7 @@ public class Sms  implements Serializable {
 	public String toString() {
 		return "Sms#" + hashCode() + "[id=[" + id + "], initial id=[" + initialId 
 		+ "], sender id=[" + senderId
-		+ "], phone=[" + phone 
+		+ "], broker id=[" + brokerId + "], phone=[" + phone 
 		+ "], state=[" + state + "], date=[" + date + "]]";
 	}
 
