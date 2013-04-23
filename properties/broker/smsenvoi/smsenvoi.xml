@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 
+		The configuration file for sms services.
+		This file is referenced by /properties/applicationContext.xml.
+	-->
+
+	<!-- par défaut, on utilise les même clefs pour le servlet et pour l'accés à smsenvoi -->
+	<!--bean id="initSslParameters" class="org.esupportail.smsuapi.services.sms.impl.proxy.InitSSLParameters">
+		<property name="trustStore" value="${global.truststore}" />
+		<property name="trustStorePassword" value="${global.truststorePass}" />
+		<property name="keyStore" value="${global.keystore}" />
+		<property name="keyStorePassword" value="${global.keypass}" />
+	</bean-->
+
+	<bean id="requestSmsenvoi"
+		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.RequestSmsenvoi">
+		<property name="account_email" value="${sms.connector.smsenvoi.account.email}" />
+		<property name="account_apikey" value="${sms.connector.smsenvoi.account.apikey}" />
+	</bean>
+
+	<bean id="smsSenderImpl"
+		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoiImpl">
+		<description>
+			Smsenvoi implementation of the broker, this class manage the sms sending
+		</description>
+		<property name="daoService" ref="daoService"/>
+		<property name="requestSmsenvoi" ref="requestSmsenvoi"/>
+		<property name="sendsms_url" value="http://www.smsenvoi.com/getapi/sendsms/" />
+		<property name="simulateMessageSending">
+			<value type="boolean">${sms.connector.simulateSending}</value>
+		</property>
+	</bean>
+
+	<!-- schedule ackStatusSmsenvoi  -->
+	<bean id="ackStatusSmsenvoi" class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.AckStatusSmsenvoi">
+		<property name="checkdelivery_url" value="http://www.smsenvoi.com/getapi/checkdelivery/" />
+		<property name="daoService" ref="daoService"/>
+		<property name="requestSmsenvoi" ref="requestSmsenvoi"/>
+		<property name="nbHoursBeforeGivingUp" value="36"/>
+	</bean>
+
+	<bean id="ackStatusSmsenvoiJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.esupportail.smsuapi.services.sms.impl.smsenvoi.AckStatusSmsenvoiJob"/>
+	</bean>
+
+	<bean id="smsuapiStatusJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="ackStatusSmsenvoiJob" />
+		<property name="startDelay" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000"/>
+		<property name="repeatInterval" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000" />
+	</bean>
+
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="schedulerName">
+			<value>schedulerSmsuapiSmsenvoi</value>
+		</property>
+		<property name="triggers">
+        		<list> <ref bean="smsuapiStatusJobTrigger" /> </list>
+    		</property>
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+	</bean>
+
+</beans>

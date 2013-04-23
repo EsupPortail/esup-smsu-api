@@ -79,7 +79,7 @@ public class AckStatusProxy {
 	}
 
 
-	private double dateDifferenceInHours(Date a, Date b) {
+	public static double dateDifferenceInHours(Date a, Date b) {
 		double deltaInMilliSeconds = a.getTime() - b.getTime();
 		return deltaInMilliSeconds / 1000 / 60 / 60;
 	}

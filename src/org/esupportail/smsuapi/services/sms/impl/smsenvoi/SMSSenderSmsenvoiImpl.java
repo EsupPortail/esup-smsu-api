@@ -1,0 +1,149 @@
+package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
+
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.json.simple.JSONObject;
+
+import org.esupportail.commons.services.logging.Logger;
+import org.esupportail.commons.services.logging.LoggerImpl;
+import org.esupportail.smsuapi.dao.DaoService;
+import org.esupportail.smsuapi.dao.beans.Sms;
+import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
+import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
+import org.esupportail.smsuapi.services.sms.ISMSSender;
+
+
+/**
+ * Smsenvoi implementation of the SMS sender.
+ * @author prigaux
+ *
+ */
+public class SMSSenderSmsenvoiImpl implements ISMSSender {
+
+	/**
+	 * Log4j logger.
+	 */
+	private final Logger logger = new LoggerImpl(getClass());
+	
+	/**
+	 * use to simulate sending.
+	 */
+	private boolean simulateMessageSending;
+	
+	/**
+	 * Used to manage db.
+	 */
+	private DaoService daoService;
+
+	private RequestSmsenvoi requestSmsenvoi;
+
+	private String sendsms_url;
+	
+
+	/* (non-Javadoc)
+	 * @see org.esupportail.smsuapi.services.sms.ISMSSender
+	 * #sendMessage(org.esupportail.smsuapi.domain.beans.sms.SMSMessage)
+	 */
+	public void sendMessage(final SMSBroker sms) {
+		
+		final int smsId = sms.getId();
+		final String smsRecipient = sms.getRecipient();
+		final String smsMessage = sms.getMessage();
+		
+		logger.info("Send message to smsenvoi with parameter : ");
+		logger.info("   - message id : " + smsId);
+		logger.info("   - message recipient : " + smsRecipient);
+		logger.info("   - message : " + smsMessage);
+		
+		try {
+			
+			// only send the message if required
+			if (!simulateMessageSending) {
+				save_message_id(sms, realSendMessage(sms));
+
+				logger.info("message with : " + 
+						  " - id : " + smsId + "successfully sent");
+			} else {
+				logger.warn("Message with id : " + smsId + " not sent because simlation mode is enable");
+			}
+
+			
+		} catch (Throwable t) {
+			logger.error("An error occurs sending SMS : " + 
+				     " - id : " + smsId + 
+				     " - recipient : " + smsRecipient + 
+				     " - message : " + smsMessage, t);
+		}		
+	}
+
+	private void save_message_id(SMSBroker sms, JSONObject response) {
+		Long message_id = get_message_id(response);
+
+		Sms smsDB = daoService.getSms(sms.getId());
+		if (message_id == null) 
+		    smsDB.setStateAsEnum(SmsStatus.ERROR);
+		else
+		    smsDB.setBrokerId(message_id.intValue());
+		daoService.updateSms(smsDB);
+	}
+
+	private Long get_message_id(JSONObject resp) {
+		try {
+			if ((Long) resp.get("success") == 1)
+				return (Long) resp.get("message_id");
+		} catch (NullPointerException e) {
+		} catch (ClassCastException e) {
+		}
+		return null;
+	}
+
+	private String computeSenderlabel(SMSBroker sms) {
+		// TODO
+		return null;
+	}
+
+	private JSONObject realSendMessage(SMSBroker sms) throws IOException {
+		String senderlabel = computeSenderlabel(sms);
+		Map<String, String> p = new HashMap<String,String>();
+		p.put("message[type]", "sms");
+		p.put("message[subtype]", "PREMIUM");
+		p.put("message[recipients]", sms.getRecipient());
+		p.put("message[content]", sms.getMessage());
+		if (!StringUtils.isEmpty(senderlabel)) p.put("message[senderlabel]", senderlabel);
+
+		return requestSmsenvoi.request(sendsms_url, p);
+	}
+	
+	/*******************
+	 * Mutator.
+	 *******************/
+	
+	/**
+	 * Standard setter used by spring.
+	 * @param simulateMessageSending
+	 */
+	public void setSimulateMessageSending(final boolean simulateMessageSending) {
+		this.simulateMessageSending = simulateMessageSending;
+	}
+
+	/**
+	 * Standard setter used by spring.
+	 * @param daoService
+	 */
+	public void setDaoService(final DaoService daoService) {
+		this.daoService = daoService;
+	}
+
+	public void setRequestSmsenvoi(final RequestSmsenvoi requestSmsenvoi) {
+		this.requestSmsenvoi = requestSmsenvoi;
+	}
+
+	public void setSendsms_url(String sendsms_url) {
+		this.sendsms_url = sendsms_url;
+	}
+}
