@@ -175,15 +175,12 @@ public interface DomainService extends Serializable {
 	 * send SMS.
 	 * @param msgId 
 	 * @param perId 
-	 * @param bgrId 
-	 * @param svcId 
 	 * @param smsPhone 
 	 * @param labelAccount 
 	 * @param msgContent 
 	 * @throws UnknownIdentifierApplicationException 
 	 */
 	void sendSMS(Integer msgId, Integer perId, 
-			Integer bgrId, Integer svcId, 
 			String smsPhone, String labelAccount, 
 			String msgContent);
 

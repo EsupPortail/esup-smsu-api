@@ -33,8 +33,6 @@ public class RestServletActions implements InitializingBean, ReflectionGetters {
     	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSMS(getInteger(req, "id", null),
 			getInteger(req, "senderId", null),
-			getInteger(req, "groupSenderId", null),
-			getInteger(req, "serviceId", null),
 			getString(req, "phoneNumber"),
 			getString(req, "account", null), 
 			getString(req, "message"));
@@ -45,10 +43,10 @@ public class RestServletActions implements InitializingBean, ReflectionGetters {
 	   Since SendSms.sendSMS silently fail,
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
-	private void sendSMS(Integer msgId, Integer perId, Integer bgrId, Integer svcId, 
+	private void sendSMS(Integer msgId, Integer perId, 
 			     String smsPhone, String labelAccount, String msgContent) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(1, labelAccount);
-		sendSms.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
+		sendSms.sendSMS(msgId, perId, null, null, smsPhone, labelAccount, msgContent);
 	}
 
     	public Object wsActionIsBlacklisted(HttpServletRequest req) {    

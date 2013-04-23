@@ -30,13 +30,13 @@ public interface SendSms extends Serializable {
 	 * send SMS.
 	 * @param msgId 
 	 * @param perId 
-	 * @param bgrId 
-	 * @param svcId 
+	 * @param unused
+	 * @param unused2
 	 * @param smsPhone 
 	 * @param labelAccount 
 	 * @param msgContent 
 	 */
-	void sendSMS(Integer msgId, Integer perId, Integer bgrId, Integer svcId, 
+	void sendSMS(Integer msgId, Integer perId, Integer unused, Integer unused2, 
 			String smsPhone, String labelAccount, String msgContent);
 	
 

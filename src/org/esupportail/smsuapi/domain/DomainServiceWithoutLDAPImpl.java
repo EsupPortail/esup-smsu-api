@@ -403,18 +403,16 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	/**
 	 * @param msgId 
 	 * @param perId 
-	 * @param bgrId 
-	 * @param svcId 
 	 * @param smsPhone 
 	 * @param labelAccount 
 	 * @param msgContent 
 	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	public void sendSMS(final Integer msgId, final Integer perId, final Integer bgrId, 
-			final Integer svcId, final String smsPhone, 
+	public void sendSMS(final Integer msgId, final Integer perId,
+			final String smsPhone, 
 			final String labelAccount, final String msgContent) {
-		sendSmsManager.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);	
+		sendSmsManager.sendSMS(msgId, perId, smsPhone, labelAccount, msgContent);	
 	}
 
 	//////////////////////////////////////////////////////////////

@@ -85,20 +85,18 @@ public class SendSmsImpl extends AbstractIpProtectedWebService implements SendSm
 	 * java.lang.String)
 	 */
 	public void sendSMS(final Integer msgId,
-			final Integer perId, final Integer bgrId,
-			final Integer svcId, final String smsPhone,
+			final Integer perId, final Integer unused,
+			final Integer unused2, final String smsPhone,
 			final String labelAccount, final String msgContent) {
 		
 		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
 				     " - sender id = " + perId + 
-				     " - group sender id = " + bgrId + 
-				     " - service id = " + svcId + 
 				     " - recipient phone number = " + smsPhone + 
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
-		domainService.sendSMS(msgId, perId, bgrId, svcId, smsPhone, labelAccount, msgContent);
+		domainService.sendSMS(msgId, perId, smsPhone, labelAccount, msgContent);
 		
 		
 	}
