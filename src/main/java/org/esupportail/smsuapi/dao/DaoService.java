@@ -16,7 +16,6 @@ import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.User;
-import org.esupportail.smsuapi.domain.beans.VersionManager;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 
 /**
@@ -61,22 +60,6 @@ public interface DaoService extends Serializable {
 	 * @return a paginator for administrators.
 	 */
 	Paginator<User> getAdminPaginator();
-
-	//////////////////////////////////////////////////////////////
-	// VersionManager
-	//////////////////////////////////////////////////////////////
-	
-	/**
-	 * @return the VersionManager of the database.
-	 */
-	VersionManager getVersionManager();
-
-	/**
-	 * Update a VersionManager.
-	 * @param versionManager
-	 */
-	void updateVersionManager(VersionManager versionManager);
-
 	
 	//////////////////////////////////////////////////////////////
 	// Application methods

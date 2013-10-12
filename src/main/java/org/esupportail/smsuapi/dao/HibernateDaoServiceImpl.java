@@ -16,7 +16,6 @@ import org.esupportail.commons.dao.AbstractJdbcJndiHibernateDaoService;
 import org.esupportail.commons.dao.HibernateFixedQueryPaginator;
 import org.esupportail.commons.dao.HqlUtils;
 import org.esupportail.commons.services.application.UninitializedDatabaseException;
-import org.esupportail.commons.services.application.VersionningUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 //import org.esupportail.commons.services.logging.Logger;
@@ -28,7 +27,6 @@ import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.User;
-import org.esupportail.smsuapi.domain.beans.VersionManager;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -136,41 +134,6 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 				HqlUtils.isTrue(ADMIN_ATTRIBUTE),
 				ID_ATTRIBUTE);
 		return new HibernateFixedQueryPaginator<User>(this, queryStr);
-	}
-
-	//////////////////////////////////////////////////////////////
-	// VersionManager
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#getVersionManager()
-	 */
-	@SuppressWarnings("unchecked")
-	public VersionManager getVersionManager() {
-		DetachedCriteria criteria = DetachedCriteria.forClass(VersionManager.class);
-		criteria.addOrder(Order.asc(ID_ATTRIBUTE));
-		List<VersionManager> versionManagers;
-		try {
-			versionManagers = getHibernateTemplate().findByCriteria(criteria);
-		} catch (BadSqlGrammarException e) {
-			throw new UninitializedDatabaseException(
-					"your database is not initialized, please run 'ant init-data'", e);
-		}
-		if (versionManagers.isEmpty()) {
-			VersionManager versionManager = new VersionManager();
-			versionManager.setVersion(VersionningUtils.VERSION_0);
-			addObject(versionManager);
-			return versionManager;
-		}
-		return versionManagers.get(0);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#updateVersionManager(
-	 * org.esupportail.smsuapi.domain.beans.VersionManager)
-	 */
-	public void updateVersionManager(final VersionManager versionManager) {
-		updateObject(versionManager);
 	}
 
 	//////////////////////////////////////////////////////////////

@@ -67,33 +67,6 @@ public interface DomainService extends Serializable {
 	 * @param user
 	 */
 	void deleteAdmin(User user);
-
-	/**
-	 * @return a paginator for administrators.
-	 */
-	Paginator<User> getAdminPaginator();
-
-	//////////////////////////////////////////////////////////////
-	// VersionManager
-	//////////////////////////////////////////////////////////////
-	
-	/**
-	 * @return the database version.
-	 * @throws ConfigException when the database is not initialized
-	 */
-	Version getDatabaseVersion() throws ConfigException;
-	
-	/**
-	 * Set the database version.
-	 * @param version 
-	 */
-	void setDatabaseVersion(Version version);
-	
-	/**
-	 * Set the database version.
-	 * @param version 
-	 */
-	void setDatabaseVersion(String version);
 	
 	//////////////////////////////////////////////////////////////
 	// Authorizations

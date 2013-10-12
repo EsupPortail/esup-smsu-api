@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.esupportail.commons.exceptions.ConfigException;
 import org.esupportail.commons.exceptions.UserNotFoundException;
-import org.esupportail.commons.services.application.Version;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
@@ -25,7 +24,6 @@ import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.User;
-import org.esupportail.smsuapi.domain.beans.VersionManager;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
@@ -186,44 +184,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 		return this.daoService.getAdminPaginator();
 	}
 
-
-	//////////////////////////////////////////////////////////////
-	// VersionManager
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#getDatabaseVersion()
-	 */
-	public Version getDatabaseVersion() throws ConfigException {
-		VersionManager versionManager = daoService.getVersionManager();
-		if (versionManager == null) {
-			return null;
-		}
-		return new Version(versionManager.getVersion());
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#setDatabaseVersion(java.lang.String)
-	 */
-	public void setDatabaseVersion(final String version) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("setting database version to '" + version + "'...");
-		}
-		VersionManager versionManager = daoService.getVersionManager();
-		versionManager.setVersion(version);
-		daoService.updateVersionManager(versionManager);
-		if (logger.isDebugEnabled()) {
-			logger.debug("database version set to '" + version + "'.");
-		}
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#setDatabaseVersion(
-	 * org.esupportail.commons.services.application.Version)
-	 */
-	public void setDatabaseVersion(final Version version) {
-		setDatabaseVersion(version.toString());
-	}
 
 	//////////////////////////////////////////////////////////////
 	// Authorizations
