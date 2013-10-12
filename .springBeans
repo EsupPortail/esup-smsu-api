@@ -13,7 +13,6 @@
 		<config>properties/web/converters.xml</config>
 		<config>properties/domain/domain.xml</config>
 		<config>properties/exceptionHandling/exceptionHandling.xml</config>
-		<config>properties/auth/auth.xml</config>
 		<config>properties/cache/cache.xml</config>
 		<config>properties/init/init.xml</config>
 		<config>properties/misc/application.xml</config>
@@ -30,7 +29,6 @@
 			<incomplete>false</incomplete>
 			<configs>
 				<config>properties/applicationContext.xml</config>
-				<config>properties/auth/auth.xml</config>
 				<config>properties/cache/cache.xml</config>
 				<config>properties/dao/dao.xml</config>
 				<config>properties/deepLinking/deepLinking.xml</config>
