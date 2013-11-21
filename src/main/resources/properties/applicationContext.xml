@@ -39,8 +39,5 @@
 	<import resource="init/init.xml" />
 	<import resource="scheduler/scheduler.xml" />
 	<import resource="broker/${sms.connector.name}/${sms.connector.name}.xml" />
-	<import resource="tags/tags.xml" />
-	<import resource="web/controllers.xml" />
-	<import resource="web/converters.xml" />
 
 </beans>
