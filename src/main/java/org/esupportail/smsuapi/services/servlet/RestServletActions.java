@@ -1,29 +1,25 @@
 package org.esupportail.smsuapi.services.servlet;
 
 import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.NotNull;
-import org.esupportail.commons.utils.AnnotationsChecker;
-import org.esupportail.commons.utils.ReflectionGetters;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class RestServletActions implements InitializingBean, ReflectionGetters {
+public class RestServletActions {
 
+	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(getClass());
 
-	@NotNull private org.esupportail.smsuapi.business.ClientManager clientManager;
-	@NotNull private org.esupportail.smsuapi.services.remote.SendSms sendSms;
-	@NotNull private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
-	@NotNull private org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList;
-
-	public void afterPropertiesSet() {
-		AnnotationsChecker.check(this);
-	}
+	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
+	@Autowired private org.esupportail.smsuapi.services.remote.SendSms sendSms;
+	@Autowired private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
+	@Autowired private org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSMS(getInteger(req, "id", null),
@@ -83,15 +79,6 @@ public class RestServletActions implements InitializingBean, ReflectionGetters {
 		} catch (java.io.UnsupportedEncodingException e) {
 			throw new RuntimeException("urldecode failed on '" + s + "'");
 		}
-	}
-
-
-	/**
-	 * Automatic getter used by AnnotationsChecker
-	 *  implement ReflectionGetters instead of creating getters for all properties for AnnotationsChecker
-	 */
-	public Object getSimpleProperty(String name) throws Exception { 
-		return this.getClass().getDeclaredField(name).get(this);
 	}
 
 	/**

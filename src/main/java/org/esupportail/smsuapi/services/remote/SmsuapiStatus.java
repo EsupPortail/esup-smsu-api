@@ -6,36 +6,24 @@ package org.esupportail.smsuapi.services.remote;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.beans.AbstractApplicationAwareBean;
-import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
  * The basic implementation of the information remote service.
  */
-public class SmsuapiStatus extends AbstractApplicationAwareBean {
+public class SmsuapiStatus {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6357313623247229092L;
-
-	/**
-	 * The application service.
-	 */
-	private ApplicationService applicationService;
-	
-	/**
-	 * The domain service.
-	 */
-	private DomainService domainService;
+	@Autowired private ApplicationService applicationService;
+	@Autowired private DomainService domainService;
 	
 	/**
 	 * A logger.
@@ -48,20 +36,6 @@ public class SmsuapiStatus extends AbstractApplicationAwareBean {
 	 */
 	public SmsuapiStatus() {
 		super();
-	}
-
-	/**
-	 * @see org.esupportail.commons.beans.AbstractApplicationAwareBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(applicationService, 
-				"property applicationService of class " + this.getClass().getName() 
-				+ " can not be null");
-		Assert.notNull(domainService, 
-				"property domainService of class " + this.getClass().getName() 
-				+ " can not be null");
 	}
 	
 	/**

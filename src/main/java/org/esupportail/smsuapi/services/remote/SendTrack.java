@@ -9,56 +9,29 @@ import java.util.Set;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.beans.AbstractApplicationAwareBean;
-import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
 import org.esupportail.ws.remote.beans.TrackInfos;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The basic implementation of the information remote service.
  */
-public class SendTrack extends AbstractApplicationAwareBean {
-	/**
-	 * The serialization id.
-	 */
-	private static final long serialVersionUID = 4480257087458550019L;
-
+public class SendTrack {
 	/**
 	 * A logger.
 	 */
 	private final Logger logger = new LoggerImpl(getClass());
 
-	/**
-	 * The application service.
-	 */
-	private ApplicationService applicationService;
-	
-	/**
-	 * The domain service.
-	 */
-	private DomainService domainService;
+	@Autowired private ApplicationService applicationService;
+	@Autowired private DomainService domainService;
 	
 	/**
 	 * Bean constructor.
 	 */
 	public SendTrack() {
 		super();
-	}
-
-	/**
-	 * @see org.esupportail.commons.beans.AbstractApplicationAwareBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(applicationService, 
-				"property applicationService of class " + this.getClass().getName() 
-				+ " can not be null");
-		Assert.notNull(domainService, 
-				"property domainService of class " + this.getClass().getName() 
-				+ " can not be null");
 	}
 	
 	public TrackInfos getTrackInfos(final Integer msgId) 

@@ -16,60 +16,41 @@
 		id="sendtrack" 
 		class="org.esupportail.smsuapi.services.remote.SendTrack"
 		>
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 
 	<bean 
 		id="sendsms" 
 		class="org.esupportail.smsuapi.services.remote.SendSms">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="smsuapiStatus" 
 		class="org.esupportail.smsuapi.services.remote.SmsuapiStatus">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="notificationPhoneNumberInBlackList" 
 		class="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="listPhoneNumbersInBlackList" 
 		class="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackList">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="reporting" 
 		class="org.esupportail.smsuapi.services.remote.Reporting">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="testConnexion" 
 		class="org.esupportail.smsuapi.services.remote.TestConnexion">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
 	</bean>
 
 
 	<bean id="restServletActions"
 	      class="org.esupportail.smsuapi.services.servlet.RestServletActions">
-		<property name="clientManager" ref="clientManager"/>
-
-		<property name="sendSms" ref="sendsms" />
-		<property name="sendTrack" ref="sendtrack" />
-		<property name="notificationPhoneNumberInBlackList" ref="notificationPhoneNumberInBlackList" />
 	</bean>
 	
 </beans>

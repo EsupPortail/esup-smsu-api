@@ -7,32 +7,19 @@ package org.esupportail.smsuapi.services.remote;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.beans.AbstractApplicationAwareBean;
-import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
 import org.esupportail.ws.remote.beans.ReportingInfos;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The basic implementation of the information remote service.
  */
-public class Reporting extends AbstractApplicationAwareBean {
+public class Reporting {
 
-	/**
-	 * The serialization id.
-	 */
-	private static final long serialVersionUID = 4480257087458550019L;
-
-	/**
-	 * The application service.
-	 */
-	private ApplicationService applicationService;
-	
-	/**
-	 * The domain service.
-	 */
-	private DomainService domainService;
+	@Autowired private ApplicationService applicationService;
+	@Autowired private DomainService domainService;
 	
 	/**
 	 * A logger.
@@ -46,21 +33,6 @@ public class Reporting extends AbstractApplicationAwareBean {
 	public Reporting() {
 		super();
 	}
-
-	/**
-	 * @see org.esupportail.commons.beans.AbstractApplicationAwareBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(applicationService, 
-				"property applicationService of class " + this.getClass().getName() 
-				+ " can not be null");
-		Assert.notNull(domainService, 
-				"property domainService of class " + this.getClass().getName() 
-				+ " can not be null");
-	}
-	
 
 	public ReportingInfos getStats(final int month, final int year) 
 				throws UnknownMonthIndexException, UnknownIdentifierApplicationException {

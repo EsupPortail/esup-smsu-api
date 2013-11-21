@@ -7,31 +7,17 @@ package org.esupportail.smsuapi.services.remote;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.beans.AbstractApplicationAwareBean;
-import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The basic implementation of the information remote service.
  */
-public class SendSms extends AbstractApplicationAwareBean {
-
-	/**
-	 * The serialization id.
-	 */
-	private static final long serialVersionUID = 4480257087458550019L;
-
-	/**
-	 * The application service.
-	 */
-	protected ApplicationService applicationService;
-	
-	/**
-	 * The domain service.
-	 */
-	protected DomainService domainService;
+public class SendSms {
+	@Autowired protected ApplicationService applicationService;
+	@Autowired protected DomainService domainService;
 	
 	/**
 	 * A logger.
@@ -45,21 +31,6 @@ public class SendSms extends AbstractApplicationAwareBean {
 	public SendSms() {
 		super();
 	}
-
-	/**
-	 * @see org.esupportail.commons.beans.AbstractApplicationAwareBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		Assert.notNull(applicationService, 
-				"property applicationService of class " + this.getClass().getName() 
-				+ " can not be null");
-		Assert.notNull(domainService, 
-				"property domainService of class " + this.getClass().getName() 
-				+ " can not be null");
-	}
-	
 
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#mayCreateAccountCheckQuotaOk(java.lang.Integer, java.lang.String)

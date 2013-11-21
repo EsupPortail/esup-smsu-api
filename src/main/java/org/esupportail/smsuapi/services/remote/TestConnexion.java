@@ -3,31 +3,17 @@ package org.esupportail.smsuapi.services.remote;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.beans.AbstractApplicationAwareBean;
-import org.esupportail.smsuapi.utils.NotNull;
-import org.esupportail.smsuapi.utils.AnnotationsChecker;
 import org.esupportail.smsuapi.domain.DomainService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author xphp8691
  *
  */
-public class TestConnexion extends AbstractApplicationAwareBean {
-	
-	/**
-	 * The serialization id.
-	 */
-	private static final long serialVersionUID = -1L;
-	
-	/**
-	 * The application service.
-	 */
-	@NotNull private ApplicationService applicationService;
-	
-	/**
-	 * The domain service.
-	 */
-	@NotNull private DomainService domainService;
+public class TestConnexion {
+
+	@Autowired private ApplicationService applicationService;
+	@Autowired private DomainService domainService;
 	
 	/**
 	 * A logger.
@@ -41,17 +27,7 @@ public class TestConnexion extends AbstractApplicationAwareBean {
 	 */
 	public TestConnexion() {
 		super();
-	}
-
-	/**
-	 * @see org.esupportail.commons.beans.AbstractApplicationAwareBean#afterPropertiesSet()
-	 */
-	@Override
-	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
-		AnnotationsChecker.check(this);
-	}
-	
+	}	
 	
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.TestConnexion#testConnexion()
