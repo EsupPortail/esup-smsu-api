@@ -43,14 +43,6 @@
     	/>
 
     <cache 
-    	name="org.esupportail.commons.services.ldap.CachingLdapEntityServiceImpl"
-    	maxElementsInMemory="1000" 
-    	eternal="false" 
-    	timeToIdleSeconds="300"
-    	timeToLiveSeconds="600" 
-    	/>
-
-    <cache 
     	name="org.esupportail.commons.services.exceptionHandling.CachingEmailExceptionServiceImpl"
     	maxElementsInMemory="1000" 
     	eternal="false" 

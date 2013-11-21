@@ -46,17 +46,6 @@
 		</property>
 	</bean>
 
-<!--	<bean id="administratorsController"-->
-<!--		class="org.esupportail.smsuapi.web.controllers.AdministratorsController"-->
-<!--		parent="abstractContextAwareController"-->
-<!--		scope="session"-->
-<!--		>-->
-<!--		<description>A bean to manage administrators.</description>-->
-<!--		<property name="ldapUserService" ref="ldapUserService">-->
-<!--			<description>The LDAP service.</description>-->
-<!--		</property>-->
-<!--	</bean>-->
-
 	<bean id="preferencesController"
 		class="org.esupportail.smsuapi.web.controllers.PreferencesController"
 		parent="abstractContextAwareController"
@@ -79,20 +68,6 @@
 		scope="session"
     	>
 		<description>A bean to manage the about page.</description>
-	</bean>
-
-	<bean id="ldapSearchController"
-		class="org.esupportail.smsuapi.web.controllers.LdapSearchController"
-		parent="abstractApplicationAwareBean"
-		scope="session"
-    	>
-		<description>A bean to manage LDAP searches.</description>
-		<property name="ldapUserService" ref="ldapUserService">
-			<description>The LDAP service.</description>
-		</property>
-		<property name="sessionController" ref="sessionController">
-			<description>The context bean.</description>
-		</property>
 	</bean>
 
 	<bean id="exceptionController"

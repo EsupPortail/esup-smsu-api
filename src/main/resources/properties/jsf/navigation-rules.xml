@@ -64,38 +64,6 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<display-name>ldapSearch</display-name>
-		<from-view-id>/stylesheets/ldapSearch.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>cancelToAdministratorAdd</from-outcome>
-			<to-view-id>/stylesheets/administratorAdd.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>cancelToDepartmentManagerAdd</from-outcome>
-			<to-view-id>
-				/stylesheets/departmentManagerAdd.jsp
-			</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<display-name>ldapResults</display-name>
-		<from-view-id>/stylesheets/ldapResults.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>userSelectedToAdministratorAdd</from-outcome>
-			<to-view-id>/stylesheets/administratorAdd.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>cancelToAdministratorAdd</from-outcome>
-			<to-view-id>/stylesheets/administratorAdd.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>back</from-outcome>
-			<to-view-id>/stylesheets/ldapSearch.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
 		<navigation-case>
 			<from-outcome>applicationRestarted</from-outcome>
 			<to-view-id>/stylesheets/welcome.jsp</to-view-id>
@@ -119,14 +87,6 @@
 		<navigation-case>
 			<from-outcome>casLogin</from-outcome>
 			<to-view-id>/stylesheets/cas.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>ldapSearch</from-outcome>
-			<to-view-id>/stylesheets/ldapSearch.jsp</to-view-id>
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>ldapChoose</from-outcome>
-			<to-view-id>/stylesheets/ldapResults.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

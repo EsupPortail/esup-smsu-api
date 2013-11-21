@@ -101,9 +101,8 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 	//////////////////////////////////////////////////////////////
 
 	/**
-	 * Set the information of a user from a ldapUser.
+	 * Set the information of a user.
 	 * @param user 
-	 * @param ldapUser 
 	 * @return true if the user was updated.
 	 */
 	private boolean setUserInfo(

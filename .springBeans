@@ -22,7 +22,6 @@
 		<config>properties/tags/tags.xml</config>
 		<config>properties/deepLinking/deepLinking.xml</config>
 		<config>properties/dao/dao.xml</config>
-		<config>properties/ldap/ldap.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -39,7 +38,6 @@
 				<config>properties/exceptionHandling/exceptionHandling.xml</config>
 				<config>properties/i18n/i18n.xml</config>
 				<config>properties/init/init.xml</config>
-				<config>properties/ldap/ldap.xml</config>
 				<config>properties/misc/abstractBeans.xml</config>
 				<config>properties/misc/application.xml</config>
 				<config>properties/smtp/smtp.xml</config>
