@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.esupportail.commons.web.beans.Paginator;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
@@ -55,11 +54,6 @@ public interface DaoService extends Serializable {
 	 * @param user
 	 */
 	void updateUser(User user);
-
-	/**
-	 * @return a paginator for administrators.
-	 */
-	Paginator<User> getAdminPaginator();
 	
 	//////////////////////////////////////////////////////////////
 	// Application methods

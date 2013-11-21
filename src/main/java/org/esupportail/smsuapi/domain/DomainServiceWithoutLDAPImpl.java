@@ -14,7 +14,6 @@ import org.esupportail.commons.exceptions.UserNotFoundException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
-import org.esupportail.commons.web.beans.Paginator;
 import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.ClientManager;
 import org.esupportail.smsuapi.business.ReportingManager;
@@ -174,13 +173,6 @@ public class DomainServiceWithoutLDAPImpl implements DomainService, Initializing
 			final User user) {
 		user.setAdmin(false);
 		updateUser(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#getAdminPaginator()
-	 */
-	public Paginator<User> getAdminPaginator() {
-		return this.daoService.getAdminPaginator();
 	}
 
 

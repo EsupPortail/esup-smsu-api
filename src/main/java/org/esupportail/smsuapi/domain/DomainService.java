@@ -11,7 +11,6 @@ import java.util.Set;
 import org.esupportail.commons.exceptions.ConfigException;
 import org.esupportail.commons.exceptions.UserNotFoundException;
 import org.esupportail.commons.services.application.Version;
-import org.esupportail.commons.web.beans.Paginator;
 
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;

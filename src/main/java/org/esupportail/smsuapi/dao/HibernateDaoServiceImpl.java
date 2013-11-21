@@ -13,14 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.esupportail.commons.dao.AbstractJdbcJndiHibernateDaoService;
-import org.esupportail.commons.dao.HibernateFixedQueryPaginator;
 import org.esupportail.commons.dao.HqlUtils;
 import org.esupportail.commons.services.application.UninitializedDatabaseException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 //import org.esupportail.commons.services.logging.Logger;
 //import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.web.beans.Paginator;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
@@ -122,18 +120,6 @@ public class HibernateDaoServiceImpl extends AbstractJdbcJndiHibernateDaoService
 	 */
 	public void updateUser(final User user) {
 		updateObject(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#getAdminPaginator()
-	 */
-	@SuppressWarnings({ "deprecation" })
-	public Paginator<User> getAdminPaginator() {
-		String queryStr = HqlUtils.fromWhereOrderByAsc(
-				User.class.getSimpleName(),
-				HqlUtils.isTrue(ADMIN_ATTRIBUTE),
-				ID_ATTRIBUTE);
-		return new HibernateFixedQueryPaginator<User>(this, queryStr);
 	}
 
 	//////////////////////////////////////////////////////////////
