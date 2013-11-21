@@ -1,0 +1,213 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.esupportail</groupId>
+  <artifactId>esup-smsu-api</artifactId>
+  <packaging>war</packaging>
+  <name>esup-smsu-api</name>
+  <version>1.1.4</version>
+
+  <build>
+    <!--finalName>${project.name}</finalName-->
+
+    <plugins>
+
+      <plugin>
+	<artifactId>maven-war-plugin</artifactId>
+	<version>2.1</version>
+      </plugin>
+
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-compiler-plugin</artifactId>
+	<version>2.3.2</version>
+	<configuration>
+	  <source>1.6</source>
+	  <target>1.6</target>
+	</configuration>
+      </plugin>
+
+      <plugin>
+	<groupId>org.mortbay.jetty</groupId>
+	<artifactId>jetty-maven-plugin</artifactId>
+	<version>${jetty-version}</version>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+    <esup-commons-version>[0.3.3, 0.4)</esup-commons-version>
+    <spring-version>3.2.3.RELEASE</spring-version>
+    <jetty-version>8.1.9.v20130131</jetty-version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>esup</id>
+      <url>https://mvn.esup-portail.org/content/repositories/releases</url>
+      <snapshots> <enabled>false</enabled> </snapshots>
+      <releases> <enabled>true</enabled> </releases>
+    </repository>
+
+    <repository>
+      <id>my-local-repo</id>
+      <url>file://${basedir}/utils/repository</url>
+    </repository>
+
+  </repositories>
+
+  <dependencies>
+                <dependency>
+                        <groupId>javax.servlet</groupId>
+                        <artifactId>servlet-api</artifactId>
+                        <version>2.5</version>
+                        <scope>provided</scope>
+                </dependency>
+
+		<dependency>
+		  <groupId>commons-collections</groupId>
+		  <artifactId>commons-collections</artifactId>
+		  <version>[3.1, 4)</version>
+		</dependency>
+		<dependency>
+		  <groupId>commons-io</groupId>
+		  <artifactId>commons-io</artifactId>
+		  <version>[1.2, 2)</version>
+		</dependency>
+		<dependency>
+		  <groupId>commons-lang</groupId>
+		  <artifactId>commons-lang</artifactId>
+		  <version>[2.1, 3)</version>
+		</dependency>
+		<dependency>
+		  <groupId>commons-codec</groupId>
+		  <artifactId>commons-codec</artifactId>
+		  <version>[1.4, 2)</version>
+		</dependency>
+		<dependency>
+		  <groupId>commons-beanutils</groupId>
+		  <artifactId>commons-beanutils</artifactId>
+		  <version>[1.6, 2)</version>
+		</dependency>
+            
+
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-core</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-orm</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-context-support</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-web</artifactId>
+		  <version>${spring-version}</version>
+		</dependency>
+
+
+		<!-- hibernate connection pooling -->
+		<dependency>
+		  <groupId>org.hibernate</groupId>
+		  <artifactId>hibernate-c3p0</artifactId>
+		  <version>3.3.2.GA</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>org.esupportail</groupId>
+		  <artifactId>esup-commons2-hibernate</artifactId>
+		  <version>${esup-commons-version}</version>
+		<exclusions>
+		  <!-- remove unneeded -->
+		  <exclusion>
+		    <groupId>postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		  </exclusion>
+		  <exclusion>
+		    <groupId>hsqldb</groupId>
+		    <artifactId>hsqldb</artifactId>
+		  </exclusion>
+		</exclusions>
+		</dependency>
+		<dependency>
+		  <groupId>org.esupportail</groupId>
+		  <artifactId>esup-commons2-web</artifactId>
+		  <version>${esup-commons-version}</version>
+		<exclusions>
+		  <!-- spring-asm is no more in spring 3.2.x -->
+		  <exclusion>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-asm</artifactId>
+		  </exclusion>
+		</exclusions>
+		</dependency>
+		<dependency>
+		  <groupId>org.esupportail</groupId>
+		  <artifactId>esup-commons2-exceptionHandling</artifactId>
+		  <version>${esup-commons-version}</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>quartz</groupId>
+		  <artifactId>quartz</artifactId>
+		  <version>1.5.2</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>com.google.code.gson</groupId>
+		  <artifactId>gson</artifactId>
+		  <version>[2.2.2, 2.3)</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>com.googlecode.json-simple</groupId>
+		  <artifactId>json-simple</artifactId>
+		  <version>[1.1.1, 1.2)</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>commons-httpclient</groupId>
+		  <artifactId>commons-httpclient</artifactId>
+		  <version>3.0.1</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>org.codehaus.xfire</groupId>
+		  <artifactId>xfire-all</artifactId>
+		  <version>1.2.6</version>
+		  <exclusions>
+		    <exclusion>
+		      <groupId>xerces</groupId>
+		      <artifactId>xercesImpl</artifactId>
+		    </exclusion>
+		    <exclusion>
+		      <groupId>org.springframework</groupId>
+		      <artifactId>spring</artifactId>
+		    </exclusion>
+		  </exclusions>
+		</dependency>
+
+		<dependency>
+		  <groupId>fr.cvf.util</groupId>
+		  <artifactId>lib-mgs</artifactId>
+		  <version>4.0.5</version>            
+		</dependency>
+
+		<dependency>
+		  <groupId>fr.cvf.util</groupId>
+		  <artifactId>mode-sgs</artifactId>
+		  <version>2.0.5</version>            
+		</dependency>
+
+  </dependencies>
+
+</project>
