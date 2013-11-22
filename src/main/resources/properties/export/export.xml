@@ -14,7 +14,7 @@
 	
 	<bean 
 		id="sendtrack" 
-		class="org.esupportail.smsuapi.services.remote.SendTrackImpl"
+		class="org.esupportail.smsuapi.services.remote.SendTrack"
 		>
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
@@ -22,49 +22,42 @@
 
 	<bean 
 		id="sendsms" 
-		class="org.esupportail.smsuapi.services.remote.SendSmsImpl">
-		<property name="applicationService" ref="applicationService" />
-		<property name="domainService" ref="domainService" />
-	</bean>
-	
-	<bean 
-		id="sendsmsthird" 
-		class="org.esupportail.smsuapi.services.remote.SendSmsThirdImpl">
+		class="org.esupportail.smsuapi.services.remote.SendSms">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="smsuapiStatus" 
-		class="org.esupportail.smsuapi.services.remote.SmsuapiStatusImpl">
+		class="org.esupportail.smsuapi.services.remote.SmsuapiStatus">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="notificationPhoneNumberInBlackList" 
-		class="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackListImpl">
+		class="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="listPhoneNumbersInBlackList" 
-		class="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackListImpl">
+		class="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackList">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="reporting" 
-		class="org.esupportail.smsuapi.services.remote.ReportingImpl">
+		class="org.esupportail.smsuapi.services.remote.Reporting">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
 	<bean 
 		id="testConnexion" 
-		class="org.esupportail.smsuapi.services.remote.TestConnexionImpl">
+		class="org.esupportail.smsuapi.services.remote.TestConnexion">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
 	</bean>

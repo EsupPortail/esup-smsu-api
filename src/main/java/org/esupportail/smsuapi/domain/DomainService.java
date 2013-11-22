@@ -17,7 +17,6 @@ import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.ClientManager;
 import org.esupportail.smsuapi.business.ReportingManager;
 import org.esupportail.smsuapi.business.SendSmsManager;
-import org.esupportail.smsuapi.business.SendSmsThirdManager;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -53,11 +52,6 @@ public class DomainService implements InitializingBean {
 	 * {@link SendSmsManager}.
 	 */
 	private SendSmsManager sendSmsManager;
-
-	/**
-	 * {@link SendSmsThirdManager}.
-	 */
-	private SendSmsThirdManager sendSmsThirdManager;
 
 	/**
 	 * {@link BlackListManager}.
@@ -366,21 +360,6 @@ public class DomainService implements InitializingBean {
 	}
 
 	//////////////////////////////////////////////////////////////
-	// WS SendSmsThird methods
-	//////////////////////////////////////////////////////////////
-	/**
-	 * @throws InsufficientQuotaException 
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
-	 */
-	public void sendSMSByThird(final List<String> smsPhoneList, final String msgContent, final int msgId)
-	throws UnknownIdentifierApplicationException, 
-	InsufficientQuotaException {
-
-		sendSmsThirdManager.sendSMSByThird(smsPhoneList, msgContent, msgId);
-	}
-
-
-	//////////////////////////////////////////////////////////////
 	// WS Blacklist methods
 	//////////////////////////////////////////////////////////////
 	/**
@@ -467,10 +446,6 @@ public class DomainService implements InitializingBean {
 	//////////////////////////////////////
 	public void setSendSmsManager(final SendSmsManager sendSmsManager) {
 		this.sendSmsManager = sendSmsManager;
-	}
-
-	public void setSendSmsThirdManager(final SendSmsThirdManager sendSmsThirdManager) {
-		this.sendSmsThirdManager = sendSmsThirdManager;
 	}
 
 	public void setBlackListManager(final BlackListManager blackListManager) {

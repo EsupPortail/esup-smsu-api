@@ -14,16 +14,6 @@
 		<property name="schedulerUtils" ref="schedulerUtils"/>
 		<property name="clientManager" ref="clientManager"/>
 	</bean>
-
-	<bean id="sendSmsThirdManager"
-		class="org.esupportail.smsuapi.business.SendSmsThirdManager">
-		<description>The business layer concerning the sending.</description>
-		<property name="daoService" ref="daoService" />
-		<property name="smsSender" ref="smsSenderImpl" />
-		<property name="schedulerUtils" ref="schedulerUtils"/>
-		<property name="clientManager" ref="clientManager"/>
-	</bean>
-	
 	
 	<bean id="statisticBuilder"
 		class="org.esupportail.smsuapi.business.stats.StatisticBuilder">
