@@ -11,21 +11,6 @@
 		The configuration file for remote (web) services.
 		This file is referenced by /properties/applicationContext.xml.
 	-->
-
-	<import resource="classpath:org/codehaus/xfire/spring/xfire.xml" /> 
-
-	<bean id="abstractXFire"
-		class="org.codehaus.xfire.spring.remoting.XFireExporter"
-		abstract="true" >
-		<property name="serviceFactory" ref="xfire.serviceFactory" />
-		<property name="xfire" ref="xfire" />
-	</bean> 
-
-	<bean id="sendtrackXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="sendtrack" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SendTrack" />
-	</bean>
 	
 	<bean 
 		id="sendtrack" 
@@ -35,12 +20,6 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 
-	<bean id="sendsmsXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="sendsms" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SendSms" />
-	</bean>
-
 	<bean 
 		id="sendsms" 
 		class="org.esupportail.smsuapi.services.remote.SendSmsImpl">
@@ -48,12 +27,6 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
-	<bean id="sendsmsthirdXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="sendsmsthird" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SendSmsThird" />
-	</bean>
-
 	<bean 
 		id="sendsmsthird" 
 		class="org.esupportail.smsuapi.services.remote.SendSmsThirdImpl">
@@ -61,12 +34,6 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
-	<bean id="smsuapiStatusXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="smsuapiStatus" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SmsuapiStatus" />
-	</bean>
-
 	<bean 
 		id="smsuapiStatus" 
 		class="org.esupportail.smsuapi.services.remote.SmsuapiStatusImpl">
@@ -74,12 +41,6 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
-	<bean id="notificationPhoneNumberInBlackListXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="notificationPhoneNumberInBlackList" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList" />
-	</bean>
-
 	<bean 
 		id="notificationPhoneNumberInBlackList" 
 		class="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackListImpl">
@@ -87,23 +48,11 @@
 		<property name="domainService" ref="domainService" />
 	</bean>
 	
-	<bean id="listPhoneNumbersInBlackListXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="listPhoneNumbersInBlackList" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackList" />
-	</bean>
-
 	<bean 
 		id="listPhoneNumbersInBlackList" 
 		class="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackListImpl">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
-	</bean>
-
-	<bean id="reportingXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="reporting" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.Reporting" />
 	</bean>
 	
 	<bean 
@@ -111,12 +60,6 @@
 		class="org.esupportail.smsuapi.services.remote.ReportingImpl">
 		<property name="applicationService" ref="applicationService" />
 		<property name="domainService" ref="domainService" />
-	</bean>
-	
-	<bean id="testConnexionXFire"
-		parent="abstractXFire" >
-		<property name="serviceBean" ref="testConnexion" />
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.TestConnexion" />
 	</bean>
 	
 	<bean 

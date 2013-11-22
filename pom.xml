@@ -181,22 +181,6 @@
 		</dependency>
 
 		<dependency>
-		  <groupId>org.codehaus.xfire</groupId>
-		  <artifactId>xfire-all</artifactId>
-		  <version>1.2.6</version>
-		  <exclusions>
-		    <exclusion>
-		      <groupId>xerces</groupId>
-		      <artifactId>xercesImpl</artifactId>
-		    </exclusion>
-		    <exclusion>
-		      <groupId>org.springframework</groupId>
-		      <artifactId>spring</artifactId>
-		    </exclusion>
-		  </exclusions>
-		</dependency>
-
-		<dependency>
 		  <groupId>fr.cvf.util</groupId>
 		  <artifactId>lib-mgs</artifactId>
 		  <version>4.0.5</version>            
