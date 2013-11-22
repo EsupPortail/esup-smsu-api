@@ -12,9 +12,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import org.esupportail.commons.dao.AbstractJdbcJndiHibernateDaoService;
-import org.esupportail.commons.dao.HqlUtils;
-import org.esupportail.commons.services.application.UninitializedDatabaseException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 //import org.esupportail.commons.services.logging.Logger;
@@ -31,7 +28,6 @@ import org.hibernate.Query;
 import org.hibernate.classic.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.InitializingBean;
@@ -96,7 +92,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 	/**
 	 * @see org.esupportail.smsuapi.dao.DaoService#getUsers()
 	 */
-	@SuppressWarnings("unchecked")
 	public List<User> getUsers() {
 		return getHibernateTemplate().loadAll(User.class);
 	}
@@ -283,7 +278,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 	/**
 	 * @see org.esupportail.smsuapi.dao.DaoService#getUsers()
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Sms> getSmss() {
 		return getHibernateTemplate().loadAll(Sms.class);
 	}

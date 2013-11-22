@@ -4,7 +4,6 @@ import javax.servlet.ServletContext;
 
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.BeanUtils;
 
 /**
  * Use to manage application context esup-commons way.
