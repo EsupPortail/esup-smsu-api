@@ -43,26 +43,25 @@ public class AckManagerBusiness {
 		final Sms sms = daoService.getSms(smid);
 		
 		if (sms != null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Updating in DB SMS with : " + " - sms_id : " + smid);
-			}
-			
-			sms.setStateAsEnum(smsStatus);
-			daoService.updateSms(sms);
-			
-			// if
-			if (smsStatus.equals(SmsStatus.ERROR_POST_BL)) {
-				final Application application = sms.getApp();
-				final String phoneNumber = sms.getPhone();
-				putPhoneNumberInBlackList(phoneNumber, application);
-			}
-			
+			manageAck(sms, smsStatus);			
 		} else {
 			logger.error("unable to find in db sms with : " + 
 				     " - sms_id : " + smid + 
 				     "In order to update is state in DB" + smid);
 		}
 		
+	}
+
+	private void manageAck(final Sms sms, final SmsStatus smsStatus) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Updating in DB SMS with : " + " - sms_id : " + sms.getId());
+		}		
+		sms.setStateAsEnum(smsStatus);
+		daoService.updateSms(sms);
+				
+		if (smsStatus.equals(SmsStatus.ERROR_POST_BL)) {
+			putPhoneNumberInBlackList(sms.getPhone(), sms.getApp());
+		}
 	}
 	
 	/**
