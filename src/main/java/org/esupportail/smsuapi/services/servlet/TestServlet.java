@@ -13,11 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.esupportail.commons.services.database.DatabaseUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.BeanUtils;
-import org.esupportail.smsuapi.business.context.ApplicationContextUtils;
 import org.esupportail.smsuapi.business.purge.PurgeSms;
 import org.esupportail.smsuapi.business.purge.PurgeStatistic;
 import org.esupportail.smsuapi.business.stats.StatisticBuilder;
@@ -107,11 +105,7 @@ public class TestServlet extends HttpServlet {
     }
     
     private void testStat() {
-    	ApplicationContextUtils.initApplicationContext();
-    	try {
-    		DatabaseUtils.open();
-    		DatabaseUtils.begin();
-    		
+	try {
     		DaoService daoService = (DaoService) BeanUtils.getBean("daoService");
     		@SuppressWarnings("unused")
 			final Application app = daoService.getApplicationByName("application name");
@@ -123,17 +117,12 @@ public class TestServlet extends HttpServlet {
 
     		StatisticBuilder statisticBuilder = (StatisticBuilder) BeanUtils.getBean("statisticBuilder");
     		statisticBuilder.buildAllStatistics();
-    		DatabaseUtils.commit();
     	} catch (Throwable t) {
-    		DatabaseUtils.rollback();
-    	} finally {
-    		DatabaseUtils.close();
+    		logger.debug(t.getMessage());
     	}
-    	
     }
     
     private void testQrtz() {
-    	ApplicationContextUtils.initApplicationContext();
     	SchedulerUtils schedulerUtils = (SchedulerUtils) BeanUtils.getBean("schedulerUtils");
     	SMSBroker smsb = new SMSBroker(0, "Un message", "0232323232", "");
     	
@@ -144,34 +133,16 @@ public class TestServlet extends HttpServlet {
     
     @SuppressWarnings("deprecation")
 	private void testDao() {
-    	ApplicationContextUtils.initApplicationContext();
-    	try {
-    		DatabaseUtils.open();
-    		DatabaseUtils.begin();
-    		
     		DaoService daoService = (DaoService) BeanUtils.getBean("daoService");
     		final Application app = daoService.getApplicationByName("application name");
     		final Account acc = daoService.getAccByLabel("account label");
     		final Date theDate = new Date(109,6,1);
     		@SuppressWarnings("unused")
 			final boolean bool = daoService.isStatisticExistsForApplicationAndAccountAndDate(app, acc, theDate);
-    		
-    		
-    		
-    		DatabaseUtils.commit();
-    	} catch (Throwable t) {
-    		DatabaseUtils.rollback();
-    	} finally {
-    		DatabaseUtils.close();
-    	}
     }
     
      private void testNumErr() {
-    	
-    	try {
-    		DatabaseUtils.open();
-    		DatabaseUtils.begin();
-    		
+    	try {    		
     		DomainService domainService = (DomainService) BeanUtils.getBean("domainService");
     		//logger.debug("ici : 0666666666");
     		//Boolean retVal = domainService.isPhoneNumberInBlackList("0665178942");
@@ -179,52 +150,27 @@ public class TestServlet extends HttpServlet {
     		@SuppressWarnings("unused")
 			Set<String> list = domainService.getListPhoneNumbersInBlackList();
     	
-    		DatabaseUtils.commit();
     	} catch (Throwable t) {
     		logger.debug(t.getMessage());
-    		DatabaseUtils.rollback();
-    	} finally {
-    		DatabaseUtils.close();
     	}
     }
      
      private void testPurgeSms() {
-    	 
-    	 ApplicationContextUtils.initApplicationContext();
-    		 
     		 try {
-    			 DatabaseUtils.open();
-    			 DatabaseUtils.begin();
-
     			 final PurgeSms purgeSms = (PurgeSms) BeanUtils.getBean("purgeSms");
     			 purgeSms.purgeSms();
 
-    			 DatabaseUtils.commit();
     		 } catch (Throwable t) {
     			 logger.debug(t.getMessage());
-    			 DatabaseUtils.rollback();
-    		 } finally {
-    			 DatabaseUtils.close();
     		 }
      }
      
      private void testPurgeStatistic() {
-    	 
-    	 ApplicationContextUtils.initApplicationContext();
-    		 
     		 try {
-    			 DatabaseUtils.open();
-    			 DatabaseUtils.begin();
-
     			 final PurgeStatistic purgeStatistic = (PurgeStatistic) BeanUtils.getBean("purgeStatistic");
     			 purgeStatistic.purgeStatistic();
-
-    			 DatabaseUtils.commit();
     		 } catch (Throwable t) {
     			 logger.debug(t.getMessage());
-    			 DatabaseUtils.rollback();
-    		 } finally {
-    			 DatabaseUtils.close();
     		 }
      }
 }

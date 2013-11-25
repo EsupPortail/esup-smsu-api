@@ -10,12 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.esupportail.commons.services.database.DatabaseUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.ContextUtils;
-import org.esupportail.smsuapi.business.context.ApplicationContextUtils;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 
@@ -36,29 +32,12 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 	public void handleRequest(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			Method m = getAction(RestServletActions.getString(req, "action"));
-			executeMethodWithDb(m, req, resp);
+			executeMethodRaw(m, req, resp);
 		} catch (Throwable e) {
 			answerError(resp, e);
 		}
 
 	}
-
-	private void executeMethodWithDb(Method m, HttpServletRequest req, HttpServletResponse resp) throws Throwable {
-		ServletRequestAttributes previousRequestAttributes = null;
-		try {
-			previousRequestAttributes = ContextUtils.bindRequestAndContext(req, getServletContext());
-			BeanUtils.initBeanFactory(getServletContext());
-			DatabaseUtils.open();
-			DatabaseUtils.begin();
-			ApplicationContextUtils.initApplicationContext();
-			executeMethodRaw(m, req, resp);   		
-			DatabaseUtils.commit();
-		} finally {
-			DatabaseUtils.close();
-			ContextUtils.unbindRequest(previousRequestAttributes);
-		}
-	}
-
 
 	private void executeMethodRaw(Method m, HttpServletRequest req, HttpServletResponse resp) throws Throwable {
 		if (!restServletActions.isAuthValid()) {
