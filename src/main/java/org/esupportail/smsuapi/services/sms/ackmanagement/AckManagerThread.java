@@ -1,10 +1,12 @@
 package org.esupportail.smsuapi.services.sms.ackmanagement;
 
-import org.esupportail.commons.services.database.DatabaseUtils;
+import org.hibernate.SessionFactory;
+import org.springframework.context.ApplicationContext;
+
+import org.esupportail.commons.context.ApplicationContextHolder;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.BeanUtils;
-import org.esupportail.smsuapi.business.context.ApplicationContextUtils;
+import org.esupportail.smsuapi.utils.HibernateUtils;
 
 /**
  * Implementation of ack managment by thread.
@@ -34,16 +36,13 @@ public class AckManagerThread extends Thread {
 	 * @see java.lang.Thread#run()
 	 */
 	public void run() {
-		
+		// need <bean id="..." class="org.esupportail.commons.context.ApplicationContextHolder" />
+		ApplicationContext applicationContext = ApplicationContextHolder.getContext();
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory(applicationContext);
+		boolean participate = HibernateUtils.openSession(sessionFactory);
+
 		try {
-			ApplicationContextUtils.initApplicationContext();
-			// Open connexion & transaction using esup-commons method.
-			// open connexion
-			DatabaseUtils.open();  
-			// open transaction
-			DatabaseUtils.begin();
-
-
 			if (logger.isDebugEnabled()) {
 				logger.debug("Starting new Thread to manage ack with : " + 
 					     " - smid : " + acknowledgment.getSmsId() + 
@@ -51,19 +50,16 @@ public class AckManagerThread extends Thread {
 			}
 
 			// Send the ack to the business layer 
-			final AckManagerBusiness ackManagerBusiness = (AckManagerBusiness) BeanUtils.getBean(ACK_BUSINESS_MGR_BEAN_NAME);
+			final AckManagerBusiness ackManagerBusiness = (AckManagerBusiness) applicationContext.getBean(ACK_BUSINESS_MGR_BEAN_NAME);
 			ackManagerBusiness.manageAck(acknowledgment);
 
-			// commit transaction
-			DatabaseUtils.commit(); 
 		// error case, rollback
 		} catch (RuntimeException e) {
 			logger.error("Catching exception in AckManagerThread, now rollback : ", e);
-			DatabaseUtils.rollback(); 
 			throw e;
 		// close the session every time	
 		} finally {
-			DatabaseUtils.close(); 
+		    HibernateUtils.closeSession(sessionFactory, participate);
 		}
 	 }
 

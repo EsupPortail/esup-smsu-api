@@ -1,9 +1,7 @@
 package org.esupportail.smsuapi.services.scheduler;
 
-import org.esupportail.commons.services.database.DatabaseUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.smsuapi.business.context.ApplicationContextUtils;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -14,6 +12,9 @@ import org.quartz.SchedulerException;
 import org.quartz.StatefulJob;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import org.hibernate.SessionFactory;
+import org.esupportail.smsuapi.utils.HibernateUtils;
 
 /**
  * 
@@ -88,22 +89,13 @@ public abstract class AbstractQuartzJob extends QuartzJobBean implements Statefu
         // get the jobDataMap
         final JobDataMap jobDataMap = jobDetail.getJobDataMap();
         
-        try {
-        	ApplicationContextUtils.initApplicationContext();
-             // Open session & transaction (esup commons way)
-        	DatabaseUtils.open();
-        	DatabaseUtils.begin();
-        	        	
-        	// do the job
-        	executeJob(applicationContext, jobDataMap);
-        	
-        	// if everything ok, commit
-        	DatabaseUtils.commit();
- 
-        } catch (Throwable t) {
-        	// if an error occurs, rollback
-        	DatabaseUtils.rollback();
 
+	SessionFactory sessionFactory = HibernateUtils.getSessionFactory(applicationContext);
+
+	boolean participate = HibernateUtils.openSession(sessionFactory);
+        try {
+		executeJob(applicationContext, jobDataMap);
+	} catch (Throwable t) {
         	logger.error("An exception occurred during the execute internal ", t);
             if (exceptionHandler != null) {
                 exceptionHandler.process("Abstract Quartz job", t);
@@ -111,8 +103,8 @@ public abstract class AbstractQuartzJob extends QuartzJobBean implements Statefu
                 throw new UnsupportedOperationException("The exceptionHander has to be not null");
             }
         } finally {
-        	DatabaseUtils.close();
-        }
+		HibernateUtils.closeSession(sessionFactory, participate);
+	}
 	}
 	
 	/**

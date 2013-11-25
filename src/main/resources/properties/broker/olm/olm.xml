@@ -12,6 +12,9 @@
 		This file is referenced by /properties/applicationContext.xml.
 	-->
 
+	<!-- used by AckManagerThread -->
+	<bean id="applicationContextHolder" class="org.esupportail.commons.context.ApplicationContextHolder" />
+
 	<bean id="smsSenderImpl"
 		class="org.esupportail.smsuapi.services.sms.impl.olm.SMSSenderOlmImpl">
 		<description>
