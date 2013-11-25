@@ -47,9 +47,7 @@
 
 	<servlet>
 		<servlet-name>rest</servlet-name>
-		<servlet-class>
-			org.esupportail.smsuapi.services.servlet.RestServlet
-		</servlet-class>
+		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>rest</servlet-name>

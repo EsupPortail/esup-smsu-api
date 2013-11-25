@@ -7,50 +7,33 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.esupportail.commons.services.database.DatabaseUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.commons.utils.BeanUtils;
 import org.esupportail.commons.utils.ContextUtils;
 import org.esupportail.smsuapi.business.context.ApplicationContextUtils;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import com.google.gson.Gson;
 
 /**
  * Servlet used to access webservices through simple REST
  *
  */
-public class RestServlet extends HttpServlet {
+public class RestServlet implements org.springframework.web.HttpRequestHandler {
 
 	private final Logger logger = new LoggerImpl(getClass());
 	
-	private RestServletActions restServletActions = null;
+	@Autowired private RestServletActions restServletActions;
 
-	private RestServletActions getRestServletActions() {
-		if (restServletActions == null) {
-			restServletActions = (RestServletActions) BeanUtils.getBean("restServletActions");
-		}
-		return restServletActions;
+	public void setRestServletActions(RestServletActions restServletActions) {
+		this.restServletActions = restServletActions;
 	}
-
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGetOrPost(req, resp);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doGetOrPost(req, resp);
-	}
-
-		
-	private void doGetOrPost(HttpServletRequest req, HttpServletResponse resp) {
+	
+	public void handleRequest(HttpServletRequest req, HttpServletResponse resp) {
 		try {
 			Method m = getAction(RestServletActions.getString(req, "action"));
 			executeMethodWithDb(m, req, resp);
@@ -78,14 +61,14 @@ public class RestServlet extends HttpServlet {
 
 
 	private void executeMethodRaw(Method m, HttpServletRequest req, HttpServletResponse resp) throws Throwable {
-		if (!getRestServletActions().isAuthValid()) {
+		if (!restServletActions.isAuthValid()) {
 			answerBasicAuthNeeded(resp);
 			return;
 		}
 		logger.info("invoking " + m.getName());
 		Object val;
 		try { 
-			val = m.invoke(getRestServletActions(), req);
+			val = m.invoke(restServletActions, req);
 		} catch (java.lang.reflect.InvocationTargetException e) {
 			throw e.getCause();
 		}
