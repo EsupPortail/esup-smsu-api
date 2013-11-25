@@ -1,25 +1,22 @@
 package org.esupportail.smsuapi.services.sms.impl.proxy;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.httpclient.NameValuePair;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.esupportail.smsuapi.services.remote.SmsuapiStatus;
-import org.esupportail.ws.remote.beans.MsgIdAndPhone;
+import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
 
 public class AckStatusProxy {
 		
-	/**
-	 * Proxy connector used to ack status
-	 */
-	private SmsuapiStatus smsuapiStatus;
+	private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
 	
 	/**
 	 * Used to manage db.
@@ -46,16 +43,29 @@ public class AckStatusProxy {
 
 		logger.info("AckStatusProxy: asking the proxy for the status of some sms");
 		try {
-			List<String> statuss = smsuapiStatus.getStatus(toMsgIdAndPhoneList(smss));
+			List<String> statuss = wsMessageStatus(smss);
 			Iterator<Sms> it_in = smss.iterator();
 			Iterator<String> status_it = statuss.iterator();		
 			while (it_in.hasNext() && status_it.hasNext()) {
 				updateStatus(it_in.next(), status_it.next());
 			}
-		} catch (UnknownIdentifierApplicationException e) {
+		} catch (IOException e) {
 			logger.error("AckStatusProxy: the proxy does not know us", e);
 		}
 		
+	}
+
+	private List<String> wsMessageStatus(List<Sms> smss) throws IOException {
+		return httpRequestSmsuapiWS.messageStatus(convertSmsStatusParams(smss));
+	}
+
+	private LinkedList<NameValuePair> convertSmsStatusParams(List<Sms> smss) {
+		LinkedList<NameValuePair> params = new LinkedList<NameValuePair>();
+		for (Sms sms : smss) {
+			params.add(new NameValuePair("id", ""+sms.getId()));
+			params.add(new NameValuePair("phoneNumber", sms.getPhone()));
+		}
+		return params;
 	}
 
 	private void updateStatus(Sms sms, String status) {
@@ -83,12 +93,6 @@ public class AckStatusProxy {
 		double deltaInMilliSeconds = a.getTime() - b.getTime();
 		return deltaInMilliSeconds / 1000 / 60 / 60;
 	}
-
-	private List<MsgIdAndPhone> toMsgIdAndPhoneList(List<Sms> smss) {
-		List<MsgIdAndPhone> l = new LinkedList<MsgIdAndPhone>();
-		for (Sms sms_ : smss) l.add(new MsgIdAndPhone(sms_.getId(), sms_.getPhone()));
-		return l;
-	}
 	
 	
 	/*******************
@@ -98,8 +102,8 @@ public class AckStatusProxy {
 	/**
 	 * Standard setter used by Spring.
 	 */
-	public void setSmsuapiStatus(final SmsuapiStatus smsuapiStatus) {
-		this.smsuapiStatus = smsuapiStatus;
+	public void setHttpRequestSmsuapiWS(HttpRequestSmsuapiWS httpRequestSmsuapiWS) {
+		this.httpRequestSmsuapiWS = httpRequestSmsuapiWS;
 	}
 
 	/**

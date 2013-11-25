@@ -3,8 +3,8 @@ package org.esupportail.smsuapi.services.sms.impl.proxy;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
-import org.esupportail.smsuapi.services.remote.SendSms;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
 
 /**
  * Proxy implementation of the SMS sender.
@@ -18,10 +18,7 @@ public class SMSSenderProxyImpl implements ISMSSender {
 	 */
 	private final Logger logger = new LoggerImpl(getClass());
 	
-	/**
-	 * Proxy connector used to send message.
-	 */
-	private SendSms sendSms;
+	private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
 	
 	/**
 	 * use to simulate sending.
@@ -48,7 +45,7 @@ public class SMSSenderProxyImpl implements ISMSSender {
 			
 			// only send the message if required
 			if (!simulateMessageSending) {
-				sendSms.sendSMS(smsId, null, null, null, smsRecipient, null, smsMessage);
+				httpRequestSmsuapiWS.sendSms(smsId, smsRecipient, smsMessage);
 
 				logger.info("message with : " + 
 						  " - id : " + smsId + "successfully sent");
@@ -74,8 +71,8 @@ public class SMSSenderProxyImpl implements ISMSSender {
 	/**
 	 * Standard setter used by Spring.
 	 */
-	public void setSendSms(final SendSms sendSms) {
-		this.sendSms = sendSms;
+	public void setHttpRequestSmsuapiWS(HttpRequestSmsuapiWS httpRequestSmsuapiWS) {
+		this.httpRequestSmsuapiWS = httpRequestSmsuapiWS;
 	}
 	
 	/**

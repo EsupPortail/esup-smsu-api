@@ -32,20 +32,11 @@
 	</bean>
 
 
-	<bean id="sendSmsWS"
-		class="org.codehaus.xfire.spring.remoting.XFireClientFactoryBean">
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SendSms" />
-		<property name="wsdlDocumentUrl" value="${sms.connector.proxy.ws.address}/SendSms?WSDL" />
-		<property name="lookupServiceOnStartup">
-			<!-- needed to ensure initSslParameters is done before smsSenderImpl -->
-			<value type="boolean">false</value>
-		</property>
-	</bean>
-
-	<bean id="smsuapiStatusWS"
-		class="org.codehaus.xfire.spring.remoting.XFireClientFactoryBean">
-		<property name="serviceClass" value="org.esupportail.smsuapi.services.remote.SmsuapiStatus" />
-		<property name="wsdlDocumentUrl" value="${sms.connector.proxy.ws.address}/SmsuapiStatus?WSDL" />
+	<bean id="httpRequestSmsuapiWS"
+		class="org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS">
+		<property name="username" value="${sms.connector.proxy.ws.username}" />
+		<property name="password" value="${sms.connector.proxy.ws.password}" />
+		<property name="url" value="${sms.connector.proxy.ws.address}" />
 	</bean>
 
 	<!-- schedule ackStatusProxy  -->
