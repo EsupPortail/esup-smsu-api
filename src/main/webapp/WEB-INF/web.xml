@@ -32,7 +32,7 @@
 	
 	<listener>
 		<listener-class>
-			org.esupportail.smsuapi.business.context.SmsuapiServletContextListener
+			org.springframework.web.context.request.RequestContextListener
 		</listener-class>
 	</listener>  
 
