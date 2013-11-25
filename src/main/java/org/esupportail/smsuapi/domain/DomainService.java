@@ -39,11 +39,6 @@ import org.springframework.beans.factory.InitializingBean;
 public class DomainService implements InitializingBean {
 
 	/**
-	 * The serialization id.
-	 */
-	private static final long serialVersionUID = -8200845058340254019L;
-
-	/**
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
