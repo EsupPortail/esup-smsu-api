@@ -55,10 +55,9 @@ public class BlackListManager {
 	 * @param phoneNumber
 	 * @return return true if the phone number is in the bl, false otherwise
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<String> getListPhoneNumbersInBlackList() {
 		 List<Blacklist> listPhoneNumbersInBlackList = daoService.getListPhoneNumbersInBlackList();
-		 Set<String> setPhoneNumbersInBlackList = new HashSet();
+		 Set<String> setPhoneNumbersInBlackList = new HashSet<String>();
 		 for (Blacklist bl : listPhoneNumbersInBlackList) {
 				setPhoneNumbersInBlackList.add(bl.getPhone());
 			}

@@ -239,9 +239,8 @@ public class DomainService implements InitializingBean {
 	 * @return the non-authorized phone numbers (in black list).
 	 * @throws UnknownIdentifierApplicationException 
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbDestBlackList(final Integer msgId) throws UnknownIdentifierApplicationException {
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
 
@@ -276,9 +275,8 @@ public class DomainService implements InitializingBean {
 	 * @throws UnknownIdentifierApplicationException 
 	 * @throws Exception 
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbErrorSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
@@ -291,10 +289,9 @@ public class DomainService implements InitializingBean {
 	/**
 	 * @return the number of SMS in error.
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<String> getListNumErreur(final Integer msgId) {
 		// list criteria for HQL query 
-		List<String> list = new ArrayList();
+		List<String> list = new ArrayList<String>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
