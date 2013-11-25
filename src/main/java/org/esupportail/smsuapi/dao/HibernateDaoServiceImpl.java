@@ -44,22 +44,10 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 	 * The serialization id.
 	 */
 	private static final long serialVersionUID = 3152554337896617315L;
-
-	
-	/**
-	 * The name of the 'id' attribute.
-	 */
-	private static final String ID_ATTRIBUTE = "id";
-
-	/**
-	 * The name of the 'admin' attribute.
-	 */
-	private static final String ADMIN_ATTRIBUTE = "admin";
 	
 	/**
 	 * A logger.
 	 */
-	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(getClass());
 	
 	/**
