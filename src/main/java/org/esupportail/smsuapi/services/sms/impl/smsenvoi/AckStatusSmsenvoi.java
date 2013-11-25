@@ -65,7 +65,7 @@ public class AckStatusSmsenvoi {
 		return m.values().iterator().next();
 	}
 
-	private String get_arcode(JSONObject resp) {
+	public String get_arcode(JSONObject resp) {
 		try {
 			if ((Long) resp.get("success") == 1) {
 				JSONObject listing = (JSONObject) json_map_get(resp, "listing");
