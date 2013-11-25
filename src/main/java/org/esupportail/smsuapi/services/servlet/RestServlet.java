@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.google.gson.Gson;
+import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * Servlet used to access webservices through simple REST
@@ -70,7 +70,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 
 	private void writeJson(HttpServletResponse resp, Object val) {
 		try {
-			String jsonVal= new Gson().toJson(val);
+			String jsonVal= new ObjectMapper().writeValueAsString(val);
 			logger.debug("jsonVal: " + jsonVal);
 			getJsonWriter(resp).write(jsonVal);
 		} catch (IOException e) {
