@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.json.simple.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -44,7 +42,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 
 	private String sendsms_url;
 
-	private JSONObject from;
+	private JsonNode from;
 
 	/* (non-Javadoc)
 	 * @see org.esupportail.smsuapi.services.sms.ISMSSender
@@ -82,7 +80,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 		}		
 	}
 
-	private void save_message_id(SMSBroker sms, JSONObject response) {
+	private void save_message_id(SMSBroker sms, JsonNode response) {
 		Long message_id = get_message_id(response);
 
 		Sms smsDB = daoService.getSms(sms.getId());
@@ -93,10 +91,10 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 		daoService.updateSms(smsDB);
 	}
 
-	private Long get_message_id(JSONObject resp) {
+	private Long get_message_id(JsonNode resp) {
 		try {
-			if ((Long) resp.get("success") == 1)
-				return (Long) resp.get("message_id");
+			if (resp.path("success").getLongValue() == 1)
+				return resp.path("message_id").getLongValue();
 		} catch (NullPointerException e) {
 		} catch (ClassCastException e) {
 		}
@@ -104,19 +102,19 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	}
 
 	private String computeSenderlabel(SMSBroker sms) {
-		Object label = from.get(sms.getAccountLabel());
+		String label = from.path(sms.getAccountLabel()).getTextValue();
 		if (label == null) {
-			label = from.get("");
+			label = from.path("").getTextValue();
 			if (label == null)
 				logger.info("no default senderlabel (cf sms.connector.smsenvoi.from.mapJSON), no sender label will be used");
 			else
-				logger.debug("no senderlabel for " + sms.getAccountLabel() + " in " + from.toString() + ". Defaulting to " + label);
+				logger.debug("no senderlabel for " + sms.getAccountLabel() + " in " + from + ". Defaulting to " + label);
 		}
 		logger.debug("senderlabel: " + label);
 		return label == null ? null : (String) label;
 	}
 
-	private JSONObject realSendMessage(SMSBroker sms) throws IOException {
+	private JsonNode realSendMessage(SMSBroker sms) throws IOException {
 		String senderlabel = computeSenderlabel(sms);
 		Map<String, String> p = new HashMap<String,String>();
 		p.put("message[type]", "sms");

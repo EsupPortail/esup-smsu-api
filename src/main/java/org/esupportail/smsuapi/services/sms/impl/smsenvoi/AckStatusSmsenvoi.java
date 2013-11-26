@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import org.json.simple.JSONObject;
-
+import org.codehaus.jackson.JsonNode;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -58,30 +58,21 @@ public class AckStatusSmsenvoi {
 		}
 	}
 
-	private Object json_map_get(Object o, String field) throws NullPointerException, ClassCastException {
-		return ((JSONObject) o).get(field);
-	}
-	private <A,B> B firstValue(Map<A,B> m) {
-		return m.values().iterator().next();
-	}
-
-	public String get_arcode(JSONObject resp) {
-		try {
-			if ((Long) resp.get("success") == 1) {
-				JSONObject listing = (JSONObject) json_map_get(resp, "listing");
-			        return (String) json_map_get(firstValue(listing), "arcode");
-			}
-		} catch (NullPointerException e) {
-		} catch (ClassCastException e) {
+	public String get_arcode(JsonNode resp) {
+		if (resp.path("success").getLongValue() != 1) return null;
+		try {			
+			JsonNode firstElement = resp.path("listing").getElements().next();
+			return firstElement.path("arcode").getTextValue();
+		} catch (NoSuchElementException e) {
+			return null;
 		}
-		return null;
 	}
 
 	private SmsStatus getStatus(Integer message_id) {
 		Map<String, String> p = new HashMap<String,String>();
 		p.put("message_id", ""+message_id);
 		try {
-		    JSONObject resp = requestSmsenvoi.request(checkdelivery_url, p);
+		    JsonNode resp = requestSmsenvoi.request(checkdelivery_url, p);
 		    String arcode = get_arcode(resp);
 		    if (arcode == null)
 			// it happens in case of invalid phone number. Other cases?

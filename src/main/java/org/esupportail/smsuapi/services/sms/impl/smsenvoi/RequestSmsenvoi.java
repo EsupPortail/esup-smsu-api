@@ -12,9 +12,9 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 
@@ -28,14 +28,12 @@ public class RequestSmsenvoi {
 	private String account_email;
 	private String account_apikey;
 	
-	public static JSONObject json_decode(String s) {
-		Object o = JSONValue.parse(s);
+	public static JsonNode json_decode(String s) {
 		try {
-			return (JSONObject) o;
-		} catch (NullPointerException e) {
-		} catch (ClassCastException e) {
+			return (new ObjectMapper()).readTree(s);
+		} catch (IOException e) {
+			return null;
 		}
-		return null;
 	}
 
 	public static String urlencode(String s) {
@@ -46,7 +44,7 @@ public class RequestSmsenvoi {
 		}
 	}
 	
-	public JSONObject request(String url, Map<String, String> params) throws IOException {
+	public JsonNode request(String url, Map<String, String> params) throws IOException {
 		params.put("email", account_email);
 		params.put("apikey", account_apikey);
 		String response = requestGET(cook_url(url, params));
