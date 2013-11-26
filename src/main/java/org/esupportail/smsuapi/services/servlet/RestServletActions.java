@@ -1,5 +1,7 @@
 package org.esupportail.smsuapi.services.servlet;
 
+import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,7 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
+import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class RestServletActions {
@@ -19,6 +22,7 @@ public class RestServletActions {
 	@Autowired private org.esupportail.smsuapi.services.remote.SendSms sendSms;
 	@Autowired private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
 	@Autowired private org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList;
+	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSMS(getInteger(req, "id", null),
@@ -48,16 +52,33 @@ public class RestServletActions {
 		return sendTrack.getTrackInfos(getInteger(req, "id"));
 	}
 
+    	public Object wsActionMessageStatus(HttpServletRequest req) throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {
+		String[] ids = getStrings(req, "id");
+		String[] phoneNumbers = getStrings(req, "phoneNumber");
+		if (ids.length != phoneNumbers.length) {
+			throw new RuntimeException("there must be same number of parameters \"id\" and \"phoneNumber\"");
+		}
+		List<MsgIdAndPhone> list = new ArrayList<MsgIdAndPhone>();
+		for (int i = 0; i < ids.length; i++) {
+			list.add(new MsgIdAndPhone(Integer.parseInt(ids[i]), phoneNumbers[i]));
+		}
+		return smsuapiStatus.getStatus(list);
+	}
+
 	boolean isAuthValid() {
 		return clientManager.getApplicationOrNull() != null;
 	}
 
 
+	static String[] getStrings(HttpServletRequest req, String name) {
+		String[] vals = req.getParameterValues(name);
+		if (vals == null) throw new RuntimeException("\"" + name + "\" parameter is mandatory");
+		return vals;
+	}
 	static String getString(HttpServletRequest req, String name) {
 		String val = getString(req, name, null);
 		if (val == null) throw new RuntimeException("\"" + name + "\" parameter is mandatory");
 		return val;
-
 	}
 	static String getString(HttpServletRequest req, String name, String defaultValue) {
 		String val = req.getParameter(name);
@@ -98,6 +119,13 @@ public class RestServletActions {
 	 */
 	public void setNotificationPhoneNumberInBlackList(final org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList) {
 		this.notificationPhoneNumberInBlackList = notificationPhoneNumberInBlackList;
+	}
+
+	/**
+	 * Standard setter used by spring.
+	 */
+	public void setSmsuapiStatus(final org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus) {
+		this.smsuapiStatus = smsuapiStatus;
 	}
 
 }
