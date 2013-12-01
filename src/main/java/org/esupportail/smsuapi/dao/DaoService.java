@@ -226,8 +226,6 @@ public interface DaoService extends Serializable {
 	 * @return the applcation dao
 	 */
 	Application getApplicationByName(String name);
-
-	Application getApplicationByCertificate(byte[] cert);
 	
 	
 	//////////////////////////////////////////////////////////////

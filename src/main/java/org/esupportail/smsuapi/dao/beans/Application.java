@@ -29,9 +29,9 @@ public class Application  implements Serializable {
 	public static final String PROP_ACC = "Acc";
 
 	/**
-	 * Hibernate property for the certificate.
+	 * Hibernate property for the password.
 	 */
-	public static final String PROP_CERTIFCATE = "Certifcate";
+	public static final String PROP_PASSWORD = "Password";
 
 	/**
 	 * Hibernate property for the number of consumed sms.
@@ -64,9 +64,9 @@ public class Application  implements Serializable {
 	private java.lang.String name;
 
 	/**
-	 * Application certificate.
+	 * Application password
 	 */
-	private byte[] certifcate;
+	private String password;
 
 	/**
 	 * Application quota.
@@ -162,24 +162,35 @@ public class Application  implements Serializable {
 		this.name = name;
 	}
 
-
-
-	/**
+ 	/**
 	 * Return the value associated with the column: APP_CERTIFCATE.
 	 */
-	public byte[] getCertifcate() {
-		return certifcate;
+	public byte[] getPasswordWasCertificate() {
+		return password.getBytes();
 	}
 
 	/**
 	 * Set the value related to the column: APP_CERTIFCATE.
-	 * @param certifcate the APP_CERTIFCATE value
+	 * @param password the APP_CERTIFCATE value
 	 */
-	public void setCertifcate(final byte[] certifcate) {
-		this.certifcate = certifcate;
+	private String PASSWORD_PREFIX_IN_CERTIFCATE = "PASSWORD:";
+	public void setPasswordWasCertificate(final byte[] passwordWasCertificate) {
+		String s = new String(passwordWasCertificate);
+		s = removePrefix(s, PASSWORD_PREFIX_IN_CERTIFCATE);
+		setPassword(s);
 	}
 
+	private String removePrefix(String s, String prefix) {
+		return s.startsWith(prefix) ? s.substring(prefix.length()) : s;
+	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(final String password) {
+		this.password = password;
+	}
 
 	/**
 	 * Return the value associated with the column: APP_QUOTA.

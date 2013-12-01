@@ -440,14 +440,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		Application application = (Application) criteria.uniqueResult();
 		return application;
 	}
-
-	public Application getApplicationByCertificate(final byte[] bCert) {
-		Session currentSession = getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Application.class);
-		criteria.add(Restrictions.eq(Application.PROP_CERTIFCATE, bCert));
-		Application application = (Application) criteria.uniqueResult();
-		return application;
-	}
 	
 	//////////////////////////////////////////////////////////////
 	// Black list

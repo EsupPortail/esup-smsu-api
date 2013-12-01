@@ -428,7 +428,7 @@ public class DomainService implements InitializingBean {
 		String application = clientManager.getClientName();
 
 		if (application.equals(""))
-		    return "ERROR : " + clientManager.getNoCertificateNorBasicAuthErrorMessage();
+		    return "ERROR : " + clientManager.getNoBasicAuthErrorMessage();
 		else 
 		    return sReturn + application;
 	}

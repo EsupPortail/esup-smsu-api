@@ -2,10 +2,6 @@ package org.esupportail.smsuapi.business;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
-import java.security.cert.X509Certificate;
-import javax.security.cert.CertificateException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
@@ -14,7 +10,6 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,19 +17,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author xphp8691
  *
  */
-public class ClientManager implements InitializingBean {
+public class ClientManager {
 
-	/**
-	 * pattern as sting used to extract the client name.
-	 */
-	private String subjectDNRegex;
-	
 	/**
 	 * 
 	 */
 	private DaoService daoService;
-
-	private String PASSWORD_PREFIX_IN_CERTIFCATE = "PASSWORD:";
 	
 	/**
 	 * A logger.
@@ -49,24 +37,8 @@ public class ClientManager implements InitializingBean {
 		super();
 	}
 
-
-	/**
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	public void afterPropertiesSet() throws IllegalArgumentException {	
-		compileSubjectDNRegex();
-	}
-
-	public Pattern compileSubjectDNRegex() throws IllegalArgumentException {
-		try {
-			return Pattern.compile(subjectDNRegex, Pattern.CASE_INSENSITIVE);
-		} catch (PatternSyntaxException e) {
-			throw new IllegalArgumentException("Malformed regular expression: " + subjectDNRegex);
-		}
-	}
-
-	public String getNoCertificateNorBasicAuthErrorMessage() {
-		return "no certificate nor basic auth received by smsuapi. Either fix smsuapi configuration: you need clientAuth=optional in server.xml (tomcat) or \"SSLVerifyClient optional\" in apache conf (if you use a frontal apache). Or use Basic Auth";
+	public String getNoBasicAuthErrorMessage() {
+		return "no basic auth received by smsuapi. You must use Basic Auth";
 	}
 
 	/**
@@ -74,27 +46,12 @@ public class ClientManager implements InitializingBean {
 	 * @throws IllegalArgumentException
 	 */
 	public String getClientName() throws IllegalArgumentException {
-		String cn = getCertificateCN();
-		if (cn == null) cn = getBasicAuthUser();
+		String cn = getBasicAuthUser();
 		if (cn == null) { 
-			logger.error(getNoCertificateNorBasicAuthErrorMessage());
+			logger.error(getNoBasicAuthErrorMessage());
 			return "";
 		} else {
 			return cn;
-		}
-	}
-
-	private String getCertificateCN() throws IllegalArgumentException {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Client connexion. get Client Name.");
-		}
-		
-		X509Certificate[] certs = getClientX509Certificates();
-		
-		if ((certs != null) && (certs.length > 0)) {
-			return getCNFromCertificate(certs[0]);
-		} else {
-			return null;
 		}
 	}
 
@@ -103,56 +60,12 @@ public class ClientManager implements InitializingBean {
 		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	}
 
-	private X509Certificate[] getClientX509Certificates() {
-		HttpServletRequest request = getHttpServletRequest();
-		return (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
-	}
-	
-	/**
-	 * 
-	 * @param certificateCN
-	 * @return
-	 */
-	public Application getApplicationByCertificateCN(final String certificateCN) {
-		if (certificateCN == null) return null;
-
-		for (Application application : daoService.getAllApplications()) {
-
-			if (getPassword(application) != null) // skip apps configured for basic auth
-				continue;
-
-			try {
-				String cn = getCNFromApplication(application);
-				if (certificateCN.equalsIgnoreCase(cn)) {					
-					if (logger.isDebugEnabled())
-						logger.debug("CN in db : [" + cn + "] matches with CN in request : [" + certificateCN + "]");
-					return application;
-				} else {
-					if (logger.isDebugEnabled())
-						logger.debug("CN in db : [" + cn + "] does not match with CN in request : [" + certificateCN + "]");
-				}
-			} catch (CertificateException e) {
-				logger.warn("An error occurs getting the certificate from db for application with : \n" + 
-					    " - id : " + application.getId(), e);
-			}
-		}
-		return null;
-	}
-	
 	public Application getApplication() throws UnknownIdentifierApplicationException {
-		String cn = getCertificateCN();
-		if (cn != null) {
-			Application app = getApplicationByCertificateCN(cn);
-			if (app == null)
-				throw new UnknownIdentifierApplicationException("Unknown application " + getClientName() + " or invalid password");
-			return app;
-		}
-
 		String[] basicAuth = getBasicAuth();
 		if (basicAuth != null) 
 			return getApplicationByBasicAuth(basicAuth);
 		
-		throw new UnknownIdentifierApplicationException(getNoCertificateNorBasicAuthErrorMessage());
+		throw new UnknownIdentifierApplicationException(getNoBasicAuthErrorMessage());
 	}
 
 	public Application getApplicationOrNull() {
@@ -164,43 +77,6 @@ public class ClientManager implements InitializingBean {
 		}
 	}
 
-	private String getCNFromApplication(Application application) throws CertificateException {
-		byte[] certAsByteArray = application.getCertifcate();
-		return getCNFromCertificate(
-			javax.security.cert.X509Certificate.getInstance(certAsByteArray)
-			);
-	}
-	
-	/**
-	 * Extract the CN from the X509 certificate.
-	 * @param certificate
-	 * @return
-	 */
-	private String getCNFromCertificate(final X509Certificate certificate) {
-		String subjectDN = certificate.getSubjectDN().getName();
-		return getCNFromSubjectDN(subjectDN);
-	}
-	private String getCNFromCertificate(final javax.security.cert.X509Certificate certificate) {
-		String subjectDN = certificate.getSubjectDN().getName();
-		return getCNFromSubjectDN(subjectDN);
-	}
-
-	final String getCNFromSubjectDN(final String subjectDN) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Client connexion. SubjectDN = " + subjectDN);
-		}
-		Matcher matcher = compileSubjectDNRegex().matcher(subjectDN);
-		if (!matcher.find()) 
-			return "unknown";
-		if (matcher.groupCount() != 1)
-			throw new IllegalArgumentException("Regular expression must contain a single group ");
-
-		String name = matcher.group(1);
-		logger.debug("Client connexion. name = " + name);
-		return name;
-	}
-
-
 	private Application getApplicationByBasicAuth(String[] userAndPassword) throws UnknownIdentifierApplicationException {
 		return getApplicationByBasicAuth(userAndPassword[0], userAndPassword[1]);
 	}
@@ -210,9 +86,7 @@ public class ClientManager implements InitializingBean {
 			throw new UnknownIdentifierApplicationException("unknown application " + user);
 		}
 		String wantedPassword = getPassword(app);
-		if (wantedPassword == null) {
-			throw new UnknownIdentifierApplicationException("application " + app.getName() + " must be used using certificate authentication");
-		} else if (password.equals(wantedPassword)) {
+		if (password.equals(wantedPassword)) {
 			return app;
 		} else {
 			throw new UnknownIdentifierApplicationException("invalid password for application " + app.getName());
@@ -220,11 +94,7 @@ public class ClientManager implements InitializingBean {
 	}
 
 	private String getPassword(Application app) {
-		return removePrefixOrNull(new String(app.getCertifcate()), PASSWORD_PREFIX_IN_CERTIFCATE);
-	}
-
-	private String removePrefixOrNull(String s, String prefix) {
-		return s.startsWith(prefix) ? s.substring(prefix.length()) : null;
+		return app.getPassword();
 	}
 
 	private String[] getBasicAuth() {
@@ -249,13 +119,6 @@ public class ClientManager implements InitializingBean {
 		return new String(Base64.decodeBase64(s.getBytes()));
 	}
 
-	/**
-	 * @param subjectDNRegex
-	 */
-	public void setsubjectDNRegex(final String subjectDNRegex) {
-		this.subjectDNRegex = subjectDNRegex;
-	}
-	
 	/**
 	 * Standard setter used by spring.
 	 * @param daoService

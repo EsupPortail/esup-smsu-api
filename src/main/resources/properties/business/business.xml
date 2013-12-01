@@ -33,7 +33,6 @@
 	
 	<bean id="clientManager"
 		class="org.esupportail.smsuapi.business.ClientManager">
-		<property name="subjectDNRegex" value="^.*CN=([^,]*).*$" />
 		<property name="daoService" ref="daoService"/>
 	</bean>
 	
