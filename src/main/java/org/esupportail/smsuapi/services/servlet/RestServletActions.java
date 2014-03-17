@@ -43,6 +43,12 @@ public class RestServletActions {
 		sendSms.sendSMS(msgId, perId, null, null, smsPhone, labelAccount, msgContent);
 	}
 
+	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+		sendSms.mayCreateAccountCheckQuotaOk(
+				getInteger(req, "nbDest"), getString(req, "account"));
+		return "OK";
+}
+
     	public Object wsActionIsBlacklisted(HttpServletRequest req) {    
 		return notificationPhoneNumberInBlackList
 		    .isPhoneNumberInBlackList(getString(req, "phoneNumber"));
