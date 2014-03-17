@@ -1,6 +1,5 @@
 package org.esupportail.smsuapi.services.servlet;
 
-import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,7 +61,7 @@ public class RestServletActions {
 	}
 	static String getString(HttpServletRequest req, String name, String defaultValue) {
 		String val = req.getParameter(name);
-		return val != null ? urldecode(val) : defaultValue;
+		return val != null ? val : defaultValue;
 	}
 
 	static Integer getInteger(HttpServletRequest req, String name) {
@@ -71,14 +70,6 @@ public class RestServletActions {
 	static Integer getInteger(HttpServletRequest req, String name, Integer defaultValue) {
 		String s = getString(req, name, null);
 		return s != null ? Integer.valueOf(s) : defaultValue;
-	}
-
-	static String urldecode(String s) {
-		try {
-			return URLDecoder.decode(s, "UTF-8");
-		} catch (java.io.UnsupportedEncodingException e) {
-			throw new RuntimeException("urldecode failed on '" + s + "'");
-		}
 	}
 
 	/**
