@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * The class that represents applications.
  */
-public class Application  implements Serializable {
+public class Application  implements Serializable, Comparable<Application> {
 
 	/**
 	 * Hibernate reference for application.
@@ -359,5 +359,9 @@ public class Application  implements Serializable {
 		+ "], quota=[" + quota + "], number of consumed sms=[" + consumedSms +  "]]";
 	}
 
+	@Override
+	public int compareTo(Application app) {
+	    return getName().compareTo(app.getName());
+	}
 
 }
