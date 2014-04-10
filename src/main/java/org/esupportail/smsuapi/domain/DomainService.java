@@ -156,47 +156,6 @@ public class DomainService implements InitializingBean {
 		updateUser(user);
 	}
 
-
-	//////////////////////////////////////////////////////////////
-	// Authorizations
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#userCanViewAdmins(
-	 * org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public boolean userCanViewAdmins(final User user) {
-		if (user == null) {
-			return false;
-		}
-		return user.getAdmin();
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#userCanAddAdmin(
-	 * org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public boolean userCanAddAdmin(final User user) {
-		if (user == null) {
-			return false;
-		}
-		return user.getAdmin();
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#userCanDeleteAdmin(
-	 * org.esupportail.smsuapiadmin.domain.beans.User, org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public boolean userCanDeleteAdmin(final User user, final User admin) {
-		if (user == null) {
-			return false;
-		}
-		if (!user.getAdmin()) {
-			return false;
-		}
-		return !user.equals(admin);
-	}
-
 	//////////////////////////////////////////////////////////////
 	// Misc
 	//////////////////////////////////////////////////////////////
