@@ -231,11 +231,25 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 	 * 
 	 * @param sms
 	 */
-	public void addSms(final Sms sms) {
+	public synchronized void addSms(final Sms sms) {
+		if (sms.getInitialId() == null) {
+			sms.setInitialId(getNewInitialId(sms.getApp()));
+		}
 		addObject(sms);
 	}
 
 	
+	private Integer getNewInitialId(Application app) {
+		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
+		criteria.setProjection( Projections.max(Sms.PROP_INITIAL_ID) )
+				.add(Restrictions.eq(Sms.PROP_APP, app));
+
+		@SuppressWarnings("unchecked")
+		List<Integer> list = criteria.list();
+		
+		return 1 + (list.size() > 0 ? (Integer) list.get(0) : 0);
+	}
+
 	/**
 	 * @param sms
 	 */
