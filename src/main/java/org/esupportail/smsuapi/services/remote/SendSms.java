@@ -7,7 +7,7 @@ package org.esupportail.smsuapi.services.remote;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.smsuapi.domain.DomainService;
+import org.esupportail.smsuapi.business.SendSmsManager;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SendSms {
 	@Autowired protected ApplicationService applicationService;
-	@Autowired protected DomainService domainService;
+	@Autowired protected SendSmsManager sendSmsManager;
 	
 	/**
 	 * A logger.
@@ -41,7 +41,7 @@ public class SendSms {
 		logger.info("mayCreateAccountCheckQuotaOk method with parameters : " + 
 				     " - nbDest = " + nbDest + 
 				     " - labelAccount = " + labelAccount);
-		domainService.mayCreateAccountCheckQuotaOk(nbDest, labelAccount);
+		sendSmsManager.mayCreateAccountAndCheckQuotaOk(nbDest, labelAccount);
 	}
 		
 
@@ -67,7 +67,7 @@ public class SendSms {
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
-		domainService.sendSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
+		sendSmsManager.sendSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
 		
 		
 	}
@@ -77,13 +77,6 @@ public class SendSms {
 	 */
 	public void setApplicationService(final ApplicationService applicationService) {
 		this.applicationService = applicationService;
-	}
-
-	/**
-	 * @param domainService the domainService to set
-	 */
-	public void setDomainService(final DomainService domainService) {
-		this.domainService = domainService;
 	}
 
 }

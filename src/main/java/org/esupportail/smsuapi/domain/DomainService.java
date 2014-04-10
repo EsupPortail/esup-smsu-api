@@ -16,13 +16,11 @@ import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.ClientManager;
 import org.esupportail.smsuapi.business.ReportingManager;
-import org.esupportail.smsuapi.business.SendSmsManager;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
@@ -42,11 +40,6 @@ public class DomainService implements InitializingBean {
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
-
-	/**
-	 * {@link SendSmsManager}.
-	 */
-	private SendSmsManager sendSmsManager;
 
 	/**
 	 * {@link BlackListManager}.
@@ -325,33 +318,6 @@ public class DomainService implements InitializingBean {
 	}
 
 	//////////////////////////////////////////////////////////////
-	// WS SendSms methods
-	//////////////////////////////////////////////////////////////
-	/**
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
-	 */
-	public void mayCreateAccountCheckQuotaOk(final Integer nbDest, final String labelAccount) 
-	throws UnknownIdentifierApplicationException, 
-	InsufficientQuotaException {
-		sendSmsManager.mayCreateAccountAndCheckQuotaOk(nbDest, labelAccount);
-	}
-
-	/**
-	 * @param msgId 
-	 * @param perId 
-	 * @param smsPhone 
-	 * @param labelAccount 
-	 * @param msgContent 
-	 * @throws UnknownIdentifierApplicationException 
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
-	 */
-	public void sendSMS(final Integer msgId, final Integer perId,
-			final String smsPhone, 
-			final String labelAccount, final String msgContent) {
-		sendSmsManager.sendSMS(msgId, perId, smsPhone, labelAccount, msgContent);	
-	}
-
-	//////////////////////////////////////////////////////////////
 	// WS Blacklist methods
 	//////////////////////////////////////////////////////////////
 	/**
@@ -436,10 +402,6 @@ public class DomainService implements InitializingBean {
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////
-	public void setSendSmsManager(final SendSmsManager sendSmsManager) {
-		this.sendSmsManager = sendSmsManager;
-	}
-
 	public void setBlackListManager(final BlackListManager blackListManager) {
 		this.blackListManager = blackListManager;
 	}
