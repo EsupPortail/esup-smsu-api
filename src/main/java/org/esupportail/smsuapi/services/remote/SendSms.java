@@ -56,18 +56,18 @@ public class SendSms {
 	 * java.lang.String)
 	 */
 	public void sendSMS(final Integer msgId,
-			final Integer perId, final Integer unused,
+			final Integer senderId, final Integer unused,
 			final Integer unused2, final String smsPhone,
 			final String labelAccount, final String msgContent) {
 		
 		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
-				     " - sender id = " + perId + 
+				     " - sender id = " + senderId + 
 				     " - recipient phone number = " + smsPhone + 
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
-		domainService.sendSMS(msgId, perId, smsPhone, labelAccount, msgContent);
+		domainService.sendSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
 		
 		
 	}

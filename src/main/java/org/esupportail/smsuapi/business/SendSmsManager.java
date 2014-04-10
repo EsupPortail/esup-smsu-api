@@ -96,20 +96,18 @@ public class SendSmsManager {
 
 	/**
 	 * @param msgId 
-	 * @param perId 
-	 * @param unused
-	 * @param unused2
+	 * @param senderId 
 	 * @param smsPhone 
 	 * @param labelAccount 
 	 * @param msgContent 
 	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	public void sendSMS(final Integer msgId, final Integer perId,
+	public void sendSMS(final Integer msgId, final Integer senderId,
 			final String smsPhone, 
 			final String labelAccount, final String msgContent) {
 
-			SMSBroker smsMessage = saveSMS(msgId, perId, smsPhone, labelAccount, msgContent);
+			SMSBroker smsMessage = saveSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
 
 			if (smsMessage != null) { 
 				// launch the task witch manage the sms sending
@@ -121,7 +119,7 @@ public class SendSmsManager {
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	private SMSBroker saveSMS(final Integer msgId, final Integer perId,
+	private SMSBroker saveSMS(final Integer msgId, final Integer senderId,
 			final String smsPhone, 
 			final String labelAccount, final String msgContent) {
 
@@ -137,7 +135,7 @@ public class SendSmsManager {
 
 		try {
 			Account account = mayCreateAccountAndCheckQuotaOk(1, labelAccount);
-			return saveSMSNoCheck(msgId, perId, smsPhone, account, msgContent, app);
+			return saveSMSNoCheck(msgId, senderId, smsPhone, account, msgContent, app);
 		} catch (UnknownIdentifierApplicationException e) {
 			logger.error(e);
 			return null;
@@ -147,7 +145,7 @@ public class SendSmsManager {
 		}
 	}
 
-	protected SMSBroker saveSMSNoCheck(final Integer msgId, final Integer perId,
+	protected SMSBroker saveSMSNoCheck(final Integer msgId, final Integer senderId,
 			final String smsPhone,
 			Account account, final String msgContent,
 			Application app) {	
@@ -159,7 +157,7 @@ public class SendSmsManager {
 		sms.setApp(app);
 		sms.setInitialId(msgId);
 		sms.setPhone(smsPhone);
-		sms.setSenderId(perId);
+		sms.setSenderId(senderId);
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
 		daoService.addSms(sms);
 
