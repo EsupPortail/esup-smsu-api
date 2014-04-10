@@ -21,7 +21,6 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
-import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -65,45 +64,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		return getHibernateTemplate().getSessionFactory().getCurrentSession();
 	}
 
-	
-	//////////////////////////////////////////////////////////////
-	// User
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#getUser(java.lang.String)
-	 */
-	public User getUser(final String id) {
-		return (User) getHibernateTemplate().get(User.class, id);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#getUsers()
-	 */
-	public List<User> getUsers() {
-		return getHibernateTemplate().loadAll(User.class);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#addUser(org.esupportail.smsuapi.domain.beans.User)
-	 */
-	public void addUser(final User user) {
-		addObject(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#deleteUser(org.esupportail.smsuapi.domain.beans.User)
-	 */
-	public void deleteUser(final User user) {
-		deleteObject(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#updateUser(org.esupportail.smsuapi.domain.beans.User)
-	 */
-	public void updateUser(final User user) {
-		updateObject(user);
-	}
 
 	//////////////////////////////////////////////////////////////
 	// WS sendSMS methods tools. 

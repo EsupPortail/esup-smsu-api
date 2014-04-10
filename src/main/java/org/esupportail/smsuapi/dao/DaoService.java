@@ -14,46 +14,12 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
-import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 
 /**
  * The DAO service interface.
  */
 public interface DaoService extends Serializable {
-
-	//////////////////////////////////////////////////////////////
-	// User
-	//////////////////////////////////////////////////////////////
-	
-	/**
-	 * @param id
-	 * @return the User instance that corresponds to an id.
-	 */
-	User getUser(String id);
-
-	/**
-	 * @return the list of all the users.
-	 */
-	List<User> getUsers();
-
-	/**
-	 * Add a user.
-	 * @param user
-	 */
-	void addUser(User user);
-
-	/**
-	 * Delete a user.
-	 * @param user
-	 */
-	void deleteUser(User user);
-
-	/**
-	 * Update a user.
-	 * @param user
-	 */
-	void updateUser(User user);
 	
 	//////////////////////////////////////////////////////////////
 	// Application methods

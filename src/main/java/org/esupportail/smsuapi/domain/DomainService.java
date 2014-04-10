@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.esupportail.commons.exceptions.UserNotFoundException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
@@ -17,7 +16,6 @@ import org.esupportail.smsuapi.business.ClientManager;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
-import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
@@ -60,86 +58,6 @@ public class DomainService implements InitializingBean {
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(this.daoService, 
 				"property daoService of class " + this.getClass().getName() + " can not be null");
-	}
-
-	//////////////////////////////////////////////////////////////
-	// User
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * Set the information of a user.
-	 * @param user 
-	 * @return true if the user was updated.
-	 */
-	private boolean setUserInfo(
-			final User user) {
-		String displayName = user.getId();
-		if (displayName.equals(user.getDisplayName())) {
-			return false;
-		}
-		user.setDisplayName(displayName);
-		return true;
-	}
-
-
-	/**
-	 * @see org.esupportail.smsuapi.domain.DomainService#updateUserInfo(org.esupportail.smsuapi.domain.beans.User)
-	 */
-	public void updateUserInfo(final User user) {
-		if (setUserInfo(user)) {
-			updateUser(user);
-		}
-	}
-
-	/**
-	 * If the user is not found in the database, try to create it from a LDAP search.
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#getUser(java.lang.String)
-	 */
-	public User getUser(final String id) throws UserNotFoundException {
-		User user = daoService.getUser(id);
-		if (user == null) {
-			user = new User();
-			user.setId(id);
-			setUserInfo(user);
-			daoService.addUser(user);
-			logger.info("user '" + user.getId() + "' has been added to the database");
-		}
-		return user;
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#getUsers()
-	 */
-	public List<User> getUsers() {
-		return this.daoService.getUsers();
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#updateUser(
-	 * org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public void updateUser(final User user) {
-		this.daoService.updateUser(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#addAdmin(
-	 * org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public void addAdmin(
-			final User user) {
-		user.setAdmin(true);
-		updateUser(user);
-	}
-
-	/**
-	 * @see org.esupportail.smsuapiadmin.domain.DomainService#deleteAdmin(
-	 * org.esupportail.smsuapiadmin.domain.beans.User)
-	 */
-	public void deleteAdmin(
-			final User user) {
-		user.setAdmin(false);
-		updateUser(user);
 	}
 
 	//////////////////////////////////////////////////////////////
