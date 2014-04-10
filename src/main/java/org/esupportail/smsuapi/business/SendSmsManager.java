@@ -1,6 +1,7 @@
 package org.esupportail.smsuapi.business;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.esupportail.commons.services.logging.Logger;
@@ -174,6 +175,7 @@ public class SendSmsManager {
 		sms.setPhone(smsPhone);
 		sms.setSenderId(senderId);
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
+		sms.setDate(new Date());
 		daoService.addSms(sms);
 
 		if (!isBlacklisted) {
