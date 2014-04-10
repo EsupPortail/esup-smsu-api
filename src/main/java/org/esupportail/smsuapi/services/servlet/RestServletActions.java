@@ -49,8 +49,12 @@ public class RestServletActions {
 		return "OK";
 }
 
-    	public Object wsActionIsBlacklisted(HttpServletRequest req) {    
+	public Object wsActionIsBlacklisted(HttpServletRequest req) {    
 		return blackListManager.isPhoneNumberInBlackList(getString(req, "phoneNumber"));
+	}
+
+	public Object wsActionListPhoneNumbersInBlackList(HttpServletRequest req) {
+		return blackListManager.getListPhoneNumbersInBlackList();
 	}
 
     	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {    
