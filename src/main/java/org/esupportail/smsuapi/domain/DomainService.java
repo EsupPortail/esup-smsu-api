@@ -181,14 +181,6 @@ public class DomainService implements InitializingBean {
 	}
 
 	/**
-	 * @see org.esupportail.smsuapi.domain.DomainService#getApplicationByName(java.lang.String)
-	 */
-	public Application getApplicationByName(final String name) {
-		return daoService.getApplicationByName(name);
-	}
-
-
-	/**
 	 * @see org.esupportail.smsuapi.domain.DomainService#testConnexion()
 	 */
 	public String testConnexion() {
