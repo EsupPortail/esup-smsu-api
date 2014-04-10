@@ -474,9 +474,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		return retVal;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.esupportail.smsuapi.dao.DaoService#isPhoneNumberInBlackList(java.lang.String)
-	 */
 	@SuppressWarnings("unchecked")
 	public List<Blacklist> getListPhoneNumbersInBlackList() {
 		final Session currentSession = getCurrentSession();
