@@ -16,13 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.BeanUtils;
+import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.purge.PurgeSms;
 import org.esupportail.smsuapi.business.purge.PurgeStatistic;
 import org.esupportail.smsuapi.business.stats.StatisticBuilder;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
-import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
@@ -143,12 +143,12 @@ public class TestServlet extends HttpServlet {
     
      private void testNumErr() {
     	try {    		
-    		DomainService domainService = (DomainService) BeanUtils.getBean("domainService");
+    		BlackListManager blackListManager = (BlackListManager) BeanUtils.getBean("blackListManager");
     		//logger.debug("ici : 0666666666");
     		//Boolean retVal = domainService.isPhoneNumberInBlackList("0665178942");
     		//logger.debug("ici reponse pour 0666666666 : " + retVal);
     		@SuppressWarnings("unused")
-			Set<String> list = domainService.getListPhoneNumbersInBlackList();
+			Set<String> list = blackListManager.getListPhoneNumbersInBlackList();
     	
     	} catch (Throwable t) {
     		logger.debug(t.getMessage());

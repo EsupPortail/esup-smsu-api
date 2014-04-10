@@ -34,12 +34,7 @@
 		id="smsuapiStatus" 
 		class="org.esupportail.smsuapi.services.remote.SmsuapiStatus">
 	</bean>
-	
-	<bean 
-		id="notificationPhoneNumberInBlackList" 
-		class="org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList">
-	</bean>
-	
+		
 	<bean 
 		id="listPhoneNumbersInBlackList" 
 		class="org.esupportail.smsuapi.services.remote.ListPhoneNumbersInBlackList">

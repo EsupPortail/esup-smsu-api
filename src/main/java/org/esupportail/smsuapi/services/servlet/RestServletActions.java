@@ -21,7 +21,7 @@ public class RestServletActions {
 	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SendSms sendSms;
 	@Autowired private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
-	@Autowired private org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList;
+	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
@@ -50,8 +50,7 @@ public class RestServletActions {
 }
 
     	public Object wsActionIsBlacklisted(HttpServletRequest req) {    
-		return notificationPhoneNumberInBlackList
-		    .isPhoneNumberInBlackList(getString(req, "phoneNumber"));
+		return blackListManager.isPhoneNumberInBlackList(getString(req, "phoneNumber"));
 	}
 
     	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {    
@@ -118,13 +117,6 @@ public class RestServletActions {
 	 */
 	public void setSendTrack(final org.esupportail.smsuapi.services.remote.SendTrack sendTrack) {
 		this.sendTrack = sendTrack;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 */
-	public void setNotificationPhoneNumberInBlackList(final org.esupportail.smsuapi.services.remote.NotificationPhoneNumberInBlackList notificationPhoneNumberInBlackList) {
-		this.notificationPhoneNumberInBlackList = notificationPhoneNumberInBlackList;
 	}
 
 	/**

@@ -7,7 +7,7 @@ package org.esupportail.smsuapi.services.remote;
 import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.smsuapi.domain.DomainService;
+import org.esupportail.smsuapi.business.ReportingManager;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
 import org.esupportail.ws.remote.beans.ReportingInfos;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Reporting {
 
 	@Autowired private ApplicationService applicationService;
-	@Autowired private DomainService domainService;
+	@Autowired private ReportingManager reportingManager;
 	
 	/**
 	 * A logger.
@@ -39,8 +39,7 @@ public class Reporting {
 		logger.info("getStats call method parameters : " + 
 				     " - month : " + month + 
 				     " - year : " + year);
-
-		ReportingInfos reportingInfos = domainService.getStats(month, year);
+		ReportingInfos reportingInfos = reportingManager.getStats(month, year);
 		
 		{
 			final String s;
@@ -64,13 +63,6 @@ public class Reporting {
 	 */
 	public void setApplicationService(final ApplicationService applicationService) {
 		this.applicationService = applicationService;
-	}
-
-	/**
-	 * @param domainService the domainService to set
-	 */
-	public void setDomainService(final DomainService domainService) {
-		this.domainService = domainService;
 	}
 
 }

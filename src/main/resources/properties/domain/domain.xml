@@ -11,8 +11,6 @@
 		class="org.esupportail.smsuapi.domain.DomainService"
 		>
 		<property name="daoService" ref="daoService" />
-		<property name="blackListManager" ref="blackListManager"/>
-		<property name="reportingManager" ref="reportingManager"/>
 		<property name="clientManager" ref="clientManager"/>
 	</bean>
 

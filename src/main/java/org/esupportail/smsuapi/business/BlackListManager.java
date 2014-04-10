@@ -19,7 +19,6 @@ public class BlackListManager {
 	/**
 	 * Log4j logger.
 	 */
-	@SuppressWarnings("unused")
 	private final Logger logger = new LoggerImpl(getClass());
 
 	/**
@@ -47,7 +46,11 @@ public class BlackListManager {
 	 * @return return true if the phone number is in the bl, false otherwise
 	 */
 	public boolean isPhoneNumberInBlackList(final String phoneNumber) {
-		return daoService.isPhoneNumberInBlackList(phoneNumber);
+		logger.info("Receive request for isPhoneNumberInBlackList : " + phoneNumber);
+		boolean retVal = daoService.isPhoneNumberInBlackList(phoneNumber);
+		logger.info("Response for getListPhoneNumbersInBlackList request : " 
+				 + phoneNumber + " is : " + retVal);		
+		return retVal;
 	}
 	
 	/**

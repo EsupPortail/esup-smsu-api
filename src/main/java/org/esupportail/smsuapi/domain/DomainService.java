@@ -13,9 +13,7 @@ import org.esupportail.commons.exceptions.UserNotFoundException;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.Assert;
-import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.ClientManager;
-import org.esupportail.smsuapi.business.ReportingManager;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -23,8 +21,6 @@ import org.esupportail.smsuapi.domain.beans.User;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
-import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
-import org.esupportail.ws.remote.beans.ReportingInfos;
 import org.springframework.beans.factory.InitializingBean;
 
 
@@ -40,16 +36,6 @@ public class DomainService implements InitializingBean {
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
-
-	/**
-	 * {@link BlackListManager}.
-	 */
-	private BlackListManager blackListManager;
-
-	/**
-	 * {@link ReportingManager}.
-	 */
-	private ReportingManager reportingManager;
 
 	/**
 	 *  {@link ClientManager}.
@@ -276,52 +262,6 @@ public class DomainService implements InitializingBean {
 		}
 	}
 
-	//////////////////////////////////////////////////////////////
-	// WS Blacklist methods
-	//////////////////////////////////////////////////////////////
-	/**
-	 * Test if a phone number is already in the black list.
-	 * @param phoneNumber
-	 * @return return true if the phone number is in the bl, false otherwise
-	 */
-	public boolean isPhoneNumberInBlackList(final String phoneNumber) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Request in domaineService : " + phoneNumber);
-		}
-		Boolean retVal = blackListManager.isPhoneNumberInBlackList(phoneNumber); 
-		if (logger.isDebugEnabled()) {
-			logger.debug("Response return in domaineService for : " 
-					+ phoneNumber + " is : " + retVal);
-		}
-
-		return retVal;
-	}
-
-	/**
-	 * Test if a phone number is already in the black list.
-	 * @param phoneNumber
-	 * @return return true if the phone number is in the bl, false otherwise
-	 */
-	public Set<String> getListPhoneNumbersInBlackList() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Request in domainService for ListPhoneNumbersInBlackList");
-		}
-		Set<String> listPhoneNumbersInBlackList = blackListManager.getListPhoneNumbersInBlackList();
-
-		if (logger.isDebugEnabled()) {
-			final StringBuilder sb = new StringBuilder(500);
-			sb.append("Response in domainService for ListPhoneNumbersInBlackList :");
-			for (String nb : listPhoneNumbersInBlackList) {
-				sb.append(" - phone number in blacklist = ").append(nb);	
-			}
-			logger.debug(sb.toString());
-		}
-		return listPhoneNumbersInBlackList;
-	}
-
-
-
-
 	/**
 	 * @see org.esupportail.smsuapi.domain.DomainService#getApplicationByName(java.lang.String)
 	 */
@@ -329,20 +269,6 @@ public class DomainService implements InitializingBean {
 		return daoService.getApplicationByName(name);
 	}
 
-
-	/////////////////////////////////////////////////////////////
-	// WS Reporting method
-	//////////////////////////////////////////////////////////////
-	/**
-	 * get Stats interface.
-	 * @param month
-	 * @param year
-	 */
-	public ReportingInfos getStats(final int month, final int year) 
-	throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
-		ReportingInfos reportingInfos = reportingManager.getStats(month, year);
-		return reportingInfos;
-	}
 
 	/**
 	 * @see org.esupportail.smsuapi.domain.DomainService#testConnexion()
@@ -361,14 +287,6 @@ public class DomainService implements InitializingBean {
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////
-	public void setBlackListManager(final BlackListManager blackListManager) {
-		this.blackListManager = blackListManager;
-	}
-
-	public void setReportingManager(final ReportingManager reportingManager) {
-		this.reportingManager = reportingManager;
-	}
-
 	public void setClientManager(final ClientManager clientManager) {
 		this.clientManager = clientManager;
 	}
