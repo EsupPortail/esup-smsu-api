@@ -103,16 +103,6 @@ public interface DaoService extends Serializable {
 	
 	
 	/**
-	 * Return the number of sms in table SMS with state DELIVERED 
-	 * for an application and an account between two dates.
-	 * @param application
-	 * @param account
-	 * @return
-	 */
-	int getNbOfSuccessfullySentSmsByAppAndAccountAndDate(Application application, Account account, 
-			      		Date startDate, Date endDate);
-	
-	/**
 	 * Return the number of sms in table SMS with state ERROR, ERROR_PRE_BL or ERROR_POST_BL 
 	 * for an application and an account between two dates.
 	 * @param application

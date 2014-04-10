@@ -286,24 +286,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.esupportail.smsuapi.dao.DaoService#getNbOfSuccessfullySentSmsByAppAndAccount
-	 * (org.esupportail.smsuapi.dao.beans.Application, org.esupportail.smsuapi.dao.beans.Account)
-	 */
-	public int getNbOfSuccessfullySentSmsByAppAndAccountAndDate(final Application application, 
-			final Account account, final Date startDate, final Date endDate) {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_APP, application));
-		criteria.add(Restrictions.eq(Sms.PROP_ACC, account));
-		criteria.add(Restrictions.between(Sms.PROP_DATE, startDate, endDate));
-		criteria.add(Restrictions.eq(Sms.PROP_STATE, SmsStatus.DELIVERED.name()));
-		
-		criteria.setProjection(Projections.rowCount());
-		final Integer count = (Integer) criteria.uniqueResult();
-		return count.intValue();
-	}
-	
-	/* (non-Javadoc)
 	 * @see org.esupportail.smsuapi.dao.DaoService#getNbOfSmsInErrorByAppAndAccountAndDate
 	 * (org.esupportail.smsuapi.dao.beans.Application, org.esupportail.smsuapi.dao.beans.Account, 
 	 * java.util.Date, java.util.Date)
