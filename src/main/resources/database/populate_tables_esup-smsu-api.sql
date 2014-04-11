@@ -23,6 +23,6 @@ INSERT INTO role_composition VALUES (3, 3);
 INSERT INTO role_composition VALUES (3, 4);
 
 -- Ajout du premier super administrateur
-INSERT INTO user_bo_smsu VALUES (1, 3, 'admin');
+INSERT INTO user_bo_smsu VALUES (1, 'admin', 3);
 
 commit;
