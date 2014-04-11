@@ -263,9 +263,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		return lstSms;
 	}
 
-	/**
-	 * @see org.esupportail.smsuapi.dao.DaoService#getUsers()
-	 */
 	public List<Sms> getSmss() {
 		return getHibernateTemplate().loadAll(Sms.class);
 	}
