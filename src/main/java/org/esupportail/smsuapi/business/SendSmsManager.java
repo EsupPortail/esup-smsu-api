@@ -1,5 +1,8 @@
 package org.esupportail.smsuapi.business;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -97,21 +100,21 @@ public class SendSmsManager {
 	/**
 	 * @param msgId 
 	 * @param senderId 
-	 * @param smsPhone 
+	 * @param smsPhones 
 	 * @param labelAccount 
 	 * @param msgContent 
 	 * @throws UnknownIdentifierApplicationException 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
 	public void sendSMS(final Integer msgId, final Integer senderId,
-			final String smsPhone, 
+			final String[] smsPhones, 
 			final String labelAccount, final String msgContent) {
 
-			SMSBroker smsMessage = saveSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
+			List<SMSBroker> smsMessages = saveSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
 
-			if (smsMessage != null) { 
+			if (smsMessages != null) { 
 				// launch the task witch manage the sms sending
-				schedulerUtils.launchSuperviseSmsSending(smsMessage);
+				schedulerUtils.launchSuperviseSmsSending(smsMessages);
 			}
 	}
 
@@ -119,23 +122,35 @@ public class SendSmsManager {
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	private SMSBroker saveSMS(final Integer msgId, final Integer senderId,
-			final String smsPhone, 
+	private List<SMSBroker> saveSMS(Integer msgId, final Integer senderId,
+			final String[] smsPhones, 
 			final String labelAccount, final String msgContent) {
 
 		Application app = clientManager.getApplicationOrNull();
 		
 		// check if the sms already exists (in case of FO problem...)
 		if (msgId != null && app != null) {
-			if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
-				logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
-				return null;
+			for (String smsPhone: smsPhones) {
+				if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
+					logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
+					return null;
+				}
 			}
 		}
-
 		try {
-			Account account = mayCreateAccountAndCheckQuotaOk(1, labelAccount);
-			return saveSMSNoCheck(msgId, senderId, smsPhone, account, msgContent, app);
+			Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
+			ArrayList<SMSBroker> list = new ArrayList<SMSBroker>();
+			for (String smsPhone : smsPhones) {
+				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, msgContent, app);
+				if (msgId == null) {
+					// the app did not give an "initialId", the first SMS did get a new initialId, re-use it for the others sms
+					msgId = sms.getInitialId();
+				}
+				if (sms.getStateAsEnum().equals(SmsStatus.IN_PROGRESS)) {
+					list.add(new SMSBroker(sms.getId(), smsPhone, msgContent, sms.getAcc().getLabel()));
+				}
+			}
+			return list.size() > 0 ? list : null;
 		} catch (UnknownIdentifierApplicationException e) {
 			logger.error(e);
 			return null;
@@ -145,7 +160,7 @@ public class SendSmsManager {
 		}
 	}
 
-	protected SMSBroker saveSMSNoCheck(final Integer msgId, final Integer senderId,
+	protected Sms saveSMSNoCheck(final Integer msgId, final Integer senderId,
 			final String smsPhone,
 			Account account, final String msgContent,
 			Application app) {	
@@ -161,17 +176,14 @@ public class SendSmsManager {
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
 		daoService.addSms(sms);
 
-		if (isBlacklisted) {
-			return null;
-		} else {
+		if (!isBlacklisted) {
 			account.setConsumedSms(account.getConsumedSms() + 1);
 			daoService.updateAccount(account); 
 		
 			app.setConsumedSms(app.getConsumedSms() + 1);
 			daoService.updateApplication(app);
-
-			return new SMSBroker(sms.getId(), smsPhone, msgContent, sms.getAcc().getLabel());
 		}
+		return sms;		
 	}
 
 	/**

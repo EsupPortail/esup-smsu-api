@@ -27,7 +27,7 @@ public class RestServletActions {
     	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSMS(getInteger(req, "id", null),
 			getInteger(req, "senderId", null),
-			getString(req, "phoneNumber"),
+			getStrings(req, "phoneNumber"),
 			getString(req, "account", null), 
 			getString(req, "message"));
 		return "OK";
@@ -38,9 +38,9 @@ public class RestServletActions {
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
 	private void sendSMS(Integer msgId, Integer senderId, 
-			     String smsPhone, String labelAccount, String msgContent) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+			     String[] smsPhones, String labelAccount, String msgContent) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(1, labelAccount);
-		sendSms.sendSMS(msgId, senderId, null, null, smsPhone, labelAccount, msgContent);
+		sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
 	}
 
 	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {

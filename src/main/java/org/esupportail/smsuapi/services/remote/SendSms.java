@@ -57,17 +57,17 @@ public class SendSms {
 	 */
 	public void sendSMS(final Integer msgId,
 			final Integer senderId, final Integer unused,
-			final Integer unused2, final String smsPhone,
+			final Integer unused2, final String[] smsPhones,
 			final String labelAccount, final String msgContent) {
 		
 		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
 				     " - sender id = " + senderId + 
-				     " - recipient phone number = " + smsPhone + 
+				     " - recipient phone number = " + smsPhones + 
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
-		sendSmsManager.sendSMS(msgId, senderId, smsPhone, labelAccount, msgContent);
+		sendSmsManager.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
 		
 		
 	}
