@@ -227,13 +227,6 @@ public interface DaoService extends Serializable {
 	boolean isStatisticExistsForApplicationAndAccountAndDate(Application application, Account account, Date date);
 	
 	/**
-	 * Delete all stats in db with date older than the specified date.
-	 * @param date
-	 * @return
-	 */
-	int deleteStatisticOlderThan(Date date);
-	
-	/**
 	 * Return Statistic.
 	 * @param month
 	 * @param year

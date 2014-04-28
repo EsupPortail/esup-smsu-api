@@ -490,23 +490,6 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		return exist;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.esupportail.smsuapi.dao.DaoService#deleteStatisticOlderThan(java.util.Date)
-	 */
-	public int deleteStatisticOlderThan(final Date date) {
-		final Session currentSession = getCurrentSession();
-		
-		final StringBuilder hql = new StringBuilder(200);
-		hql.append("delete from Statistic as stats where  stats.Id.Month < :date");
-		
-		final Query query = currentSession.createQuery(hql.toString());
-		query.setTimestamp("date", date);
-		
-		final int nbStatisticDeleted = query.executeUpdate();
-		
-		return nbStatisticDeleted;
-	}
-	
 	/**
 	 * Return Statistic.
 	 * @param month

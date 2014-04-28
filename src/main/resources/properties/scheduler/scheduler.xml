@@ -32,19 +32,6 @@
 		</property>
 	</bean>
 	
-	<!-- Purge statistic -->
-	<bean id="purgeStatisticJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="org.esupportail.smsuapi.services.scheduler.job.PurgeStatisticJob"/>
-	</bean>
-	
-	<bean id="purgeStatisticTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    	<property name="jobDetail" ref="purgeStatisticJob" />
-		<!-- Cron expression -->
-		<property name="cronExpression"> 
-			<value>${quartz.purgeStatisticTrigger.cronExpression}</value>
-		</property>
-	</bean>
-	
 	<bean id="quartzExceptionHandler"
 		class="org.esupportail.smsuapi.services.scheduler.QuartzExceptionHandler">
 	</bean>
@@ -79,7 +66,6 @@
         	<list>
         		<ref bean="buildStatisticsTrigger" />
         		<ref bean="purgeSmsTrigger" />
-        		<ref bean="purgeStatisticTrigger" />
           	</list>
     	</property>
 		<property name="applicationContextSchedulerContextKey">

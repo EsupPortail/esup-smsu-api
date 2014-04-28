@@ -44,12 +44,4 @@
 		<property name="daoService" ref="daoService"/>
 	</bean>
 	
-	<bean id="purgeStatistic"
-		class="org.esupportail.smsuapi.business.purge.PurgeStatistic">
-		<property name="seniorityDay">
-			<value type="int">${purge.statistic.seniorityDay}</value>
-		</property>
-		<property name="daoService" ref="daoService"/>
-	</bean>
-	
 </beans>

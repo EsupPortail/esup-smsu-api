@@ -18,7 +18,6 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.commons.utils.BeanUtils;
 import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.purge.PurgeSms;
-import org.esupportail.smsuapi.business.purge.PurgeStatistic;
 import org.esupportail.smsuapi.business.stats.StatisticBuilder;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
@@ -81,8 +80,6 @@ public class TestServlet extends HttpServlet {
     		testNumErr();
     	} else if ("purgeSms".equalsIgnoreCase(testId)) {
     		testPurgeSms();
-    	} else if ("purgeStats".equalsIgnoreCase(testId)) {
-    		testPurgeStatistic();
     	}
     }
     
@@ -163,14 +160,5 @@ public class TestServlet extends HttpServlet {
     		 } catch (Throwable t) {
     			 logger.debug(t.getMessage());
     		 }
-     }
-     
-     private void testPurgeStatistic() {
-    		 try {
-    			 final PurgeStatistic purgeStatistic = (PurgeStatistic) BeanUtils.getBean("purgeStatistic");
-    			 purgeStatistic.purgeStatistic();
-    		 } catch (Throwable t) {
-    			 logger.debug(t.getMessage());
-    		 }
-     }
+     }    
 }
