@@ -65,7 +65,7 @@ public class RestServletActions {
 		String[] ids = getStrings(req, "id");
 		String[] phoneNumbers = getStrings(req, "phoneNumber");
 		if (ids.length != phoneNumbers.length) {
-			throw new RuntimeException("there must be same number of parameters \"id\" and \"phoneNumber\"");
+			throw new InvalidParameterException("there must be same number of parameters \"id\" and \"phoneNumber\"");
 		}
 		List<MsgIdAndPhone> list = new ArrayList<MsgIdAndPhone>();
 		for (int i = 0; i < ids.length; i++) {
@@ -81,12 +81,12 @@ public class RestServletActions {
 
 	static String[] getStrings(HttpServletRequest req, String name) {
 		String[] vals = req.getParameterValues(name);
-		if (vals == null) throw new RuntimeException("\"" + name + "\" parameter is mandatory");
+		if (vals == null) throw new InvalidParameterException("\"" + name + "\" parameter is mandatory");
 		return vals;
 	}
 	static String getString(HttpServletRequest req, String name) {
 		String val = getString(req, name, null);
-		if (val == null) throw new RuntimeException("\"" + name + "\" parameter is mandatory");
+		if (val == null) throw new InvalidParameterException("\"" + name + "\" parameter is mandatory");
 		return val;
 	}
 	static String getString(HttpServletRequest req, String name, String defaultValue) {
