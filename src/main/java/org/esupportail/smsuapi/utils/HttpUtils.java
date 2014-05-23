@@ -1,91 +1,153 @@
 package org.esupportail.smsuapi.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
+import java.util.List;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
+import javax.net.ssl.SSLException;
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 
 public class HttpUtils {
 
 	private static final Logger logger = new LoggerImpl(HttpUtils.class);
+	
+	public static class Pair {
+		String a;
+		String b;
+		public Pair(String a, String b) {
+			this.a = a;
+			this.b = b;
+		}		
+	}
+	
+	public static HttpURLConnection basicAuth(HttpURLConnection uc, String username, String password) { 
+        String userpass = username + ":" + password;
+        String basicAuth = "Basic " + DatatypeConverter.printBase64Binary(userpass.getBytes());
+        uc.setRequestProperty ("Authorization", basicAuth);
+        return uc;
+	}
 
-    public static HttpClient basicAuth(String username, String password) { 
-	HttpClient client = new HttpClient();
-	client.getParams().setAuthenticationPreemptive(true);
-	client.getState().setCredentials(new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM),
-					 new UsernamePasswordCredentials(username, password));
-	return client;
-    }
+	public static HttpURLConnection openConnection(String request) throws HttpException {
+		try {
+			return (HttpURLConnection) new URL(request).openConnection();
+		} catch (IOException e) {
+			throw new HttpException(e);
+		}
+	}
 
-    public static String requestGET(HttpClient client, String request) throws IOException {
+    public static String requestGET(HttpURLConnection conn) throws HttpException {
         //logger.debug("requesting url " + request);
-        return requestRaw(client, new GetMethod(request));
+        //conn.setUseCaches(false);
+        return requestRaw(conn);
     }
 
-    public static String requestPOST(HttpClient client, String url, NameValuePair[] params) throws IOException {
-	PostMethod post = new PostMethod(url);
-        post.setRequestBody(params);
-	return requestRaw(client, post);
+    public static String requestPOST(HttpURLConnection conn, List<Pair> params) throws HttpException {
+        //conn.setUseCaches(false);
+     	conn.setDoOutput(true); // true indicates POST request
+
+    	try {
+        	// sends POST
+			IOUtils.write(formatParams(params), conn.getOutputStream());
+		} catch (IOException e) {
+			throw new HttpException(e);
+		}
+    	return requestRaw(conn);
     }
 
-    private static String requestRaw(HttpClient client, HttpMethod method) throws IOException {
-        try {
-            // Execute the method.
-            int statusCode = client.executeMethod(method);
-
-            if (statusCode == HttpStatus.SC_NOT_FOUND) {
-            	logger.error(method.getURI() + " failed with status: " + method.getStatusLine());
-            	throw new IOException("GET failed with status " + method.getStatusLine());
+    private static String requestRaw(HttpURLConnection conn) throws HttpException {
+    	try {
+			conn.connect();			
+        	if (conn.getResponseCode() >= 400) {
+            	logger.error(conn.getURL() + " error: " + conn.getResponseMessage());
+            	throw new HttpException.WithStatusCode(conn);
             }
-
+    	} catch (UnknownHostException e) {
+    		throw new HttpException.Unreachable(e);
+    	} catch (ConnectException e) {
+    		throw new HttpException.Unreachable(e);
+    	} catch (SSLException e) {
+        	throw new HttpException.Unreachable(e);
+        } catch (IOException e) {
+        	throw new HttpException(e);
+        }
+	
+        InputStream inputStream = null;
+    	try {
             // Read the response body.
-            String resp = method.getResponseBodyAsString();
-
-            if (statusCode == HttpStatus.SC_BAD_REQUEST) {
-            	logger.error(method.getURI() + " bad request: " + resp);
-            	throw new IOException(method.getURI() + " bad request: " + resp);
-            }
-
+            inputStream = conn.getInputStream();
+            String resp = IOUtils.toString(inputStream, "UTF-8");
             //logger.debug(resp);
             return resp;
+        } catch (IOException e) {
+        	throw new HttpException(e);
         } finally {
-            // Release the connection.
-            method.releaseConnection();
+        	if (inputStream != null) {
+                // Release the connection.
+				try { inputStream.close(); } catch (IOException e) {}
+        	}
         }
     }
 
-    private static String urlencode(String s) {
+    public static String cook_url(String url, String name1, String val1, List<Pair> params) {
+        return url + "?" + urlencode(name1) + "=" + urlencode(val1) + "&" + formatParams(params);
+    }
+
+    public static String cook_url(String url, String name1, String val1, Pair[] params) {
+        return url + "?" + urlencode(name1) + "=" + urlencode(val1) + "&" + formatParams(params);
+    }
+
+	private static String formatParams(Pair[] params) {
+		StringBuffer requestParams = null;
+		for (Pair param : params) {
+		    if (requestParams == null) {
+		    	requestParams = new StringBuffer();
+		    } else {
+		    	requestParams.append("&");
+		    }
+		    requestParams.append(urlencode(param.a)).append("=").append(urlencode(param.b));
+		}
+		return requestParams == null ? null : requestParams.toString();
+	}
+
+	private static String formatParams(List<Pair> params) {
+		StringBuffer requestParams = null;
+		for (Pair param : params) {
+		    if (requestParams == null) {
+		    	requestParams = new StringBuffer();
+		    } else {
+		    	requestParams.append("&");
+		    }
+		    requestParams.append(urlencode(param.a)).append("=").append(urlencode(param.b));
+		}
+		return requestParams == null ? null : requestParams.toString();
+	}
+
+    public static String urlencode(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("urlencode failed on '" + s + "'");
         }
     }
-
-    public static String cook_url(String url, String name1, String val1, NameValuePair[] params) {
-        String s = "?" + name1 + "=" + urlencode(val1);
-        for (NameValuePair e : params) {
-            s = s + "&" + e.getName() + "=" + urlencode(e.getValue());
-        }
-        return url + s;
-    }
-
-    public static String cook_url(String url, String name1, String val1, Iterable<NameValuePair> params) {
-        String s = "?" + name1 + "=" + urlencode(val1);
-        for (NameValuePair e : params) {
-            s = s + "&" + e.getName() + "=" + urlencode(e.getValue());
-        }
-        return url + s;
-    }
-
+	
+	public static JsonNode json_decode(String s) {
+		try {
+			return (new ObjectMapper()).readTree(s);
+		} catch (IOException e) {
+			return null;
+		}
+	}
+    
 }
