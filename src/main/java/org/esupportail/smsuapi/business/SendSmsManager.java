@@ -13,7 +13,6 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 
@@ -63,7 +62,7 @@ public class SendSmsManager {
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
 	public void checkQuotaOk(final Integer nbDest, Account account) 
-	throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+	throws InsufficientQuotaException {
 
 		Application app = clientManager.getApplication();
 		{
@@ -80,8 +79,7 @@ public class SendSmsManager {
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
 	public Account mayCreateAccountAndCheckQuotaOk(final Integer nbDest, final String labelAccount) 
-	throws UnknownIdentifierApplicationException, 
-	InsufficientQuotaException {
+	throws InsufficientQuotaException {
 
 		Application app = clientManager.getApplication();
 		{
@@ -104,7 +102,7 @@ public class SendSmsManager {
 	 * @param smsPhones 
 	 * @param labelAccount 
 	 * @param msgContent 
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
 	public void sendSMS(final Integer msgId, final Integer senderId,
@@ -152,9 +150,6 @@ public class SendSmsManager {
 				}
 			}
 			return list.size() > 0 ? list : null;
-		} catch (UnknownIdentifierApplicationException e) {
-			logger.error(e);
-			return null;
 		} catch (InsufficientQuotaException e) {
 			logger.info(e);
 			return null;

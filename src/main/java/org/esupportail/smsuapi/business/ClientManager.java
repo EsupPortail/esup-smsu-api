@@ -9,7 +9,7 @@ import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
+import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -60,36 +60,36 @@ public class ClientManager {
 		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	}
 
-	public Application getApplication() throws UnknownIdentifierApplicationException {
+	public Application getApplication() throws AuthenticationFailed {
 		String[] basicAuth = getBasicAuth();
 		if (basicAuth != null) 
 			return getApplicationByBasicAuth(basicAuth);
 		
-		throw new UnknownIdentifierApplicationException(getNoBasicAuthErrorMessage());
+		throw new AuthenticationFailed(getNoBasicAuthErrorMessage());
 	}
 
 	public Application getApplicationOrNull() {
 		try {
 			return getApplication();
-		} catch (UnknownIdentifierApplicationException e) {
+		} catch (AuthenticationFailed e) {
 			logger.error("" + e);
 			return null;
 		}
 	}
 
-	private Application getApplicationByBasicAuth(String[] userAndPassword) throws UnknownIdentifierApplicationException {
+	private Application getApplicationByBasicAuth(String[] userAndPassword) throws AuthenticationFailed {
 		return getApplicationByBasicAuth(userAndPassword[0], userAndPassword[1]);
 	}
-	private Application getApplicationByBasicAuth(String user, String password) throws UnknownIdentifierApplicationException {
+	private Application getApplicationByBasicAuth(String user, String password) throws AuthenticationFailed {
 		Application app = daoService.getApplicationByName(user);
 		if (app == null) {
-			throw new UnknownIdentifierApplicationException("unknown application " + user);
+			throw new AuthenticationFailed("unknown application " + user);
 		}
 		String wantedPassword = getPassword(app);
 		if (password.equals(wantedPassword)) {
 			return app;
 		} else {
-			throw new UnknownIdentifierApplicationException("invalid password for application " + app.getName());
+			throw new AuthenticationFailed("invalid password for application " + app.getName());
 		}
 	}
 

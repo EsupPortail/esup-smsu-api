@@ -8,7 +8,6 @@ import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.business.ReportingManager;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
 import org.esupportail.ws.remote.beans.ReportingInfos;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class Reporting {
 	}
 
 	public ReportingInfos getStats(final int month, final int year) 
-				throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
+				throws UnknownMonthIndexException {
 		logger.info("getStats call method parameters : " + 
 				     " - month : " + month + 
 				     " - year : " + year);

@@ -9,7 +9,6 @@ import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.business.SendSmsManager;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,8 +35,7 @@ public class SendSms {
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#mayCreateAccountCheckQuotaOk(java.lang.Integer, java.lang.String)
 	 */
 	public void mayCreateAccountCheckQuotaOk(final Integer nbDest, final String labelAccount) 
-	throws UnknownIdentifierApplicationException, 
-	InsufficientQuotaException {
+	throws InsufficientQuotaException {
 		logger.info("mayCreateAccountCheckQuotaOk method with parameters : " + 
 				     " - nbDest = " + nbDest + 
 				     " - labelAccount = " + labelAccount);
@@ -46,7 +44,7 @@ public class SendSms {
 		
 
 	/**
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#sendSMS(java.lang.Integer, 
 	 * java.lang.Integer, 
 	 * java.lang.Integer, 

@@ -17,8 +17,7 @@ import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
+import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.springframework.beans.factory.InitializingBean;
 
 
@@ -76,15 +75,13 @@ public class DomainService implements InitializingBean {
 	//////////////////////////////////////////////////////////////
 	/**
 	 * @return the number of SMS recipients.
-	 * @throws UnknownIdentifierMessageException 
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws UnknownMessageIdException 
 	 */
-	public int getNbDest(final Integer msgId) 
-	throws UnknownIdentifierMessageException, UnknownIdentifierApplicationException {
+	public int getNbDest(final Integer msgId) throws UnknownMessageIdException {
 		Application app = clientManager.getApplication();
 		{
 			if (daoService.getNbDest(msgId, app) == 0) {
-				throw new UnknownIdentifierMessageException("Unknown message");
+				throw new UnknownMessageIdException();
 			} else {
 				return daoService.getNbDest(msgId, app);
 			}
@@ -93,9 +90,8 @@ public class DomainService implements InitializingBean {
 
 	/**
 	 * @return the non-authorized phone numbers (in black list).
-	 * @throws UnknownIdentifierApplicationException 
 	 */
-	public int getNbDestBlackList(final Integer msgId) throws UnknownIdentifierApplicationException {
+	public int getNbDestBlackList(final Integer msgId) {
 		List<String> list = new ArrayList<String>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
@@ -108,9 +104,9 @@ public class DomainService implements InitializingBean {
 
 	/**
 	 * @return the number of sent SMS.
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 */
-	public int getNbSentSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
+	public int getNbSentSMS(final Integer msgId) {
 		Application app = clientManager.getApplication();
 		return daoService.getNbSentSMS(msgId, app);
 
@@ -119,19 +115,19 @@ public class DomainService implements InitializingBean {
 
 	/**
 	 * @return the number of SMS in progress.
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 */
-	public int getNbProgressSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
+	public int getNbProgressSMS(final Integer msgId) {
 		Application app = clientManager.getApplication();
 		return daoService.getNbProgressSMS(msgId, app);
 	}
 
 	/**
 	 * @return the number of SMS in error.
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 * @throws Exception 
 	 */
-	public int getNbErrorSMS(final Integer msgId) throws UnknownIdentifierApplicationException {
+	public int getNbErrorSMS(final Integer msgId) {
 		List<String> list = new ArrayList<String>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
@@ -166,7 +162,7 @@ public class DomainService implements InitializingBean {
 		return nums;
 	}
 
-	public Sms getSms(Integer msgId, String phoneNumber) throws UnknownIdentifierApplicationException {
+	public Sms getSms(Integer msgId, String phoneNumber) {
 		Application app = clientManager.getApplication();
 		
 		List<Sms> l = daoService.getSms(app, msgId, phoneNumber);

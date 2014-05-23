@@ -12,7 +12,6 @@ import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.DomainService;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,9 +41,9 @@ public class SmsuapiStatus {
 	 * Test if a phone number is already in the black list.
 	 * @param phoneNumber
 	 * @return return true if the phone number is in the bl, false otherwise
-	 * @throws UnknownIdentifierApplicationException 
+	 * @throws AuthenticationFailed 
 	 */
-	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone) throws UnknownIdentifierApplicationException {
+	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone) {
 		{
 			final StringBuilder sb = new StringBuilder(500);
 			logger.info("Receive request for SmsuapiStatus.getStatus:");

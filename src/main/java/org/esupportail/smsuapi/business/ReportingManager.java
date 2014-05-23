@@ -7,7 +7,6 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Statistic;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
 import org.esupportail.ws.remote.beans.ReportingInfos;
 
@@ -54,7 +53,7 @@ public class ReportingManager {
 	}
 	
 	public ReportingInfos getStats(final int month, final int year) 
-			throws UnknownMonthIndexException, UnknownIdentifierApplicationException {
+			throws UnknownMonthIndexException {
 		Application app = clientManager.getApplication();
 		
 		{

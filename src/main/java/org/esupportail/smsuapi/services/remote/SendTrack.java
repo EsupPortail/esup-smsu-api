@@ -10,8 +10,7 @@ import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.domain.DomainService;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
+import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.TrackInfos;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +34,7 @@ public class SendTrack {
 	}
 	
 	public TrackInfos getTrackInfos(final Integer msgId) 
-			throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {
+			throws UnknownMessageIdException {
 		logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
 		TrackInfos infos = new TrackInfos();
 		infos.setNbDestTotal(domainService.getNbDest(msgId));

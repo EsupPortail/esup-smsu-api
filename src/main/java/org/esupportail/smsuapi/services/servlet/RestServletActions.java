@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierApplicationException;
-import org.esupportail.smsuapi.exceptions.UnknownIdentifierMessageException;
+import org.esupportail.smsuapi.exceptions.InvalidParameterException;
+import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,7 @@ public class RestServletActions {
 	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
-    	public Object wsActionSendSms(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+    	public Object wsActionSendSms(HttpServletRequest req) throws InsufficientQuotaException {
 		sendSMS(getInteger(req, "id", null),
 			getInteger(req, "senderId", null),
 			getStrings(req, "phoneNumber"),
@@ -38,12 +38,12 @@ public class RestServletActions {
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
 	private void sendSMS(Integer msgId, Integer senderId, 
-			     String[] smsPhones, String labelAccount, String msgContent) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+			     String[] smsPhones, String labelAccount, String msgContent) throws InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(1, labelAccount);
 		sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
 	}
 
-	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws UnknownIdentifierApplicationException, InsufficientQuotaException {
+	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(
 				getInteger(req, "nbDest"), getString(req, "account"));
 		return "OK";
@@ -57,11 +57,11 @@ public class RestServletActions {
 		return blackListManager.getListPhoneNumbersInBlackList();
 	}
 
-    	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {    
+    	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownMessageIdException {    
 		return sendTrack.getTrackInfos(getInteger(req, "id"));
 	}
 
-    	public Object wsActionMessageStatus(HttpServletRequest req) throws UnknownIdentifierApplicationException, UnknownIdentifierMessageException {
+    	public Object wsActionMessageStatus(HttpServletRequest req) throws UnknownMessageIdException {
 		String[] ids = getStrings(req, "id");
 		String[] phoneNumbers = getStrings(req, "phoneNumber");
 		if (ids.length != phoneNumbers.length) {
