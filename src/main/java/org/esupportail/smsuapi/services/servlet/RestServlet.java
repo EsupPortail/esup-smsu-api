@@ -1,6 +1,6 @@
 package org.esupportail.smsuapi.services.servlet;
 
-
+import org.apache.commons.lang.StringUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
@@ -65,7 +65,10 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 	private void answerError(HttpServletResponse resp, Throwable e) {
 		logger.error(e);
 		resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		writeJson(resp, "" + e);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("error", e.getClass().getSimpleName());
+		if (!StringUtils.isEmpty(e.getMessage())) map.put("message", e.getMessage());
+		writeJson(resp, map);
 	}
 
 	private void writeJson(HttpServletResponse resp, Object val) {
