@@ -1,0 +1,96 @@
+package org.esupportail.smsuapi.services.client;
+
+import static org.junit.Assert.*;
+
+import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
+import org.esupportail.smsuapi.exceptions.InvalidParameterException;
+import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
+import org.esupportail.ws.remote.beans.TrackInfos;
+import org.junit.Test;
+import org.junit.internal.TextListener;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+
+public class HttpRequestSmsuapiWSTest {
+
+	String urlOk = "http://localhost:8080/rest";
+	String usernameOk = "test-prigaux";
+	String passwordOk = "t1t1";
+
+	private HttpRequestSmsuapiWS wsBadUrl() {
+		return new HttpRequestSmsuapiWS(urlOk + "WRONG", usernameOk, passwordOk);
+	}
+
+	private HttpRequestSmsuapiWS wsBadUser() {
+		return new HttpRequestSmsuapiWS(urlOk, "badUser", passwordOk);
+	}
+
+	private HttpRequestSmsuapiWS wsNoQuota() {
+		return new HttpRequestSmsuapiWS(urlOk, "no-quota", "no-quota");
+	}
+
+	private HttpRequestSmsuapiWS wsOk() {
+		return new HttpRequestSmsuapiWS(urlOk, usernameOk, passwordOk);
+	}
+	
+	@Test(expected = SmsuapiWSException.Unreachable.class)  
+	public void testBadUrl() throws SmsuapiWSException, UnknownMessageIdException {
+		wsBadUrl().messageInfos(4);
+	}
+	
+	@Test(expected = SmsuapiWSException.AuthenticationFailed.class)  
+	public void testBadUser() throws SmsuapiWSException, UnknownMessageIdException {
+		wsBadUser().messageInfos(4);
+	}
+	
+	@Test(expected = UnknownMessageIdException.class)  
+	public void testMessageStatusUnknown() throws SmsuapiWSException, UnknownMessageIdException {
+		wsOk().messageInfos(99999);
+	}
+	
+	@Test
+	public void testMessageStatus() throws SmsuapiWSException, UnknownMessageIdException {
+		TrackInfos infos = wsOk().messageInfos(4);
+		assertEquals(infos.getNbDestTotal(), (Integer) 1);
+	}
+	
+	@Test(expected = InvalidParameterException.class)  
+	public void testSendMissingParam() throws SmsuapiWSException, InsufficientQuotaException {
+		wsOk().sendSms(null, null, "test");
+	}
+	
+	/*
+	@Test(expected = InvalidParameterException.class)  
+	public void testSendInvalidPhoneNumber() throws SmsuapiWSException, UnknownMessageIdException {
+		wsOk().sendSms(null, "xx", "test");
+	}
+	*/
+	
+	@Test(expected = InsufficientQuotaException.class)
+	public void testCheckNoQuota() throws SmsuapiWSException, InsufficientQuotaException {
+		wsNoQuota().mayCreateAccountCheckQuotaOk("", 2);
+	}
+	
+	public void testCheckQuota() throws SmsuapiWSException, InsufficientQuotaException {
+		wsOk().mayCreateAccountCheckQuotaOk("", 2);
+	}
+	
+	@Test(expected = InsufficientQuotaException.class)
+	public void testSendNoQuota() throws SmsuapiWSException, InsufficientQuotaException {
+		wsNoQuota().sendSms(null, "0601010101", "test");
+	}
+	
+	@Test
+	public void testSend() throws SmsuapiWSException, InsufficientQuotaException {
+		Integer id = wsOk().sendSms(null, "0601010101", "test");
+		System.out.println("returned " + id);
+	}
+	
+	public static void all() {
+		JUnitCore runner = new JUnitCore();
+		runner.addListener(new TextListener(System.out));
+		Result result = runner.run(HttpRequestSmsuapiWSTest.class);
+		System.out.println("tests finished: " + (result.wasSuccessful() ? "ok" : "KO"));
+	}
+
+}
