@@ -33,7 +33,6 @@ public class TestConnexion {
 	 * @see org.esupportail.smsuapi.services.remote.TestConnexion#testConnexion()
 	 */
 	public String testConnexion() {
-		// TODO Auto-generated method stub
 		return domainService.testConnexion();
 	}
 
