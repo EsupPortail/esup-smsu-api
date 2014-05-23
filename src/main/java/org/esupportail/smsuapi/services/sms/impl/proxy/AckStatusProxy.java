@@ -1,12 +1,11 @@
 package org.esupportail.smsuapi.services.sms.impl.proxy;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.httpclient.NameValuePair;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -14,6 +13,8 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
+import org.esupportail.smsuapi.utils.HttpException;
+import org.esupportail.smsuapi.utils.HttpUtils.Pair;
 
 public class AckStatusProxy {
 		
@@ -50,21 +51,26 @@ public class AckStatusProxy {
 			while (it_in.hasNext() && status_it.hasNext()) {
 				updateStatus(it_in.next(), status_it.next());
 			}
-		} catch (IOException e) {
+		} catch (HttpException e) {
 			logger.error("AckStatusProxy: the proxy does not know us", e);
 		}
 		
 	}
 
-	private List<String> wsMessageStatus(List<Sms> smss) throws IOException {
-		return httpRequestSmsuapiWS.messageStatus(convertSmsStatusParams(smss));
+	private List<String> wsMessageStatus(List<Sms> smss) throws HttpException {
+		try {
+			return httpRequestSmsuapiWS.messageStatus(convertSmsStatusParams(smss));
+		} catch (UnknownMessageIdException e) {
+			logger.error("backend does not know our message");
+			return new ArrayList<String>();
+		}
 	}
 
-	private LinkedList<NameValuePair> convertSmsStatusParams(List<Sms> smss) {
-		LinkedList<NameValuePair> params = new LinkedList<NameValuePair>();
+	private List<Pair> convertSmsStatusParams(List<Sms> smss) {
+		List<Pair> params = new LinkedList<Pair>();
 		for (Sms sms : smss) {
-			params.add(new NameValuePair("id", ""+sms.getId()));
-			params.add(new NameValuePair("phoneNumber", sms.getPhone()));
+			params.add(new Pair("id", ""+sms.getId()));
+			params.add(new Pair("phoneNumber", sms.getPhone()));
 		}
 		return params;
 	}

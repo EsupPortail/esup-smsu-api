@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
 
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,8 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.utils.HttpException;
+import org.esupportail.smsuapi.utils.HttpUtils;
 
 
 /**
@@ -114,7 +115,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 		return label == null ? null : (String) label;
 	}
 
-	private JsonNode realSendMessage(SMSBroker sms) throws IOException {
+	private JsonNode realSendMessage(SMSBroker sms) throws HttpException {
 		String senderlabel = computeSenderlabel(sms);
 		Map<String, String> p = new HashMap<String,String>();
 		p.put("message[type]", "sms");
@@ -155,7 +156,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	}
 
 	public void setFrom_mapJSON(String from_mapJSON) {
-		this.from = RequestSmsenvoi.json_decode(from_mapJSON);
+		this.from = HttpUtils.json_decode(from_mapJSON);
 		if (this.from == null)
 			logger.error("invalid from_mapJSON: " + from_mapJSON);
 	}

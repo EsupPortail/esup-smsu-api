@@ -1,6 +1,5 @@
 package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.impl.proxy.AckStatusProxy;
+import org.esupportail.smsuapi.utils.HttpException;
 
 public class AckStatusSmsenvoi {
 	
@@ -88,7 +88,7 @@ public class AckStatusSmsenvoi {
 			return SmsStatus.ERROR;
 		    else
 			return SmsStatus.ERROR;
-		} catch (IOException e) {
+		} catch (HttpException e) {
 		    logger.error(e);
 		    return null;
 		}
