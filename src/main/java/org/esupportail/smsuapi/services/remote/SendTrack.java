@@ -6,7 +6,6 @@ package org.esupportail.smsuapi.services.remote;
 
 import java.util.Set;
 
-import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.domain.DomainService;
@@ -23,15 +22,8 @@ public class SendTrack {
 	 */
 	private final Logger logger = new LoggerImpl(getClass());
 
-	@Autowired private ApplicationService applicationService;
 	@Autowired private DomainService domainService;
 	
-	/**
-	 * Bean constructor.
-	 */
-	public SendTrack() {
-		super();
-	}
 	
 	public TrackInfos getTrackInfos(final Integer msgId) 
 			throws UnknownMessageIdException {
@@ -60,13 +52,6 @@ public class SendTrack {
 	}
 	
 	
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(final ApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
-
 	/**
 	 * @param domainService the domainService to set
 	 */

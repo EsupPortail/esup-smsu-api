@@ -4,7 +4,6 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.business.ReportingManager;
@@ -17,22 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class Reporting {
 
-	@Autowired private ApplicationService applicationService;
 	@Autowired private ReportingManager reportingManager;
 	
 	/**
 	 * A logger.
 	 */
 	private final Logger logger = new LoggerImpl(this.getClass());
-	
-	
-	/**
-	 * Bean constructor.
-	 */
-	public Reporting() {
-		super();
-	}
 
+	
 	public ReportingInfos getStats(final int month, final int year) 
 				throws UnknownMonthIndexException {
 		logger.info("getStats call method parameters : " + 
@@ -55,13 +46,6 @@ public class Reporting {
 			logger.info(s);
 		}	
 	   return reportingInfos;	
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(final ApplicationService applicationService) {
-		this.applicationService = applicationService;
 	}
 
 }

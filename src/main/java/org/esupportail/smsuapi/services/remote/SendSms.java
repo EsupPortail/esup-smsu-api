@@ -4,7 +4,6 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.business.SendSmsManager;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * The basic implementation of the information remote service.
  */
 public class SendSms {
-	@Autowired protected ApplicationService applicationService;
 	@Autowired protected SendSmsManager sendSmsManager;
 	
 	/**
@@ -24,13 +22,6 @@ public class SendSms {
 	protected final Logger logger = new LoggerImpl(this.getClass());
 	
 	
-	/**
-	 * Bean constructor.
-	 */
-	public SendSms() {
-		super();
-	}
-
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#mayCreateAccountCheckQuotaOk(java.lang.Integer, java.lang.String)
 	 */
@@ -67,13 +58,6 @@ public class SendSms {
 		
 		return sendSmsManager.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);		
 		
-	}
-
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(final ApplicationService applicationService) {
-		this.applicationService = applicationService;
 	}
 
 }

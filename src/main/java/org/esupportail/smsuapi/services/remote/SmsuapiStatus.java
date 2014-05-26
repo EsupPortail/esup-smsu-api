@@ -7,7 +7,6 @@ package org.esupportail.smsuapi.services.remote;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.esupportail.commons.services.application.ApplicationService;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SmsuapiStatus {
 
-	@Autowired private ApplicationService applicationService;
 	@Autowired private DomainService domainService;
 	
 	/**
@@ -59,16 +57,7 @@ public class SmsuapiStatus {
 		}
 		return l;
 	}
-
 	
-	
-	/**
-	 * @param applicationService the applicationService to set
-	 */
-	public void setApplicationService(final ApplicationService applicationService) {
-		this.applicationService = applicationService;
-	}
-
 	/**
 	 * @param domainService the domainService to set
 	 */
