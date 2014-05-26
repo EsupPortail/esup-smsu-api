@@ -2,6 +2,8 @@ package org.esupportail.smsuapi.services.servlet;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,30 +27,30 @@ public class RestServletActions {
 	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws InsufficientQuotaException {
-		sendSMS(getInteger(req, "id", null),
+		Integer id = sendSMS(getInteger(req, "id", null),
 			getInteger(req, "senderId", null),
 			getStrings(req, "phoneNumber"),
 			getString(req, "account", null), 
 			getString(req, "message"));
-		return "OK";
+		return put(singletonMap("status", (Object)"OK"), "id", id);
 	}
 
 	/**
 	   Since SendSms.sendSMS silently fail,
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
-	private void sendSMS(Integer msgId, Integer senderId, 
+	private Integer sendSMS(Integer msgId, Integer senderId, 
 			     String[] smsPhones, String labelAccount, String msgContent) throws InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(1, labelAccount);
-		sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
+		return sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
 	}
 
 	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws InsufficientQuotaException {
 		sendSms.mayCreateAccountCheckQuotaOk(
 				getInteger(req, "nbDest"), getString(req, "account"));
-		return "OK";
-}
-
+		return singletonMap("status", "OK");
+	}
+	
 	public Object wsActionIsBlacklisted(HttpServletRequest req) {    
 		return blackListManager.isPhoneNumberInBlackList(getString(req, "phoneNumber"));
 	}
@@ -102,6 +104,17 @@ public class RestServletActions {
 		return s != null ? Integer.valueOf(s) : defaultValue;
 	}
 
+	private <A,B> Map<A,B> singletonMap(A k, B v) {
+		return put(new TreeMap<A,B>(), k, v);
+	}	
+
+	private <A,B> Map<A,B> put(Map<A,B> m, A k, B v) {
+		m.put(k,v);
+		return m;
+	}	
+
+	
+	
 	/**
 	 * Standard setter used by spring.
 	 */

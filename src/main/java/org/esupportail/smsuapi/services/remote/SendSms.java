@@ -53,7 +53,7 @@ public class SendSms {
 	 * java.lang.String, 
 	 * java.lang.String)
 	 */
-	public void sendSMS(final Integer msgId,
+	public Integer sendSMS(final Integer msgId,
 			final Integer senderId, final Integer unused,
 			final Integer unused2, final String[] smsPhones,
 			final String labelAccount, final String msgContent) {
@@ -65,8 +65,7 @@ public class SendSms {
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
-		sendSmsManager.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
-		
+		return sendSmsManager.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);		
 		
 	}
 

@@ -112,7 +112,11 @@ public class HttpRequestSmsuapiWSTestOptional {
 	@Test
 	public void testSend() throws HttpException, InsufficientQuotaException {
 		Integer id = wsOk().sendSms(null, "0601010101", "test");
-		System.out.println("returned " + id);
+		assertNotNull(id);
+
+		Integer id2 = id + 2;
+		Integer id2_ = wsOk().sendSms(id2, "0601010101", "test");
+		assertEquals(id2, id2_);
 	}
 	
 	public static void all() {

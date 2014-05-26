@@ -105,25 +105,30 @@ public class SendSmsManager {
 	 * @throws AuthenticationFailed 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	public void sendSMS(final Integer msgId, final Integer senderId,
+	public Integer sendSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
 			final String labelAccount, final String msgContent) {
 
-			List<SMSBroker> smsMessages = saveSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
+			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount);
+			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
+			msgId = smss.size() > 0 ? smss.get(0).getInitialId() : null; 
+
+			List<SMSBroker> smsMessages = convertToSMSBroker(msgContent, smss);
 
 			if (smsMessages != null) { 
 				// launch the task witch manage the sms sending
 				schedulerUtils.launchSuperviseSmsSending(smsMessages);
 			}
+			return msgId;
 	}
 
 
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
 	 */
-	private List<SMSBroker> saveSMS(Integer msgId, final Integer senderId,
+	private List<Sms> saveSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
-			final String labelAccount, final String msgContent) {
+			final String labelAccount) {
 
 		Application app = clientManager.getApplicationOrNull();
 		
@@ -136,30 +141,39 @@ public class SendSmsManager {
 				}
 			}
 		}
+		
+		Account account;
 		try {
-			Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
-			ArrayList<SMSBroker> list = new ArrayList<SMSBroker>();
-			for (String smsPhone : smsPhones) {
-				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, msgContent, app);
-				if (msgId == null) {
-					// the app did not give an "initialId", the first SMS did get a new initialId, re-use it for the others sms
-					msgId = sms.getInitialId();
-				}
-				if (sms.getStateAsEnum().equals(SmsStatus.IN_PROGRESS)) {
-					list.add(new SMSBroker(sms.getId(), smsPhone, msgContent, sms.getAcc().getLabel()));
-				}
-			}
-			return list.size() > 0 ? list : null;
+			account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
 		} catch (InsufficientQuotaException e) {
 			logger.info(e);
 			return null;
 		}
+		
+		List<Sms> list = new ArrayList<Sms>();
+			for (String smsPhone : smsPhones) {
+				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, app);
+				if (msgId == null) {
+					// the app did not give an "initialId", the first SMS did get a new initialId, re-use it for the others sms
+					msgId = sms.getInitialId();
+				}
+				list.add(sms);
+			}
+		return list;
+	}
+
+	private List<SMSBroker> convertToSMSBroker(final String msgContent, List<Sms> smss) {
+		List<SMSBroker> list = new ArrayList<SMSBroker>();
+		for (Sms sms : smss) {
+			if (sms.getStateAsEnum().equals(SmsStatus.IN_PROGRESS)) {
+				list.add(new SMSBroker(sms.getId(), sms.getPhone(), msgContent, sms.getAcc().getLabel()));
+			}
+		}
+		return list.size() > 0 ? list : null;
 	}
 
 	protected Sms saveSMSNoCheck(final Integer msgId, final Integer senderId,
-			final String smsPhone,
-			Account account, final String msgContent,
-			Application app) {	
+			final String smsPhone, Account account, Application app) {	
 		
 		boolean isBlacklisted = daoService.getBlackLListByPhone(smsPhone) != 0;
 		
@@ -171,7 +185,7 @@ public class SendSmsManager {
 		sms.setSenderId(senderId);
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
 		sms.setDate(new Date());
-		daoService.addSms(sms);
+		daoService.addSms(sms); // if null initialId, it will compute a new unique initialId
 
 		if (!isBlacklisted) {
 			account.setConsumedSms(account.getConsumedSms() + 1);
