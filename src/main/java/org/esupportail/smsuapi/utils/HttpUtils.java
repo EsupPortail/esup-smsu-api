@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
@@ -22,6 +23,8 @@ import org.esupportail.commons.services.logging.LoggerImpl;
 public class HttpUtils {
 
 	private static final Logger logger = new LoggerImpl(HttpUtils.class);
+
+	private static int defaultConnectTimeout = 10; // seconds
 	
 	public static class Pair {
 		String a;
@@ -40,8 +43,14 @@ public class HttpUtils {
 	}
 
 	public static HttpURLConnection openConnection(String request) throws HttpException {
+		return openConnection(request, defaultConnectTimeout);
+	}
+
+	public static HttpURLConnection openConnection(String request, int timeout) throws HttpException {
 		try {
-			return (HttpURLConnection) new URL(request).openConnection();
+			HttpURLConnection conn = (HttpURLConnection) new URL(request).openConnection();
+			conn.setConnectTimeout(timeout * 1000);
+			return conn;
 		} catch (IOException e) {
 			throw new HttpException(e);
 		}
@@ -78,6 +87,8 @@ public class HttpUtils {
     	} catch (ConnectException e) {
     		throw new HttpException.Unreachable(e);
     	} catch (SSLException e) {
+        	throw new HttpException.Unreachable(e);
+    	} catch (SocketTimeoutException e) { // connect timeout or read timeout(?)
         	throw new HttpException.Unreachable(e);
         } catch (IOException e) {
         	throw new HttpException(e);

@@ -23,6 +23,10 @@ public class HttpRequestSmsuapiWSTestOptional {
 		return new HttpRequestSmsuapiWS("http://WRONG.WRONG", usernameOk, passwordOk);
 	}
 
+	private HttpRequestSmsuapiWS wsFirewallDrop() {
+		return new HttpRequestSmsuapiWS("http://google.com:1234", usernameOk, passwordOk);
+	}
+
 	private HttpRequestSmsuapiWS wsBadHttps() {
 		return new HttpRequestSmsuapiWS("https://localhost:8080/rest", usernameOk, passwordOk);
 	}
@@ -46,6 +50,11 @@ public class HttpRequestSmsuapiWSTestOptional {
 	@Test(expected = HttpException.Unreachable.class)  
 	public void testBadUrl() throws HttpException, UnknownMessageIdException {
 		wsBadUrl().messageInfos(4);
+	}
+	
+	@Test(expected = HttpException.Unreachable.class)  
+	public void testWSFirewallDrop() throws HttpException, UnknownMessageIdException {
+		wsFirewallDrop().messageInfos(4);
 	}
 	
 	@Test(expected = HttpException.Unreachable.class)  
