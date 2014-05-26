@@ -1,6 +1,5 @@
 /**
- * ESUP-Portail Example Application - Copyright (c) 2006 ESUP-Portail consortium
- * http://sourcesup.cru.fr/projects/esup-example
+ * SMS-U - Copyright (c) 2009-2014 Universite Paris 1 Pantheon-Sorbonne
  */
 package org.esupportail.smsuapi.services.remote; 
 
