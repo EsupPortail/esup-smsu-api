@@ -148,10 +148,13 @@ public class HttpRequestSmsuapiWS {
 				JsonNode jsonErr = HttpUtils.json_decode(e.getErrorMessage());
 				if (jsonErr != null) {
 					String error = jsonErr.path("error").getTextValue();
-					switch (error) {
-					case "UnknownMessageIdException": Unchecked.throw_(new UnknownMessageIdException());
-					case "InvalidParameterException": throw new InvalidParameterException(jsonErr.path("message").getTextValue());
-					case "InsufficientQuotaException": Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
+					if (error == null) {
+					} else if (error.equals("UnknownMessageIdException")) {
+						Unchecked.throw_(new UnknownMessageIdException());
+					} else if (error.equals("InvalidParameterException")) {
+						throw new InvalidParameterException(jsonErr.path("message").getTextValue());
+					} else if (error.equals("InsufficientQuotaException")) {
+						Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
 					}
 				}
 			}
