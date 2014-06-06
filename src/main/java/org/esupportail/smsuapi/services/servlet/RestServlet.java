@@ -63,7 +63,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 		writeJson(resp, err);
 	}
 	private void answerError(HttpServletResponse resp, Throwable e) {
-		logger.error(e);
+		logger.error(""+e);
 		resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("error", e.getClass().getSimpleName());
