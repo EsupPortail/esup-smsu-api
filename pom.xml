@@ -32,68 +32,6 @@
 	<version>${jetty-version}</version>
       </plugin>
 
-      <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-jar-plugin</artifactId>
-	<executions>
-	  <execution>
-	    <phase>prepare-package</phase>
-	    <goals><goal>jar</goal></goals>
-	  </execution>
-	</executions>
-      </plugin>
-
-      <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-source-plugin</artifactId>
-	<executions>
-	    <execution>
-	      <phase>prepare-package</phase>
-	      <goals><goal>jar</goal></goals>
-	    </execution>
-	</executions>
-      </plugin>
-
-      <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-install-plugin</artifactId>
-	<version>2.4</version> <!-- at least 2.4 for configuration.skip -->
-	<configuration>
-	  <!-- do not let default install plugin install pom.xml! -->
-	  <skip>true</skip>
-	</configuration>
-	<executions>
-	  <!-- since this is a "war" packaging, the jar will not get installed magically. Do it by hand -->
-	  <execution>
-	    <id>inst_jar</id>
-	    <phase>install</phase>
-	    <goals><goal>install-file</goal></goals>
-	    <configuration>
-	      <packaging>jar</packaging>
-	      <artifactId>${project.artifactId}</artifactId>
-	      <groupId>${project.groupId}</groupId>
-	      <version>${project.version}</version>
-	      <file>${project.build.directory}/${project.artifactId}-${project.version}.jar</file>
-	    </configuration>
-	  </execution>
-
-	  <execution>
-	    <id>inst_sources</id>
-	    <phase>install</phase>
-	    <goals><goal>install-file</goal></goals>
-	    <configuration>
-	      <classifier>sources</classifier>
-	      <packaging>jar</packaging>
-	      <artifactId>${project.artifactId}</artifactId>
-	      <groupId>${project.groupId}</groupId>
-	      <version>${project.version}</version>
-	      <file>${project.build.directory}/${project.artifactId}-${project.version}-sources.jar</file>
-	    </configuration>
-	  </execution>
-
-	</executions>
-      </plugin>
-
     </plugins>
 
   </build>

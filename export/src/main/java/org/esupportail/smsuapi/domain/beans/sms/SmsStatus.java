@@ -1,0 +1,1 @@
+../../../../../../../../../../src/main/java/org/esupportail/smsuapi/domain/beans/sms/SmsStatus.java
