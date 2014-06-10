@@ -1,6 +1,6 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.esupportail</groupId>
+  <groupId>org.esup-portail</groupId>
   <artifactId>esup-smsu-api</artifactId>
   <packaging>war</packaging>
   <name>esup-smsu-api</name>
