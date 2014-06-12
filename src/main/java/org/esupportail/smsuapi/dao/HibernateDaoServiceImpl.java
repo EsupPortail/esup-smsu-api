@@ -246,7 +246,7 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		@SuppressWarnings("unchecked")
 		List<Integer> list = criteria.list();
 		
-		return 1 + (list.size() > 0 ? (Integer) list.get(0) : 0);
+		return 1 + (list!=null && list.size() > 0 && list.get(0) != null ? (Integer) list.get(0) : 0);
 	}
 
 	/**
