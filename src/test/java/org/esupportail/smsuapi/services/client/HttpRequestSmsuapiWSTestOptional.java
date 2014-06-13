@@ -15,7 +15,7 @@ import org.junit.runner.Result;
 
 public class HttpRequestSmsuapiWSTestOptional {
 
-	String urlOk = "http://localhost:8080/rest";
+	String urlOk = "http://localhost:8080/";
 	String usernameOk = "test-prigaux";
 	String passwordOk = "t1t1";
 
@@ -28,7 +28,7 @@ public class HttpRequestSmsuapiWSTestOptional {
 	}
 
 	private HttpRequestSmsuapiWS wsBadHttps() {
-		return new HttpRequestSmsuapiWS("https://localhost:8080/rest", usernameOk, passwordOk);
+		return new HttpRequestSmsuapiWS("https://localhost:8080/", usernameOk, passwordOk);
 	}
 
 	private HttpRequestSmsuapiWS wsBadUrl() {
