@@ -243,10 +243,9 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		criteria.setProjection( Projections.max(Sms.PROP_INITIAL_ID) )
 				.add(Restrictions.eq(Sms.PROP_APP, app));
 
-		@SuppressWarnings("unchecked")
-		List<Integer> list = criteria.list();
+		Integer max = (Integer) criteria.uniqueResult();
 		
-		return 1 + (list.size() > 0 ? (Integer) list.get(0) : 0);
+		return 1 + (max != null ? max : 0);
 	}
 
 	/**
