@@ -13,6 +13,7 @@
 		<property name="smsSender" ref="smsSenderImpl" />
 		<property name="schedulerUtils" ref="schedulerUtils"/>
 		<property name="clientManager" ref="clientManager"/>
+		<property name="phoneNumberPattern" value="[ +0-9]*"/>
 	</bean>
 	
 	<bean id="statisticBuilder"

@@ -13,6 +13,7 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
+import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 
@@ -28,6 +29,8 @@ public class SendSmsManager {
 	 */
 	protected final Logger logger = new LoggerImpl(getClass());
 
+	private String phoneNumberPattern;
+	
 	/**
 	 * {@link DaoService}.
 	 */
@@ -108,6 +111,8 @@ public class SendSmsManager {
 			final String[] smsPhones, 
 			final String labelAccount, final String msgContent) throws InsufficientQuotaException {
 
+			checkPhoneNumbers(smsPhones);
+			
 			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount);
 			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
 			msgId = smss.size() > 0 ? smss.get(0).getInitialId() : null; 
@@ -119,6 +124,13 @@ public class SendSmsManager {
 				schedulerUtils.launchSuperviseSmsSending(smsMessages);
 			}
 			return msgId;
+	}
+
+	private void checkPhoneNumbers(final String[] smsPhones) {
+		for (String smsPhone : smsPhones) {
+			if (!smsPhone.matches(phoneNumberPattern))
+				throw new InvalidParameterException("invalid phoneNumber \"" + smsPhone + "\"");
+		}
 	}
 
 
@@ -222,6 +234,10 @@ public class SendSmsManager {
 	 */
 	public void setClientManager(final ClientManager clientManager) {
 		this.clientManager = clientManager;
+	}
+
+	public void setPhoneNumberPattern(String phoneNumberPattern) {
+		this.phoneNumberPattern = phoneNumberPattern;
 	}
 
 }
