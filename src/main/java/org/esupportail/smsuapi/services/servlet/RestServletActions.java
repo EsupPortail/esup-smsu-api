@@ -97,11 +97,20 @@ public class RestServletActions {
 	}
 
 	static Integer getInteger(HttpServletRequest req, String name) {
-		return Integer.parseInt(getString(req, name));
+		try {
+			return Integer.parseInt(getString(req, name));
+		} catch (NumberFormatException e) {
+			throw new InvalidParameterException("\"" + name + "\" parameter must be an integer");
+		}
 	}
 	static Integer getInteger(HttpServletRequest req, String name, Integer defaultValue) {
 		String s = getString(req, name, null);
-		return s != null ? Integer.valueOf(s) : defaultValue;
+		try {
+			return s != null ? Integer.valueOf(s) : defaultValue;
+ 		} catch (NumberFormatException e) {
+			throw new InvalidParameterException("\"" + name + "\" parameter must be an integer");
+		}
+
 	}
 
 	private <A,B> Map<A,B> singletonMap(A k, B v) {
