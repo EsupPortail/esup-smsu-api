@@ -41,7 +41,7 @@ public class RestServletActions {
 	 */
 	private Integer sendSMS(Integer msgId, Integer senderId, 
 			     String[] smsPhones, String labelAccount, String msgContent) throws InsufficientQuotaException {
-		sendSms.mayCreateAccountCheckQuotaOk(1, labelAccount);
+		sendSms.mayCreateAccountCheckQuotaOk(smsPhones.length, labelAccount);
 		return sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
 	}
 
