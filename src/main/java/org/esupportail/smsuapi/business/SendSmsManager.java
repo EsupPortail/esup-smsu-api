@@ -102,12 +102,11 @@ public class SendSmsManager {
 	 * @param smsPhones 
 	 * @param labelAccount 
 	 * @param msgContent 
-	 * @throws AuthenticationFailed 
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
+	 * @throws InsufficientQuotaException 
 	 */
 	public Integer sendSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
-			final String labelAccount, final String msgContent) {
+			final String labelAccount, final String msgContent) throws InsufficientQuotaException {
 
 			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount);
 			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
@@ -123,12 +122,9 @@ public class SendSmsManager {
 	}
 
 
-	/**
-	 * @see org.esupportail.smsuapi.services.remote.SendSms#snrdSMS()
-	 */
 	private List<Sms> saveSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
-			final String labelAccount) {
+			final String labelAccount) throws InsufficientQuotaException {
 
 		Application app = clientManager.getApplicationOrNull();
 		
@@ -136,19 +132,14 @@ public class SendSmsManager {
 		if (msgId != null && app != null) {
 			for (String smsPhone: smsPhones) {
 				if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
-					logger.error("SMS already sent! Check for a problem with the application : " + app.getName());
-					return null;
+					String msg = "SMS already sent! Check for a problem with the application : " + app.getName();
+					logger.error(msg);
+					throw new InvalidParameterException(msg);
 				}
 			}
 		}
 		
-		Account account;
-		try {
-			account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
-		} catch (InsufficientQuotaException e) {
-			logger.info(e);
-			return null;
-		}
+		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
 		
 		List<Sms> list = new ArrayList<Sms>();
 			for (String smsPhone : smsPhones) {

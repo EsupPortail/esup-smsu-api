@@ -34,6 +34,7 @@ public class SendSms {
 		
 
 	/**
+	 * @throws InsufficientQuotaException 
 	 * @throws AuthenticationFailed 
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#sendSMS(java.lang.Integer, 
 	 * java.lang.Integer, 
@@ -46,7 +47,7 @@ public class SendSms {
 	public Integer sendSMS(final Integer msgId,
 			final Integer senderId, final Integer unused,
 			final Integer unused2, final String[] smsPhones,
-			final String labelAccount, final String msgContent) {
+			final String labelAccount, final String msgContent) throws InsufficientQuotaException {
 		
 		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
