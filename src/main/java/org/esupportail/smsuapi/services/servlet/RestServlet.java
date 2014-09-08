@@ -63,10 +63,16 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 		writeJson(resp, err);
 	}
 	private void answerError(HttpServletResponse resp, Throwable e) {
-		logger.error(""+e);
+		String exnName = e.getClass().getSimpleName();
+		if (exnName.equals("UnknownMessageIdException") || exnName.equals("InvalidParameterException") || exnName.equals("InsufficientQuotaException")) {
+			// known exceptions, no need to pollute logs with backtrace
+			logger.error(""+e);
+		} else {
+			logger.error(e);
+		}
 		resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("error", e.getClass().getSimpleName());
+		map.put("error", exnName);
 		if (!StringUtils.isEmpty(e.getMessage())) map.put("message", e.getMessage());
 		writeJson(resp, map);
 	}
