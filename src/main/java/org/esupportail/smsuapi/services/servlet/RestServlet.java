@@ -56,7 +56,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 
 	private void answerBasicAuthNeeded(HttpServletResponse resp) {
 		String err = "HTTP authentication needed";
-		logger.error(err);
+		logger.info(err);
 		String s = "Basic realm=\"Smsuapi\"";
 		resp.setHeader("WWW-Authenticate", s);
 		resp.setStatus(401);

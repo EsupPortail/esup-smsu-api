@@ -47,7 +47,7 @@ public class ClientManager {
 	public String getClientName() throws IllegalArgumentException {
 		String cn = getBasicAuthUser();
 		if (cn == null) { 
-			logger.error(getNoBasicAuthErrorMessage());
+			logger.info(getNoBasicAuthErrorMessage());
 			return "";
 		} else {
 			return cn;
