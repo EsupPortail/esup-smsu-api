@@ -102,7 +102,7 @@ public class AckStatusSmsenvoi {
 			if (h < nbHoursBeforeGivingUp)
 				return; // ignore for the moment
 			else {
-				logger.error(String.format("After %.1f hours smsenvoi smsuapi still return %s for " + sms.getId() + ":" + sms.getPhone() + ", giving up (marking as ERROR)", h, status));
+				logger.info(String.format("After %.1f hours smsenvoi smsuapi still return %s for " + sms.getId() + ":" + sms.getPhone() + ", giving up (marking as ERROR)", h, status));
 				status = "ERROR";
 			}
 		}
