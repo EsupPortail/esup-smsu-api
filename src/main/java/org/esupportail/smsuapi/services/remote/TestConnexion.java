@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.remote;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +12,7 @@ public class TestConnexion {
 	 * A logger.
 	 */
 	@SuppressWarnings("unused")
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	
 	/**

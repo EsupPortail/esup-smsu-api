@@ -11,8 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -22,7 +21,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class RestServlet implements org.springframework.web.HttpRequestHandler {
 
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	@Autowired private RestServletActions restServletActions;
 

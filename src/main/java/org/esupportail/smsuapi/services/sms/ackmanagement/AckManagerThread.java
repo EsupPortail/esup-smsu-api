@@ -4,8 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.ApplicationContext;
 
 import org.esupportail.commons.context.ApplicationContextHolder;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.utils.HibernateUtils;
 
 /**
@@ -23,7 +22,7 @@ public class AckManagerThread extends Thread {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	
 	/**

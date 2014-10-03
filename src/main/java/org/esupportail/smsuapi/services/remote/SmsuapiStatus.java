@@ -6,8 +6,7 @@ package org.esupportail.smsuapi.services.remote;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.DomainService;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
@@ -24,7 +23,7 @@ public class SmsuapiStatus {
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 	
 	
 	/**

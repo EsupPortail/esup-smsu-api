@@ -2,8 +2,7 @@ package org.esupportail.smsuapi.services.scheduler.job;
 
 import java.util.List;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.business.SendSmsManager;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.scheduler.AbstractQuartzJob;
@@ -20,7 +19,7 @@ public class SuperviseSmsSending extends AbstractQuartzJob {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 
 	/**
 	 * The quartz job name associated (by defaults it is the application bean name).

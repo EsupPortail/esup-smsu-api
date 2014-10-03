@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.proxy;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -34,7 +33,7 @@ public class InitSSLParameters implements InitializingBean{
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	/**
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()

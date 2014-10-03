@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
@@ -27,7 +26,7 @@ public class SendSmsManager {
 	/**
 	 * Log4j logger.
 	 */
-	protected final Logger logger = new LoggerImpl(getClass());
+	protected final Logger logger = Logger.getLogger(getClass());
 
 	private String phoneNumberPattern;
 	

@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.codehaus.jackson.JsonNode;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
@@ -34,7 +33,7 @@ public class AckStatusSmsenvoi {
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 
 	public void smsuapiStatus() {

@@ -8,8 +8,7 @@ import java.util.Map.Entry;
 
 
 import org.codehaus.jackson.JsonNode;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils;
 
@@ -18,7 +17,7 @@ public class RequestSmsenvoi {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 
 	private String account_email;
 	private String account_apikey;

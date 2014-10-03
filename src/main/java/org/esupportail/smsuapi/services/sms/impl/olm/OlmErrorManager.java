@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 
 import fr.cvf.util.mgs.ErrorManager;
 
@@ -15,7 +14,7 @@ public class OlmErrorManager implements ErrorManager {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	
 	/* (non-Javadoc)

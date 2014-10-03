@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.commons.utils.BeanUtils;
 import org.esupportail.smsuapi.business.BlackListManager;
 import org.esupportail.smsuapi.business.purge.PurgeSms;
@@ -44,7 +43,7 @@ public class TestServlet extends HttpServlet {
 	  /**
      * logger
      */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 
     /**

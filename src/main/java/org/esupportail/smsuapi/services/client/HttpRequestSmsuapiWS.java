@@ -9,8 +9,7 @@ import java.util.Set;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
@@ -22,7 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class HttpRequestSmsuapiWS {
 
-    private final Logger logger = new LoggerImpl(getClass());
+    private final Logger logger = Logger.getLogger(getClass());
 
     private String username;
     private String password;

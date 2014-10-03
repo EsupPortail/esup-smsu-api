@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.proxy;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
@@ -16,7 +15,7 @@ public class SMSSenderProxyImpl implements ISMSSender {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
 	

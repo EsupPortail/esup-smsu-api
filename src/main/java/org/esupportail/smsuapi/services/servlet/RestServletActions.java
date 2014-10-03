@@ -7,8 +7,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
@@ -18,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class RestServletActions {
 
 	@SuppressWarnings("unused")
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SendSms sendSms;

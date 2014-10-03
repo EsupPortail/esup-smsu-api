@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.ackmanagement.AckManager;
 import org.esupportail.smsuapi.services.sms.ackmanagement.Acknowledgment;
@@ -23,7 +22,7 @@ public class OlmAckManager extends Manager {
 	/**
 	 * Log4j logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	/**
 	 *  

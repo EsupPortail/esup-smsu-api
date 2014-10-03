@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.scheduler;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -26,7 +25,7 @@ public abstract class AbstractQuartzJob extends QuartzJobBean implements Statefu
 	/**
      * logger.
      */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	 /**
      * Name of the spring application context bean name. 

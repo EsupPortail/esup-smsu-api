@@ -3,8 +3,7 @@
  */
 package org.esupportail.smsuapi.services.remote; 
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.business.ReportingManager;
 import org.esupportail.smsuapi.exceptions.UnknownMonthIndexException;
 import org.esupportail.ws.remote.beans.ReportingInfos;
@@ -20,7 +19,7 @@ public class Reporting {
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(this.getClass());
+	private final Logger logger = Logger.getLogger(this.getClass());
 
 	
 	public ReportingInfos getStats(final int month, final int year) 

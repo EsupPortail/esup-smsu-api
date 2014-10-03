@@ -1,7 +1,6 @@
 package org.esupportail.smsuapi.services.scheduler.job;
 
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.business.purge.PurgeSms;
 import org.esupportail.smsuapi.services.scheduler.AbstractQuartzJob;
 import org.quartz.JobDataMap;
@@ -17,7 +16,7 @@ public class PurgeSmsJob extends AbstractQuartzJob {
 	/**
 	 * A logger.
 	 */
-	private final Logger logger = new LoggerImpl(getClass());
+	private final Logger logger = Logger.getLogger(getClass());
 	
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext,	final JobDataMap jobDataMap) {

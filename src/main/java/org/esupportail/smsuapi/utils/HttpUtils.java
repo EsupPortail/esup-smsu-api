@@ -17,12 +17,11 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.esupportail.commons.services.logging.Logger;
-import org.esupportail.commons.services.logging.LoggerImpl;
+import org.apache.log4j.Logger;
 
 public class HttpUtils {
 
-	private static final Logger logger = new LoggerImpl(HttpUtils.class);
+	private static final Logger logger = Logger.getLogger(HttpUtils.class);
 
 	private static int defaultConnectTimeout = 10; // seconds
 	
