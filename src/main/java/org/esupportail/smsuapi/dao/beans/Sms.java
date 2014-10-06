@@ -100,6 +100,11 @@ public class Sms  implements Serializable {
 	private java.util.Date date;
 
 	/**
+	 * Date when the state last changed: when we acknoledge wether the SMS has been sent or failed
+	 */
+	private java.util.Date ackDate;
+
+	/**
 	 * Sms phone.
 	 */
 	private java.lang.String phone;
@@ -264,7 +269,13 @@ public class Sms  implements Serializable {
 		this.date = date;
 	}
 
+	public java.util.Date getAckDate() {
+		return ackDate;
+	}
 
+	public void setAckDate(java.util.Date ackDate) {
+		this.ackDate = ackDate;
+	}
 
 	/**
 	 * Return the value associated with the column: SMS_PHONE.

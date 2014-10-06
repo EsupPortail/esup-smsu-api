@@ -91,6 +91,7 @@ public class AckStatusProxy {
 		}
 		SmsStatus s = SmsStatus.valueOf(status);
 		sms.setStateAsEnum(s);
+		sms.setAckDate(new Date()); // update acknowledge date
 		daoService.updateSms(sms);
 	}
 

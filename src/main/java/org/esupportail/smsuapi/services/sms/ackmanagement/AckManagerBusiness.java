@@ -56,6 +56,7 @@ public class AckManagerBusiness {
 			logger.debug("Updating in DB SMS with : " + " - sms_id : " + sms.getId());
 		}		
 		sms.setStateAsEnum(smsStatus);
+		sms.setAckDate(new Date());
 		daoService.updateSms(sms);
 				
 		if (smsStatus.equals(SmsStatus.ERROR_POST_BL)) {
