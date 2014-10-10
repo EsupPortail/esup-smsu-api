@@ -51,7 +51,14 @@ public class AckStatusSmsenvoi {
 			    logger.error("AckStatusSmsenvoi: missing BrokerId for sms id " + sms.getId());
 			    status = SmsStatus.ERROR;
 			} else {
-			    status = getStatus(message_id);
+				try {
+					status = getStatus(message_id);
+					logger.info("smsenvoi smsuapi returned " + status + " for " + sms.getId() + ":" + sms.getBrokerId() + ":" + sms.getPhone());
+				} catch (HttpException.Unreachable e) {
+					logger.error(e);
+				} catch (HttpException e) {
+					logger.error("smsenvoi smsuapi failed on " + sms.getId() + ":" + sms.getBrokerId() + ":" + sms.getPhone() + ", hopefully because the sms has not been sent to smsenvoi yet", e);
+				}
 			}
 			updateStatus(sms, status == null ? null : status.name());
 		}
@@ -67,10 +74,10 @@ public class AckStatusSmsenvoi {
 		}
 	}
 
-	private SmsStatus getStatus(Integer message_id) {
+	private SmsStatus getStatus(Integer message_id) throws HttpException {
 		Map<String, String> p = new HashMap<String,String>();
 		p.put("message_id", ""+message_id);
-		try {
+		
 		    JsonNode resp = requestSmsenvoi.request(checkdelivery_url, p);
 		    String arcode = get_arcode(resp);
 		    if (arcode == null)
@@ -87,18 +94,9 @@ public class AckStatusSmsenvoi {
 			return SmsStatus.ERROR;
 		    else
 			return SmsStatus.ERROR;
-		} catch (HttpException e) {
-		    logger.error(e);
-		    return null;
-		}
 	}
 
 	private void updateStatus(Sms sms, String status) {
-		if (status == null) {
-			logger.error("smsenvoi smsuapi failed on " + sms.getId() + ":" + sms.getBrokerId() + ":" + sms.getPhone() + ", hopefully because the sms has not been sent to smsenvoi yet");
-		} else {
-			logger.info("smsenvoi smsuapi returned " + status + " for " + sms.getId() + ":" + sms.getBrokerId() + ":" + sms.getPhone());
-		}
 		if (status == null || status.equals("IN_PROGRESS")) {
 			double h = AckStatusProxy.dateDifferenceInHours(new Date(), sms.getDate());
 			if (h < nbHoursBeforeGivingUp)
