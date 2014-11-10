@@ -47,10 +47,7 @@ public class AckStatusSmsenvoi {
 		for (Sms sms : smss) {
 			String message_id = sms.getBrokerId();
 			SmsStatus status = null;
-			if (message_id == null) {
-			    logger.error("AckStatusSmsenvoi: missing BrokerId for sms id " + sms.getId());
-			    status = SmsStatus.ERROR;
-			} else {
+			if (message_id != null) {
 				try {
 					status = getStatus(message_id);
 					logger.info("smsenvoi smsuapi returned " + status + " for " + sms.getId() + ":" + sms.getBrokerId() + ":" + sms.getPhone());
@@ -101,7 +98,13 @@ public class AckStatusSmsenvoi {
 			double h = AckStatusProxy.dateDifferenceInHours(new Date(), sms.getDate());
 			if (h < nbHoursBeforeGivingUp)
 				return; // ignore for the moment
-			else {
+			else if (sms.getBrokerId() == null) {
+				logger.error("AckStatusSmsenvoi: missing BrokerId for sms id " + sms.getId());
+				// NB: brokerId may null the first time we do AckStatusSmsenvoi since the SMS may not be sent yet
+				// in that case we will retry next time
+				// After some seconds, it really is an error. But we can wait until "nbHoursBeforeGivingUp" before detecting the error
+				status = "ERROR";
+			} else {
 				logger.info(String.format("After %.1f hours smsenvoi smsuapi still return %s for " + sms.getId() + ":" + sms.getPhone() + ", giving up (marking as ERROR)", h, status));
 				status = "ERROR";
 			}
