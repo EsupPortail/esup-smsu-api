@@ -51,12 +51,27 @@ public class SendSms {
 		logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
 				     " - sender id = " + senderId + 
-				     " - recipient phone number = " + smsPhones + 
+				     " - recipient phone numbers = " + join(smsPhones, " ") + 
 				     " - user label account = " + labelAccount + 
 				     " - message = " + msgContent);
 		
 		return sendSmsManager.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);		
 		
+	}
+
+	public static String join(Object[] elements, CharSequence separator) {
+		if (elements == null) return "";
+
+		StringBuilder sb = null;
+
+		for (Object s : elements) {
+			if (sb == null)
+				sb = new StringBuilder();
+			else
+				sb.append(separator);
+			sb.append(s);			
+		}
+		return sb == null ? "" : sb.toString();
 	}
 
 }
