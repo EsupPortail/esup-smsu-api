@@ -9,5 +9,6 @@
 	<!--import resource="proxy/proxy.xml" /-->
 	<import resource="smsenvoi/smsenvoi.xml" />
 	<!--import resource="olm/olm.xml" /-->
+        <!--import resource="gammu/gammu.xml" /-->
 		
 </beans>
