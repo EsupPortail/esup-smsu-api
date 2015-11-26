@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<bean id="smsSenderImpl"
+		class="org.esupportail.smsuapi.services.sms.impl.dmc.SMSSenderDmc">	
+			<property name="simulateMessageSending">
+				<value type="boolean">${sms.connector.simulateSending}</value>
+			</property>
+			<property name="authenticate">
+				<bean class="org.esupportail.smsuapi.services.sms.impl.dmc.DmcAuthenticate">
+					<property name="serviceId" value="${sms.connector.dmc.account.serviceId}"/>
+					<property name="servicePassword" value="${sms.connector.dmc.account.servicePassword}"/>
+					<property name="spaceId" value="${sms.connector.dmc.account.spaceId}"/>
+				</bean>
+			</property>
+			<property name="dmcWsUrl" value="https://www.dmc.sfr-sh.fr/DmcWS/1.5.1/JsonService/MessagesUnitairesWS/addSingleCall"/>
+			<property name="restTemplate">
+				<bean class="org.springframework.web.client.RestTemplate">
+					<property name="messageConverters">
+						<list>
+							<bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+							<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+						</list>
+					</property>
+				</bean>
+			</property>
+	</bean>
+
+</beans>
