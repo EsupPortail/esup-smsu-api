@@ -13,9 +13,9 @@
 			</property>
 			<property name="authenticate">
 				<bean class="org.esupportail.smsuapi.services.sms.impl.dmc.DmcAuthenticate">
-					<property name="serviceId" value="123456789"/>
-					<property name="servicePassword" value="thePassword"/>
-					<property name="spaceId" value="123456"/>
+					<property name="serviceId" value="${sms.connector.dmc.account.serviceId}"/>
+					<property name="servicePassword" value="${sms.connector.dmc.account.servicePassword}"/>
+					<property name="spaceId" value="${sms.connector.dmc.account.spaceId}"/>
 				</bean>
 			</property>
 			<property name="dmcWsUrl" value="https://www.dmc.sfr-sh.fr/DmcWS/1.5.1/JsonService/MessagesUnitairesWS/addSingleCall"/>
