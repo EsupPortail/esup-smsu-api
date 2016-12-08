@@ -95,8 +95,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 		try {
 			if (resp.path("success").getLongValue() == 1)
 				return resp.path("message_id").getLongValue();
-		} catch (NullPointerException e) {
-		} catch (ClassCastException e) {
+		} catch (NullPointerException | ClassCastException e) {
 		}
 		return null;
 	}

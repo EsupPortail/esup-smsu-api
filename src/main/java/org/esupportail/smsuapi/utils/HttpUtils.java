@@ -81,14 +81,9 @@ public class HttpUtils {
             	logger.error(conn.getURL() + " error: " + conn.getResponseMessage());
             	throw new HttpException.WithStatusCode(conn);
             }
-    	} catch (UnknownHostException e) {
+    	} catch (UnknownHostException | ConnectException | SSLException |
+		         /* connect timeout or read timeout(?) */ SocketTimeoutException e) {
     		throw new HttpException.Unreachable(e);
-    	} catch (ConnectException e) {
-    		throw new HttpException.Unreachable(e);
-    	} catch (SSLException e) {
-        	throw new HttpException.Unreachable(e);
-    	} catch (SocketTimeoutException e) { // connect timeout or read timeout(?)
-        	throw new HttpException.Unreachable(e);
         } catch (IOException e) {
         	throw new HttpException(e);
         }
