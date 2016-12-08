@@ -87,7 +87,7 @@ public class Sms  implements Serializable {
 	/**
 	 * Broker id associated to the Sms.
 	 */
-	private java.lang.Integer brokerId;
+	private java.lang.String brokerId;
 
 	/**
 	 * Sms state.
@@ -199,7 +199,7 @@ public class Sms  implements Serializable {
 	/**
 	 * Return the value associated with the column: BROKER_SMS_ID.
 	 */
-	public java.lang.Integer getBrokerId() {
+	public java.lang.String getBrokerId() {
 		return brokerId;
 	}
 
@@ -207,7 +207,7 @@ public class Sms  implements Serializable {
 	 * Set the value related to the column: BROKER_SMS_ID.
 	 * @param brokerId the BROKER_SMS_ID value
 	 */
-	public void setBrokerId(final java.lang.Integer brokerId) {
+	public void setBrokerId(final java.lang.String brokerId) {
 		this.brokerId = brokerId;
 	}
 

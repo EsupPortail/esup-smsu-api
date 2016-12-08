@@ -87,7 +87,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 		if (message_id == null) 
 		    smsDB.setStateAsEnum(SmsStatus.ERROR);
 		else
-		    smsDB.setBrokerId(message_id.intValue());
+		    smsDB.setBrokerId(message_id.toString());
 		daoService.updateSms(smsDB);
 	}
 

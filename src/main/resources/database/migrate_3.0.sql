@@ -1,0 +1,1 @@
+alter table sms modify BROKER_SMS_ID varchar(255);

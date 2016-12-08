@@ -45,7 +45,7 @@ public class AckStatusSmsenvoi {
 
 		logger.info("AckStatusSmsenvoi: asking smsenvoi for the status of some sms");
 		for (Sms sms : smss) {
-			Integer message_id = sms.getBrokerId();
+			String message_id = sms.getBrokerId();
 			SmsStatus status = null;
 			if (message_id == null) {
 			    logger.error("AckStatusSmsenvoi: missing BrokerId for sms id " + sms.getId());
@@ -74,9 +74,9 @@ public class AckStatusSmsenvoi {
 		}
 	}
 
-	private SmsStatus getStatus(Integer message_id) throws HttpException {
+	private SmsStatus getStatus(String message_id) throws HttpException {
 		Map<String, String> p = new HashMap<String,String>();
-		p.put("message_id", ""+message_id);
+		p.put("message_id", message_id);
 		
 		    JsonNode resp = requestSmsenvoi.request(checkdelivery_url, p);
 		    String arcode = get_arcode(resp);
