@@ -253,7 +253,7 @@ public class StatisticBuilder {
 				final Date startDate) {
 
 
-			final List<Date> retVal = new LinkedList<Date>();
+			final List<Date> retVal = new LinkedList<>();
 
 			final long nowInMillis = System.currentTimeMillis();
 			final Calendar previousMonthAsCal = new GregorianCalendar();
@@ -291,7 +291,7 @@ public class StatisticBuilder {
 		 */
 		private List<Date> getListOfMarkerDateBetWeenTwoDates(final Date startDate, final Date endDate) {
 
-			final List<Date> listOfMarkerDate = new LinkedList<Date>();
+			final List<Date> listOfMarkerDate = new LinkedList<>();
 
 			final Calendar startDateAsCal = new GregorianCalendar();
 			startDateAsCal.setTime(startDate);

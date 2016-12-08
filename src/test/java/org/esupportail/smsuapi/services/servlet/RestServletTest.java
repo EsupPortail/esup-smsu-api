@@ -21,7 +21,7 @@ public class RestServletTest {
 		infos.setNbSentSMS(100);
 		infos.setNbProgressSMS(13);
 		infos.setNbErrorSMS(2);
-		Set<String> errors = new HashSet<String>();
+		Set<String> errors = new HashSet<>();
 		errors.add("0623456789");
 		errors.add("0601010101");
 		infos.setListNumErreur(errors);

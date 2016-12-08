@@ -45,7 +45,7 @@ public class HttpRequestSmsuapiWS {
 		return sendSms(id, singletonListOrEmpty(recipient), message, account, senderId);
 	}
 	public Integer sendSms(Integer id, List<String> recipients, String message, String account, Integer senderId) throws HttpException, InsufficientQuotaException {
-		List<Pair> params = new LinkedList<Pair>();
+		List<Pair> params = new LinkedList<>();
 		for (String recipient : recipients) {
 		    params.add(new Pair("phoneNumber", recipient));
 		}
@@ -108,7 +108,7 @@ public class HttpRequestSmsuapiWS {
 	}
 	
 	private List<String> convertToStringList(JsonNode json) {
-		List<String> l = new LinkedList<String>();
+		List<String> l = new LinkedList<>();
 		Iterator<JsonNode> it = json.getElements();		
 		while (it.hasNext())
 			l.add(it.next().getTextValue());
@@ -116,7 +116,7 @@ public class HttpRequestSmsuapiWS {
 	}
 	
 	private Set<String> convertToStringSet(JsonNode json) {
-		HashSet<String> l = new HashSet<String>();
+		HashSet<String> l = new HashSet<>();
 		Iterator<JsonNode> it = json.getElements();		
 		while (it.hasNext())
 			l.add(it.next().getTextValue());
@@ -171,7 +171,7 @@ public class HttpRequestSmsuapiWS {
     }
 
 	private <A> LinkedList<A> singletonListOrEmpty(A e) {
-		final LinkedList<A> l = new LinkedList<A>();
+		final LinkedList<A> l = new LinkedList<>();
 		if (e != null) l.add(e);
 		return l;
 	}	

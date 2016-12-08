@@ -50,7 +50,7 @@ public class SMSSenderPool implements ISMSSender {
 	}
 
 	public void setPool(List<ISMSSender> pool) {
-		this.pool = new ConcurrentLinkedQueue<ISMSSender>(pool);
+		this.pool = new ConcurrentLinkedQueue<>(pool);
 	}
 
 }

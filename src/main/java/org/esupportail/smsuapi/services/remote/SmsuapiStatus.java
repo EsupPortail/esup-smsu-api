@@ -47,7 +47,7 @@ public class SmsuapiStatus {
 			logger.info(sb.toString());
 		}
 		 
-		List<String> l = new LinkedList<String>();
+		List<String> l = new LinkedList<>();
 
 		for (MsgIdAndPhone m : listMsgIdAndPhone) {
 			Sms sms = domainService.getSms(m.getMsgId(), m.getPhoneNumber());

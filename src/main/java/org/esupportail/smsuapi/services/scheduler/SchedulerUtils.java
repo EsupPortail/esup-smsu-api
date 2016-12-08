@@ -33,7 +33,7 @@ public class SchedulerUtils {
 
 	
 	public void launchSuperviseSmsSending(final SMSBroker smsMessage) {
-		List<SMSBroker> smsMessageList = new ArrayList<SMSBroker>();
+		List<SMSBroker> smsMessageList = new ArrayList<>();
 		smsMessageList.add(smsMessage);
 		launchSuperviseSmsSending(smsMessageList);
 	}

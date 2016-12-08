@@ -90,7 +90,7 @@ public class DomainService implements InitializingBean {
 	 * @return the non-authorized phone numbers (in black list).
 	 */
 	public int getNbDestBlackList(final Integer msgId) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
 
@@ -126,7 +126,7 @@ public class DomainService implements InitializingBean {
 	 * @throws Exception 
 	 */
 	public int getNbErrorSMS(final Integer msgId) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
@@ -141,12 +141,12 @@ public class DomainService implements InitializingBean {
 	 */
 	public Set<String> getListNumErreur(final Integer msgId) {
 		// list criteria for HQL query 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 
-		List<Sms> smslist = new ArrayList<Sms>();
+		List<Sms> smslist = new ArrayList<>();
 
 		Application app = clientManager.getApplicationOrNull();
 
@@ -155,7 +155,7 @@ public class DomainService implements InitializingBean {
 			smslist = daoService.getListNumErreur(msgId, app, list);
 		}
 		
-		Set<String> nums = new HashSet<String>();
+		Set<String> nums = new HashSet<>();
 		for (Sms sms : smslist) nums.add(sms.getPhone());
 		return nums;
 	}

@@ -122,7 +122,7 @@ public class TestServlet extends HttpServlet {
     	SchedulerUtils schedulerUtils = (SchedulerUtils) BeanUtils.getBean("schedulerUtils");
     	SMSBroker smsb = new SMSBroker(0, "Un message", "0232323232", "");
     	
-    	List<SMSBroker> listSms = new LinkedList<SMSBroker>();
+        List<SMSBroker> listSms = new LinkedList<>();
     	listSms.add(smsb);
     	schedulerUtils.launchSuperviseSmsSending(listSms);
     }

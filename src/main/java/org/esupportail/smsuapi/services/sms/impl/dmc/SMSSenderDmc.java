@@ -61,7 +61,7 @@ public class SMSSenderDmc implements ISMSSender {
 				// DMC is waiting for a mix with application/x-www-form-urlencoded and json data ... 
 				// so restTemplate uses here only FormHttpMessageConverter - the object->json is made directly with ObjectMapper
 				
-				MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+				MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 				params.add("messageUnitaire", messageUnitaire.toJson());
 				
 				
@@ -79,7 +79,7 @@ public class SMSSenderDmc implements ISMSSender {
 					requestHeaders.add("Cookie", cookieJsessionId);
 				} 
 				
-				HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, requestHeaders);
+				HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, requestHeaders);
 				
 				// restemplate will use here jacksonHttpMessageConverter for json->object
 				ResponseEntity<DmcResponse> dmcRespEntity = restTemplate.exchange(dmcWsUrl, HttpMethod.POST, entity, DmcResponse.class);

@@ -152,7 +152,7 @@ public class SendSmsManager {
 		
 		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
 		
-		List<Sms> list = new ArrayList<Sms>();
+		List<Sms> list = new ArrayList<>();
 			for (String smsPhone : smsPhones) {
 				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, app);
 				if (msgId == null) {
@@ -165,7 +165,7 @@ public class SendSmsManager {
 	}
 
 	private List<SMSBroker> convertToSMSBroker(final String msgContent, List<Sms> smss) {
-		List<SMSBroker> list = new ArrayList<SMSBroker>();
+		List<SMSBroker> list = new ArrayList<>();
 		for (Sms sms : smss) {
 			if (sms.getStateAsEnum().equals(SmsStatus.IN_PROGRESS)) {
 				list.add(new SMSBroker(sms.getId(), sms.getPhone(), msgContent, sms.getAcc().getLabel()));

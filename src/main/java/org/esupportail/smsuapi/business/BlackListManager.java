@@ -59,7 +59,7 @@ public class BlackListManager {
 	 */
 	public Set<String> getListPhoneNumbersInBlackList() {
 		 List<Blacklist> listPhoneNumbersInBlackList = daoService.getListPhoneNumbersInBlackList();
-		 Set<String> setPhoneNumbersInBlackList = new HashSet<String>();
+		 Set<String> setPhoneNumbersInBlackList = new HashSet<>();
 		 for (Blacklist bl : listPhoneNumbersInBlackList) {
 				setPhoneNumbersInBlackList.add(bl.getPhone());
 			}

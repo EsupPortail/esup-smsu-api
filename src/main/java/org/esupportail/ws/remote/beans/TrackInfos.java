@@ -45,7 +45,7 @@ public class TrackInfos implements Serializable {
 	/**
 	 * Collection of phone numbers in blacklist.
 	 */
-	private java.util.Set<String> listNumErreur = new HashSet<String>();
+	private java.util.Set<String> listNumErreur = new HashSet<>();
 
 	
 	/**

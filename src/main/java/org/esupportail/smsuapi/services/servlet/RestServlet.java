@@ -71,7 +71,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 			logger.error(e);
 		}
 		resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("error", exnName);
 		if (!StringUtils.isEmpty(e.getMessage())) map.put("message", e.getMessage());
 		writeJson(resp, map);
@@ -106,7 +106,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 	}
 
 	private Map<String, Method> getActionsThroughReflection() {
-		Map<String, Method> actions = new HashMap<String, Method>();
+		Map<String, Method> actions = new HashMap<>();
 		for (Method m : RestServletActions.class.getDeclaredMethods()) {
 			String action = removePrefixOrNull(m.getName(), "wsAction");
 			if (action != null)

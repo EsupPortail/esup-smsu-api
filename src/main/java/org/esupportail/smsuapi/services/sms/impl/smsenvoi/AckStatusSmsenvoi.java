@@ -72,7 +72,7 @@ public class AckStatusSmsenvoi {
 	}
 
 	private SmsStatus getStatus(String message_id) throws HttpException {
-		Map<String, String> p = new HashMap<String,String>();
+		Map<String, String> p = new HashMap<>();
 		p.put("message_id", message_id);
 		
 		    JsonNode resp = requestSmsenvoi.request(checkdelivery_url, p);

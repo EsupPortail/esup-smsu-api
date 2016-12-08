@@ -68,7 +68,7 @@ public class RestServletActions {
 		if (ids.length != phoneNumbers.length) {
 			throw new InvalidParameterException("there must be same number of parameters \"id\" and \"phoneNumber\"");
 		}
-		List<MsgIdAndPhone> list = new ArrayList<MsgIdAndPhone>();
+		List<MsgIdAndPhone> list = new ArrayList<>();
 		for (int i = 0; i < ids.length; i++) {
 			list.add(new MsgIdAndPhone(Integer.parseInt(ids[i]), phoneNumbers[i]));
 		}

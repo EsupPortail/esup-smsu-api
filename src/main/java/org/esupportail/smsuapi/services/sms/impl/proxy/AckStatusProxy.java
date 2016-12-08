@@ -66,7 +66,7 @@ public class AckStatusProxy {
 	}
 
 	private List<Pair> convertSmsStatusParams(List<Sms> smss) {
-		List<Pair> params = new LinkedList<Pair>();
+		List<Pair> params = new LinkedList<>();
 		for (Sms sms : smss) {
 			params.add(new Pair("id", ""+sms.getId()));
 			params.add(new Pair("phoneNumber", sms.getPhone()));

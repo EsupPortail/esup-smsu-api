@@ -116,7 +116,7 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 
 	private JsonNode realSendMessage(SMSBroker sms) throws HttpException {
 		String senderlabel = computeSenderlabel(sms);
-		Map<String, String> p = new HashMap<String,String>();
+		Map<String, String> p = new HashMap<>();
 		p.put("message[type]", "sms");
 		p.put("message[subtype]", "PREMIUM");
 		p.put("message[recipients]", sms.getRecipient());
