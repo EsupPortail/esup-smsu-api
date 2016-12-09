@@ -3,7 +3,7 @@ package org.esupportail.smsuapi.services.servlet;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
@@ -21,9 +21,9 @@ public class RestServletTest {
 		infos.setNbSentSMS(100);
 		infos.setNbProgressSMS(13);
 		infos.setNbErrorSMS(2);
-		Set<String> errors = new HashSet<>();
-		errors.add("0623456789");
+		Set<String> errors = new LinkedHashSet<>();
 		errors.add("0601010101");
+		errors.add("0623456789");
 		infos.setListNumErreur(errors);
 		
 		String json = new ObjectMapper().writeValueAsString(infos);
