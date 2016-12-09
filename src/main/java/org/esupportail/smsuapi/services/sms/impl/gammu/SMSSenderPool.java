@@ -37,7 +37,7 @@ public class SMSSenderPool implements ISMSSender {
 	private ISMSSender borrowSmsSender() throws InterruptedException {
 		ISMSSender smsSender;
 		while ((smsSender = pool.poll()) == null) {
-			Thread.currentThread().sleep(POOL_WAIT_AVAILABLE);
+			Thread.sleep(POOL_WAIT_AVAILABLE);
 		}
 		return smsSender;
 	}
