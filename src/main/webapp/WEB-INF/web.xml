@@ -72,6 +72,15 @@
 	</filter-mapping>
 
 	<servlet>
+		<servlet-name>backChannelAck</servlet-name>
+		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>backChannelAck</servlet-name>
+		<url-pattern>/backChannelAck</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>rest</servlet-name>
 		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 	</servlet>
