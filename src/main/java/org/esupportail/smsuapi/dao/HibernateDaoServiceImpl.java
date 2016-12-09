@@ -196,6 +196,13 @@ public class HibernateDaoServiceImpl extends HibernateDaoSupport
 		return (Sms) getHibernateTemplate().get(Sms.class, id);
 	}
 	
+	public Sms getSmsByBrokerId(String id) {
+		Session currentSession = getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Sms.class);
+		criteria.add(Restrictions.eq(Sms.PROP_BROKER_SMS_ID, id));
+		return (Sms) criteria.uniqueResult();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 

@@ -50,6 +50,11 @@ public interface DaoService extends Serializable {
 	 * Get the sms by id.
 	 */
 	Sms getSms(int id);
+
+	/**
+	 * Get the sms by broker id
+	 */
+	Sms getSmsByBrokerId(String id);
 	
 	/**
 	 * Get the sms by message id, application and phone number
