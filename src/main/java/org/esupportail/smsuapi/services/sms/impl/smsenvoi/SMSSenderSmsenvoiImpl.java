@@ -101,6 +101,9 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	}
 
 	private String computeSenderlabel(SMSBroker sms) {
+		return computeSenderlabel(logger, from, sms);
+	}
+	public static String computeSenderlabel(Logger logger, JsonNode from, SMSBroker sms) {
 		String label = from.path(sms.getAccountLabel()).getTextValue();
 		if (label == null) {
 			label = from.path("").getTextValue();
