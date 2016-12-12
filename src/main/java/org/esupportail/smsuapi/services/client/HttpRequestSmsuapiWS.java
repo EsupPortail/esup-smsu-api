@@ -139,35 +139,41 @@ public class HttpRequestSmsuapiWS {
 		try {
 			json = HttpUtils.requestGET(HttpUtils.basicAuth(HttpUtils.openConnection(cooked_url), username, password));
 		} catch (HttpException.WithStatusCode e) {
-			if (e.getStatusCode() == 404)
-				throw new SmsuapiWS.UnreachableException(e);
-			else if (e.getStatusCode() == 401)
-				throw new SmsuapiWS.AuthenticationFailedException(e);
-			else if (e.getStatusCode() == 400) {
-				JsonNode jsonErr = HttpUtils.json_decode(e.getErrorMessage());
-				if (jsonErr != null) {
-					String error = jsonErr.path("error").getTextValue();
-					if (error == null) {
-					} else if (error.equals("UnknownMessageIdException")) {
-						Unchecked.throw_(new UnknownMessageIdException());
-					} else if (error.equals("InvalidParameterException")) {
-						throw new InvalidParameterException(jsonErr.path("message").getTextValue());
-					} else if (error.equals("InsufficientQuotaException")) {
-						Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
-					}
-				}
-			}
-			// we could not find a more useful exception, re-throw
-			throw e;
-		} catch (HttpException e) {
-			throw e;
+			throw remapException(e);
 		}
-		logger.warn("response " + json);
-		try {
-			return new ObjectMapper().readTree(json);
-		} catch (IOException e) {
-			throw new SmsuapiWS.BadJsonException(json, e);
-		}
+		return parseResponse(json);
+    }
+
+    private JsonNode parseResponse(String json) throws HttpException {
+        logger.warn("response " + json);
+        try {
+            return new ObjectMapper().readTree(json);
+        } catch (IOException e) {
+            throw new SmsuapiWS.BadJsonException(json, e);
+        }
+    }
+
+    private HttpException remapException(HttpException.WithStatusCode e) {
+        if (e.getStatusCode() == 404)
+            return new SmsuapiWS.UnreachableException(e);
+        else if (e.getStatusCode() == 401)
+            return new SmsuapiWS.AuthenticationFailedException(e);
+        else if (e.getStatusCode() == 400) {
+            JsonNode jsonErr = HttpUtils.json_decode(e.getErrorMessage());
+            if (jsonErr != null) {
+                String error = jsonErr.path("error").getTextValue();
+                if (error == null) {
+                } else if (error.equals("UnknownMessageIdException")) {
+                    Unchecked.throw_(new UnknownMessageIdException());
+                } else if (error.equals("InvalidParameterException")) {
+                    throw new InvalidParameterException(jsonErr.path("message").getTextValue());
+                } else if (error.equals("InsufficientQuotaException")) {
+                    Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
+                }
+            }
+        }
+        // we could not find a more useful exception
+        return e;
     }
 
 	private <A> LinkedList<A> singletonListOrEmpty(A e) {
