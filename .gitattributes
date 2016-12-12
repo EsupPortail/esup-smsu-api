@@ -1,0 +1,2 @@
+*.java whitespace=tab-in-indent
+*.js whitespace=tab-in-indent
