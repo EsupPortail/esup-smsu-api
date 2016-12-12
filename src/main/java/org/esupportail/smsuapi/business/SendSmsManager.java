@@ -119,7 +119,7 @@ public class SendSmsManager {
 			List<SMSBroker> smsMessages = convertToSMSBroker(msgContent, smss);
 
 			if (smsMessages != null) { 
-				// launch the task witch manage the sms sending
+				// launch the task which manage the sms sending
 				schedulerUtils.launchSuperviseSmsSending(smsMessages);
 			}
 			return msgId;
