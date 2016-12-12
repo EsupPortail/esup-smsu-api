@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- 
+		The configuration file for sms services.
+		This file is referenced by /properties/applicationContext.xml.
+	-->
+
+	<bean id="smsSenderImpl"
+		class="org.esupportail.smsuapi.services.sms.impl.allmysms.SMSSenderAllmysms">
+		<description>
+			Allmysms implementation of the broker, this class manage the sms sending
+		</description>
+		<property name="account_login" value="${sms.connector.allmysms.account.login}" />
+		<property name="account_apikey" value="${sms.connector.allmysms.account.apikey}" />
+		<property name="sendsms_url" value="https://api.allmysms.com/http/9.0/sendSms/" />
+		<property name="simulate_sendsms_url" value="https://api.allmysms.com/http/9.0/simulateCampaign/" />
+		<!--
+		<property name="simulate_sendsms_url" value="http://localhost:8081/DEBUG/" />
+		-->		
+		<property name="from_mapJSON" value="${sms.connector.allmysms.from.mapJSON}" />
+		<property name="simulateMessageSending">
+			<value type="boolean">${sms.connector.simulateSending}</value>
+		</property>
+		<property name="restTemplate">
+				<bean class="org.springframework.web.client.RestTemplate">
+					<property name="messageConverters">
+						<list>
+							<bean class="org.springframework.http.converter.FormHttpMessageConverter"/>
+							<bean class="org.esupportail.smsuapi.services.sms.impl.allmysms.ForcedMappingJacksonHttpMessageConverter"/>
+						</list>
+					</property>
+				</bean>
+			</property>
+
+	</bean>
+
+	<bean id="backChannelAck"
+	    class="org.esupportail.smsuapi.services.sms.impl.allmysms.BackChannelAck">
+	</bean>
+
+</beans>

@@ -11,4 +11,5 @@
 	<!--import resource="olm/olm.xml" /-->
 	<!--import resource="gammu/gammu.xml" /-->
 	<!--import resource="dmc/dmc.xml" /-->	
+	<!--import resource="allmysms/allmysms.xml" /-->
 </beans>
