@@ -4,7 +4,7 @@
   <artifactId>esup-smsu-api</artifactId>
   <packaging>war</packaging>
   <name>esup-smsu-api</name>
-  <version>2.0.0</version>
+  <version>3.0.0</version>
 
   <build>
     <!--finalName>${project.name}</finalName-->
