@@ -105,6 +105,10 @@ public class HttpUtils {
         }
     }
 
+    public static String cook_url(String url, String name1, String val1) {
+        return url + "?" + urlencode(name1) + "=" + urlencode(val1);
+    }
+
     public static String cook_url(String url, String name1, String val1, List<Pair> params) {
         return url + "?" + urlencode(name1) + "=" + urlencode(val1) + "&" + formatParams(params);
     }

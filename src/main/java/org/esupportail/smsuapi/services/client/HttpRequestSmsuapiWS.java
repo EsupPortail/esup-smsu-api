@@ -55,7 +55,7 @@ public class HttpRequestSmsuapiWS {
 		}
 		if (account != null) params.add(new Pair("account", account));
 		if (senderId != null) params.add(new Pair("senderId", ""+senderId));
-		JsonNode json = request("SendSms", params);
+		JsonNode json = requestPOST("SendSms", params);
 		return convertToInteger(json.path("id"));
 	}
 	
@@ -122,6 +122,17 @@ public class HttpRequestSmsuapiWS {
 			l.add(it.next().getTextValue());
 		return l;
 	}
+
+    private JsonNode requestPOST(String action, List<Pair> params) throws HttpException {
+        String cooked_url = HttpUtils.cook_url(url, "action", action);
+        String json;
+        try {
+            json = HttpUtils.requestPOST(HttpUtils.basicAuth(HttpUtils.openConnection(cooked_url), username, password), params);
+        } catch (HttpException.WithStatusCode e) {
+            throw remapException(e);
+        }
+        return parseResponse(json);
+    }
 
     private JsonNode request(String action, List<Pair> params) throws HttpException {
 	String cooked_url = HttpUtils.cook_url(url, "action", action, params);
