@@ -62,7 +62,7 @@ public class AckStatusSmsenvoi {
 	}
 
 	public String get_arcode(JsonNode resp) {
-		if (resp.path("success").getLongValue() != 1) return null;
+		if (resp == null || resp.path("success").getLongValue() != 1) return null;
 		try {			
 			JsonNode firstElement = resp.path("listing").getElements().next();
 			return firstElement.path("arcode").getTextValue();
