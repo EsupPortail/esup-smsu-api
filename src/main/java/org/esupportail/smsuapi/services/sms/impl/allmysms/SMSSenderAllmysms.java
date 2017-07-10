@@ -98,7 +98,7 @@ public class SMSSenderAllmysms implements ISMSSender {
     }
 
     private String computeSenderlabel(SMSBroker sms) {
-        return SMSSenderSmsenvoiImpl.computeSenderlabel(logger, from, sms);
+        return SMSSenderSmsenvoiImpl.computeSenderlabel(logger, from, sms.getAccountLabel());
     }
 
     @Required

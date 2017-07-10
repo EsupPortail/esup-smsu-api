@@ -101,16 +101,16 @@ public class SMSSenderSmsenvoiImpl implements ISMSSender {
 	}
 
 	private String computeSenderlabel(SMSBroker sms) {
-		return computeSenderlabel(logger, from, sms);
+		return computeSenderlabel(logger, from, sms.getAccountLabel());
 	}
-	public static String computeSenderlabel(Logger logger, JsonNode from, SMSBroker sms) {
-		String label = from.path(sms.getAccountLabel()).getTextValue();
+	public static String computeSenderlabel(Logger logger, JsonNode from, String accountLabel) {
+		String label = from.path(accountLabel).getTextValue();
 		if (label == null) {
 			label = from.path("").getTextValue();
 			if (label == null)
 				logger.info("no default senderlabel (cf sms.connector.smsenvoi.from.mapJSON), no sender label will be used");
 			else
-				logger.debug("no senderlabel for " + sms.getAccountLabel() + " in " + from + ". Defaulting to " + label);
+				logger.debug("no senderlabel for " + accountLabel + " in " + from + ". Defaulting to " + label);
 		}
 		logger.debug("senderlabel: " + label);
 		return label == null ? null : (String) label;
