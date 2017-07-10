@@ -32,12 +32,6 @@ public class SchedulerUtils {
 	private Scheduler scheduler;
 
 	
-	public void launchSuperviseSmsSending(final SMSBroker smsMessage) {
-		List<SMSBroker> smsMessageList = new ArrayList<>();
-		smsMessageList.add(smsMessage);
-		launchSuperviseSmsSending(smsMessageList);
-	}
-
 	public void launchSuperviseSmsSending(final List<SMSBroker> smsMessageList) {
 		// use hashCode of smsMessage
 		
