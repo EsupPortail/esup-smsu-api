@@ -2,10 +2,9 @@ package org.esupportail.smsuapi.services.servlet;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -86,7 +85,7 @@ public class TestServlet extends HttpServlet {
     
     private void testSms() {
     	ISMSSender smsSender = (ISMSSender) BeanUtils.getBean("smsSenderImpl");
-    	final SMSBroker smsMessage = new SMSBroker(1, "0699999999", "coucou", "");
+    	final SMSBroker smsMessage = new SMSBroker(Collections.singletonList(new SMSBroker.Rcpt(1, "0699999999")), "coucou", "");
     	smsSender.sendMessage(smsMessage);
     }
     
@@ -120,11 +119,9 @@ public class TestServlet extends HttpServlet {
     
     private void testQrtz() {
     	SchedulerUtils schedulerUtils = (SchedulerUtils) BeanUtils.getBean("schedulerUtils");
-    	SMSBroker smsb = new SMSBroker(0, "Un message", "0232323232", "");
+    	SMSBroker smsb = new SMSBroker(Collections.singletonList(new SMSBroker.Rcpt(0, "0232323232")), "Un message", "");
     	
-        List<SMSBroker> listSms = new LinkedList<>();
-    	listSms.add(smsb);
-    	schedulerUtils.launchSuperviseSmsSending(listSms);
+    	schedulerUtils.launchSuperviseSmsSending(smsb);
     }
     
     @SuppressWarnings("deprecation")

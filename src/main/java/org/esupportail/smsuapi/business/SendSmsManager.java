@@ -116,7 +116,7 @@ public class SendSmsManager {
 			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
 			msgId = smss.size() > 0 ? smss.get(0).getInitialId() : null; 
 
-			List<SMSBroker> smsMessages = convertToSMSBroker(msgContent, smss);
+			SMSBroker smsMessages = convertToSMSBroker(msgContent, smss);
 
 			if (smsMessages != null) { 
 				// launch the task which manage the sms sending
@@ -164,14 +164,14 @@ public class SendSmsManager {
 		return list;
 	}
 
-	private List<SMSBroker> convertToSMSBroker(final String msgContent, List<Sms> smss) {
-		List<SMSBroker> list = new ArrayList<>();
+	private SMSBroker convertToSMSBroker(final String msgContent, List<Sms> smss) {
+		List<SMSBroker.Rcpt> list = new ArrayList<>();
 		for (Sms sms : smss) {
 			if (sms.getStateAsEnum().equals(SmsStatus.IN_PROGRESS)) {
-				list.add(new SMSBroker(sms.getId(), sms.getPhone(), msgContent, sms.getAcc().getLabel()));
+				list.add(new SMSBroker.Rcpt(sms.getId(), sms.getPhone()));
 			}
 		}
-		return list.size() > 0 ? list : null;
+		return list.isEmpty() ? null : new SMSBroker(list, msgContent, smss.get(0).getAcc().getLabel());
 	}
 
 	protected Sms saveSMSNoCheck(final Integer msgId, final Integer senderId,

@@ -3,8 +3,7 @@ package org.esupportail.smsuapi.services.sms.impl.dmc;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.sms.OldISMSSender;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * SFR DMC SMS sender.
  */
-public class SMSSenderDmc implements ISMSSender {
+public class SMSSenderDmc extends OldISMSSender {
 
 	protected final Logger logger = Logger.getLogger(getClass());
 	

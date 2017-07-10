@@ -1,8 +1,6 @@
 package org.esupportail.smsuapi.services.scheduler;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
@@ -32,7 +30,7 @@ public class SchedulerUtils {
 	private Scheduler scheduler;
 
 	
-	public void launchSuperviseSmsSending(final List<SMSBroker> smsMessageList) {
+	public void launchSuperviseSmsSending(final SMSBroker smsMessageList) {
 		// use hashCode of smsMessage
 		
 		final long now = System.currentTimeMillis();
@@ -42,12 +40,12 @@ public class SchedulerUtils {
 		final String groupName = Scheduler.DEFAULT_GROUP;
    		
 		try {
-		  for (SMSBroker smsMessage : smsMessageList) {
 			if (logger.isDebugEnabled()) {
+		    for (SMSBroker.Rcpt smsMessage : smsMessageList.rcpts) {
 				logger.debug("smsMessage in launchSuperviseSmsSending is : " + 
-					     " - smsMessage id is : " + smsMessage.getId() + 
-					     " - smsMessage content is : " + smsMessage.getMessage() + 
-					     " - smsMessage phone is : " + smsMessage.getRecipient());
+					     " - smsMessage id is : " + smsMessage.id + 
+					     " - smsMessage content is : " + smsMessageList.message + 
+					     " - smsMessage phone is : " + smsMessage.recipient);
 			 }
 		  }
 			

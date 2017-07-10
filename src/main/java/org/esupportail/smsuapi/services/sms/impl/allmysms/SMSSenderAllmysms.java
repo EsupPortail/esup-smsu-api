@@ -42,24 +42,13 @@ public class SMSSenderAllmysms implements ISMSSender {
     protected RestTemplate restTemplate;
 
     public synchronized void sendMessage(final SMSBroker sms) {
-        final int smsId = sms.getId();
-        final String smsRecipient = sms.getRecipient();
-        final String smsMessage = sms.getMessage();
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Entering into send message with parameter : ");
-            logger.debug("   - message id : " + smsId);
-            logger.debug("   - message recipient : " + smsRecipient);
-            logger.debug("   - message : " + smsMessage);
-        }
-
         try {
             if (logger.isDebugEnabled()) {
-                final String messageISOLatin = new String(smsMessage.getBytes(), "ISO-8859-1");
+                final String messageISOLatin = new String(sms.message.getBytes(), "ISO-8859-1");
                 logger.debug("sending encoded message : " + messageISOLatin);
             }
 
-            AllmysmsRequest req = new AllmysmsRequest(smsMessage, smsRecipient, computeSenderlabel(sms));
+            AllmysmsRequest req = new AllmysmsRequest(sms.message, sms.rcpts, computeSenderlabel(sms));
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("login", account_login);
@@ -74,15 +63,18 @@ public class SMSSenderAllmysms implements ISMSSender {
             logger.info("allmysms response " + resp.toString());
             save_message_id(sms, resp);
         } catch (Throwable t) {
-            logger.error("An error occurs sending SMS : " +
-
-                    " - id : " + smsId + " - recipient : " + smsRecipient + " - message : " + smsMessage, t);
+            logger.error("An error occurs sending SMS " + sms.message, t);
+            for (SMSBroker.Rcpt s : sms.rcpts) {
+                logger.error(" to " + s.id + " - recipient : " + s.recipient + " - message : " + sms.message);
+            }
         }
 
     }
 
     private void save_message_id(SMSBroker sms, AllmysmsResponse response) {
-        Sms smsDB = daoService.getSms(sms.getId());
+      int i = 0;
+      for (SMSBroker.Rcpt s : sms.rcpts) {
+        Sms smsDB = daoService.getSms(s.id);
 
         if (response.status == null || response.status != 100) {
             logger.error("allmysend send failed: " + response);
@@ -90,15 +82,16 @@ public class SMSSenderAllmysms implements ISMSSender {
         }
 
         if (response.smsIds != null) {
-            AllmysmsResponse.SmsId respIds = response.smsIds.get(0);
+            AllmysmsResponse.SmsId respIds = response.smsIds.get(i++);
             smsDB.setBrokerId(respIds.smsId);
         }
 
         daoService.updateSms(smsDB);
     }
+    }
 
     private String computeSenderlabel(SMSBroker sms) {
-        return SMSSenderSmsenvoiImpl.computeSenderlabel(logger, from, sms.getAccountLabel());
+        return SMSSenderSmsenvoiImpl.computeSenderlabel(logger, from, sms.accountLabel);
     }
 
     @Required

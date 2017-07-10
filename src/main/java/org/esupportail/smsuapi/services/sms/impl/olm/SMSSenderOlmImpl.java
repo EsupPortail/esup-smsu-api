@@ -1,8 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.apache.log4j.Logger;
-import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.sms.OldISMSSender;
 
 import fr.cvf.util.mgs.message.NotificationLevel;
 import fr.cvf.util.mgs.mode.sgs.impl.message.request.RequestFactory;
@@ -13,7 +12,7 @@ import fr.cvf.util.mgs.mode.sgs.message.request.SMText;
  * @author PRQD8824
  *
  */
-public class SMSSenderOlmImpl implements ISMSSender {
+public class SMSSenderOlmImpl extends OldISMSSender {
 
 	/**
 	 * Log4j logger.

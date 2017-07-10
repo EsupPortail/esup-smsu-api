@@ -9,9 +9,8 @@ import org.codehaus.jackson.JsonNode;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
-import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.sms.OldISMSSender;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils;
 
@@ -21,7 +20,7 @@ import org.esupportail.smsuapi.utils.HttpUtils;
  * @author prigaux
  *
  */
-public class SMSSenderSmsenvoiImpl implements ISMSSender {
+public class SMSSenderSmsenvoiImpl extends OldISMSSender {
 
 	/**
 	 * Log4j logger.

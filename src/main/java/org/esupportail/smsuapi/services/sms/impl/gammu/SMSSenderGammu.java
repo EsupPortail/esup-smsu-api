@@ -5,8 +5,7 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
-import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.sms.OldISMSSender;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.ClassPathResource;
 
@@ -15,7 +14,7 @@ import org.springframework.core.io.ClassPathResource;
  * Gammu SMS sender.
  *
  */
-public class SMSSenderGammu implements ISMSSender {
+public class SMSSenderGammu extends OldISMSSender {
 
 	private final Logger logger = new LoggerImpl(getClass());
 

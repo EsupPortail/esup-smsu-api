@@ -1,6 +1,6 @@
 package org.esupportail.smsuapi.services.sms.impl.allmysms;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.io.IOException;
@@ -8,15 +8,20 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 
 public class AllmysmsRequest {
 
-    public AllmysmsRequest(String smsMessage, String smsRecipient, String senderLabel) {
+    public AllmysmsRequest(String smsMessage, List<SMSBroker.Rcpt> smsRecipients, String senderLabel) {
         DATA = new DATA();
         DATA.MESSAGE = smsMessage;
+        ArrayList<SMS> smss = new ArrayList<>();
+        for (SMSBroker.Rcpt smsRecipient : smsRecipients) {
         SMS sms = new SMS();
-        sms.MOBILEPHONE = smsRecipient;
-        DATA.SMS = Collections.singletonList(sms);
+            sms.MOBILEPHONE = smsRecipient.recipient;
+            smss.add(sms);
+        }
+        DATA.SMS = smss;
         DATA.TPOA = senderLabel;
     }
 

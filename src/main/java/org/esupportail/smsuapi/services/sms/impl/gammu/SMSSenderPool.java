@@ -4,26 +4,25 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
-import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
-import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.esupportail.smsuapi.services.sms.OldISMSSender;
 
 
 /**
  * SMS sender Pool.
  *
  */
-public class SMSSenderPool implements ISMSSender {
+public class SMSSenderPool extends OldISMSSender {
 
 	private final Logger logger = Logger.getLogger(getClass());
 
-	private ConcurrentLinkedQueue<ISMSSender> pool;
+	private ConcurrentLinkedQueue<OldISMSSender> pool;
 
 	// 1 sec.
 	private final static long POOL_WAIT_AVAILABLE = 1000;
 
 
 	public void sendMessage(final SMSBroker sms) {
-		ISMSSender smsSender = null;
+		OldISMSSender smsSender = null;
 		try {
 			smsSender = borrowSmsSender();
 			smsSender.sendMessage(sms);
@@ -34,22 +33,22 @@ public class SMSSenderPool implements ISMSSender {
 		}
 	}
 
-	private ISMSSender borrowSmsSender() throws InterruptedException {
-		ISMSSender smsSender;
+	private OldISMSSender borrowSmsSender() throws InterruptedException {
+		OldISMSSender smsSender;
 		while ((smsSender = pool.poll()) == null) {
 			Thread.sleep(POOL_WAIT_AVAILABLE);
 		}
 		return smsSender;
 	}
 
-	private void returnSmsSender(ISMSSender smsSender) {
+	private void returnSmsSender(OldISMSSender smsSender) {
 		if (smsSender == null) {
 			return;
 		}
 		this.pool.offer(smsSender);
 	}
 
-	public void setPool(List<ISMSSender> pool) {
+	public void setPool(List<OldISMSSender> pool) {
 		this.pool = new ConcurrentLinkedQueue<>(pool);
 	}
 
