@@ -79,7 +79,7 @@ public class SchedulerUtils {
 		} catch (SchedulerException e) {
 			logger.warn("An error occurs launching the job with parameter : \n" + 
 				    " - jobName : " + jobName + "\n" + 
-				    " - groupName : " + groupName + "\n");
+				    " - groupName : " + groupName + "\n", e);
 		}
 	}
 		
