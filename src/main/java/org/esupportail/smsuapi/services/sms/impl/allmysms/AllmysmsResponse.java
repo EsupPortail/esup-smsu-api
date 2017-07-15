@@ -18,8 +18,8 @@ public class AllmysmsResponse {
     public String invalidNumbers;
     public String campaignId;
     public String credits;
-    public String creditsUsed; // obsolete? replaced with nbCredits?
-    public String nbCredits;
+    public String creditsUsed;
+    public String nbCredits; // obsolete? replaced with nbCredits?
     public String nbContacts;
     public String nbSms;
     public List<SmsId> smsIds;
