@@ -24,11 +24,6 @@
 		class="org.esupportail.smsuapi.services.remote.SendTrack"
 		>
 	</bean>
-
-	<bean 
-		id="sendsms" 
-		class="org.esupportail.smsuapi.services.remote.SendSms">
-	</bean>
 	
 	<bean 
 		id="smsuapiStatus" 

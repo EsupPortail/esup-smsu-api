@@ -20,7 +20,7 @@ public class RestServletActions {
 	private final Logger logger = Logger.getLogger(getClass());
 
 	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
-	@Autowired private org.esupportail.smsuapi.services.remote.SendSms sendSms;
+	@Autowired private org.esupportail.smsuapi.business.SendSmsManager sendSms;
 	@Autowired private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
 	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
@@ -40,12 +40,12 @@ public class RestServletActions {
 	 */
 	private Integer sendSMS(Integer msgId, Integer senderId, 
 			     String[] smsPhones, String labelAccount, String msgContent) throws InsufficientQuotaException {
-		sendSms.mayCreateAccountCheckQuotaOk(smsPhones.length, labelAccount);
-		return sendSms.sendSMS(msgId, senderId, null, null, smsPhones, labelAccount, msgContent);
+		sendSms.mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
+		return sendSms.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
 	}
 
 	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws InsufficientQuotaException {
-		sendSms.mayCreateAccountCheckQuotaOk(
+		sendSms.mayCreateAccountAndCheckQuotaOk(
 				getInteger(req, "nbDest"), getString(req, "account"));
 		return singletonMap("status", "OK");
 	}
@@ -133,7 +133,7 @@ public class RestServletActions {
 	/**
 	 * Standard setter used by spring.
 	 */
-	public void setSendSms(final org.esupportail.smsuapi.services.remote.SendSms sendSms) {
+	public void setSendSms(final org.esupportail.smsuapi.business.SendSmsManager sendSms) {
 		this.sendSms = sendSms;
 	}
 

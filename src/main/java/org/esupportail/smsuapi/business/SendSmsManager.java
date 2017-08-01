@@ -82,7 +82,10 @@ public class SendSmsManager {
 	 */
 	public Account mayCreateAccountAndCheckQuotaOk(final Integer nbDest, final String labelAccount) 
 	throws InsufficientQuotaException {
-
+	    logger.info("mayCreateAccountCheckQuotaOk method with parameters : " + 
+				     " - nbDest = " + nbDest + 
+                     " - labelAccount = " + labelAccount);
+                          
 		Application app = clientManager.getApplication();
 		{
 			Account acc = labelAccount == null ? app.getAcc() :
@@ -109,6 +112,14 @@ public class SendSmsManager {
 	public Integer sendSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
 			final String labelAccount, final String msgContent) throws InsufficientQuotaException {
+
+                logger.info("Receive from SendSms client message : " + 
+				     " - message id = " + msgId + 
+				     " - sender id = " + senderId + 
+				     " - recipient phone numbers = " + join(smsPhones, " ") + 
+				     " - user label account = " + labelAccount + 
+				     " - message = " + msgContent);
+
 
 			checkPhoneNumbers(smsPhones);
 			
@@ -204,7 +215,23 @@ public class SendSmsManager {
 	 */
 	public void sendWaitingForSendingSms(final SMSBroker smsMessage) {
 		smsSender.sendMessage(smsMessage);
+    }
+
+	public static String join(Object[] elements, CharSequence separator) {
+		if (elements == null) return "";
+
+		StringBuilder sb = null;
+
+		for (Object s : elements) {
+			if (sb == null)
+				sb = new StringBuilder();
+			else
+				sb.append(separator);
+			sb.append(s);			
+		}
+		return sb == null ? "" : sb.toString();
 	}
+
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////
