@@ -74,14 +74,20 @@ public class DomainService implements InitializingBean {
     //////////////////////////////////////////////////////////////
  	public TrackInfos getTrackInfos(final Integer msgId) 
 			throws UnknownMessageIdException {
-		logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
+        logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
+        
+        Application app = clientManager.getApplication();
+    
 		TrackInfos infos = new TrackInfos();
-		infos.setNbDestTotal(getNbDest(msgId));
-		infos.setNbDestBlackList(getNbDestBlackList(msgId));
-		infos.setNbSentSMS(getNbSentSMS(msgId));
-		infos.setNbProgressSMS(getNbProgressSMS(msgId));
-		infos.setNbErrorSMS(getNbErrorSMS(msgId));
-		infos.setListNumErreur(getListNumErreur(msgId));
+		infos.setNbDestTotal(daoService.getNbDest(msgId, app));
+        if (infos.getNbDestTotal() == 0) {
+            throw new UnknownMessageIdException();
+        }
+		infos.setNbDestBlackList(daoService.getNbSmsWithState(msgId, app, blacklistStatuses()));
+		infos.setNbSentSMS(daoService.getNbSentSMS(msgId, app));
+		infos.setNbProgressSMS(daoService.getNbProgressSMS(msgId, app));
+		infos.setNbErrorSMS(daoService.getNbErrorSMS(msgId, app, errorStatuses()));
+		infos.setListNumErreur(sms2phones(daoService.getListNumErreur(msgId, app, errorStatuses())));
 		
 		logger.info("Response TrackInfos object, for the client of WS SendTrack : " + 
 				     "TrackInfos.NbDestTotal : " + infos.getNbDestTotal().toString() + 
@@ -98,90 +104,22 @@ public class DomainService implements InitializingBean {
 		return infos;
 	}
    
-	/**
-	 * @return the number of SMS recipients.
-	 * @throws UnknownMessageIdException 
-	 */
-	private int getNbDest(final Integer msgId) throws UnknownMessageIdException {
-		Application app = clientManager.getApplication();
-		{
-			if (daoService.getNbDest(msgId, app) == 0) {
-				throw new UnknownMessageIdException();
-			} else {
-				return daoService.getNbDest(msgId, app);
-			}
-		}	
-	}
-
-	/**
-	 * @return the non-authorized phone numbers (in black list).
-	 */
-	private int getNbDestBlackList(final Integer msgId) {
-		List<String> list = new ArrayList<>();
-		list.add(SmsStatus.ERROR_PRE_BL.name());
-		list.add(SmsStatus.ERROR_POST_BL.name());
-
-		Application app = clientManager.getApplication();
-		return daoService.getNbSmsWithState(msgId, app, list);
-
-
-	}
-
-	/**
-	 * @return the number of sent SMS.
-	 * @throws AuthenticationFailed 
-	 */
-	private int getNbSentSMS(final Integer msgId) {
-		Application app = clientManager.getApplication();
-		return daoService.getNbSentSMS(msgId, app);
-
-
-	}
-
-	/**
-	 * @return the number of SMS in progress.
-	 * @throws AuthenticationFailed 
-	 */
-	private int getNbProgressSMS(final Integer msgId) {
-		Application app = clientManager.getApplication();
-		return daoService.getNbProgressSMS(msgId, app);
-	}
-
-	/**
-	 * @return the number of SMS in error.
-	 * @throws AuthenticationFailed 
-	 * @throws Exception 
-	 */
-	private int getNbErrorSMS(final Integer msgId) {
+    private List<String> errorStatuses() {
 		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
-		list.add(SmsStatus.ERROR_POST_BL.name());
+        list.add(SmsStatus.ERROR_POST_BL.name());
+        return list;
+    }
 
-		Application app = clientManager.getApplication();
-		return daoService.getNbErrorSMS(msgId, app, list);
-
-	}
-
-	/**
-	 * @return the number of SMS in error.
-	 */
-	private Set<String> getListNumErreur(final Integer msgId) {
-		// list criteria for HQL query 
-		List<String> list = new ArrayList<>();
-		list.add(SmsStatus.ERROR.name());
-		list.add(SmsStatus.ERROR_POST_BL.name());
+    private List<String> blacklistStatuses() {
+        List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
+		list.add(SmsStatus.ERROR_POST_BL.name());
+        return list;
+    }
 
-		List<Sms> smslist = new ArrayList<>();
-
-		Application app = clientManager.getApplicationOrNull();
-
-		if (app != null) {
-			// Retrieve list of phones numbers 	
-			smslist = daoService.getListNumErreur(msgId, app, list);
-		}
-		
+    private Set<String> sms2phones(List<Sms> smslist) {
 		Set<String> nums = new HashSet<>();
 		for (Sms sms : smslist) nums.add(sms.getPhone());
 		return nums;
