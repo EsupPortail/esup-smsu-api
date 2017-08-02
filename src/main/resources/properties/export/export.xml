@@ -18,13 +18,7 @@
 
 	<!-- for spring annotation @Autowired -->
 	<context:annotation-config />
-	
-	<bean 
-		id="sendtrack" 
-		class="org.esupportail.smsuapi.services.remote.SendTrack"
-		>
-	</bean>
-	
+		
 	<bean 
 		id="smsuapiStatus" 
 		class="org.esupportail.smsuapi.services.remote.SmsuapiStatus">

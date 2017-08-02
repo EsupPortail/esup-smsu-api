@@ -21,7 +21,7 @@ public class RestServletActions {
 
 	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
 	@Autowired private org.esupportail.smsuapi.business.SendSmsManager sendSms;
-	@Autowired private org.esupportail.smsuapi.services.remote.SendTrack sendTrack;
+	@Autowired private org.esupportail.smsuapi.domain.DomainService domainService;
 	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
 	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
@@ -59,7 +59,7 @@ public class RestServletActions {
 	}
 
     	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownMessageIdException {    
-		return sendTrack.getTrackInfos(getInteger(req, "id"));
+		return domainService.getTrackInfos(getInteger(req, "id"));
 	}
 
     	public Object wsActionMessageStatus(HttpServletRequest req) throws UnknownMessageIdException {
@@ -140,8 +140,8 @@ public class RestServletActions {
 	/**
 	 * Standard setter used by spring.
 	 */
-	public void setSendTrack(final org.esupportail.smsuapi.services.remote.SendTrack sendTrack) {
-		this.sendTrack = sendTrack;
+	public void setDomainService(final org.esupportail.smsuapi.domain.DomainService domainService) {
+		this.domainService = domainService;
 	}
 
 	/**

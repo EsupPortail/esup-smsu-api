@@ -16,6 +16,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
+import org.esupportail.ws.remote.beans.TrackInfos;
 import org.springframework.beans.factory.InitializingBean;
 
 
@@ -70,12 +71,38 @@ public class DomainService implements InitializingBean {
 
 	//////////////////////////////////////////////////////////////
 	// WS SendTrack methods
-	//////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////
+ 	public TrackInfos getTrackInfos(final Integer msgId) 
+			throws UnknownMessageIdException {
+		logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
+		TrackInfos infos = new TrackInfos();
+		infos.setNbDestTotal(getNbDest(msgId));
+		infos.setNbDestBlackList(getNbDestBlackList(msgId));
+		infos.setNbSentSMS(getNbSentSMS(msgId));
+		infos.setNbProgressSMS(getNbProgressSMS(msgId));
+		infos.setNbErrorSMS(getNbErrorSMS(msgId));
+		infos.setListNumErreur(getListNumErreur(msgId));
+		
+		logger.info("Response TrackInfos object, for the client of WS SendTrack : " + 
+				     "TrackInfos.NbDestTotal : " + infos.getNbDestTotal().toString() + 
+				     "TrackInfos.NbSentSMS : " + infos.getNbSentSMS().toString() + 
+				     "TrackInfos.NbProgressSMS : " + infos.getNbProgressSMS().toString() + 
+				     "TrackInfos.NbDestBlackList :" + infos.getNbDestBlackList().toString() + 
+				     "TrackInfos.NbErrorSMS : " + infos.getNbErrorSMS().toString());
+		
+		Set<String> listnums = infos.getListNumErreur();
+		for (String phone : listnums) {
+			logger.info("TrackInfos.NumErreur : " + phone);
+	    	}
+	    
+		return infos;
+	}
+   
 	/**
 	 * @return the number of SMS recipients.
 	 * @throws UnknownMessageIdException 
 	 */
-	public int getNbDest(final Integer msgId) throws UnknownMessageIdException {
+	private int getNbDest(final Integer msgId) throws UnknownMessageIdException {
 		Application app = clientManager.getApplication();
 		{
 			if (daoService.getNbDest(msgId, app) == 0) {
@@ -89,7 +116,7 @@ public class DomainService implements InitializingBean {
 	/**
 	 * @return the non-authorized phone numbers (in black list).
 	 */
-	public int getNbDestBlackList(final Integer msgId) {
+	private int getNbDestBlackList(final Integer msgId) {
 		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
 		list.add(SmsStatus.ERROR_POST_BL.name());
@@ -104,7 +131,7 @@ public class DomainService implements InitializingBean {
 	 * @return the number of sent SMS.
 	 * @throws AuthenticationFailed 
 	 */
-	public int getNbSentSMS(final Integer msgId) {
+	private int getNbSentSMS(final Integer msgId) {
 		Application app = clientManager.getApplication();
 		return daoService.getNbSentSMS(msgId, app);
 
@@ -115,7 +142,7 @@ public class DomainService implements InitializingBean {
 	 * @return the number of SMS in progress.
 	 * @throws AuthenticationFailed 
 	 */
-	public int getNbProgressSMS(final Integer msgId) {
+	private int getNbProgressSMS(final Integer msgId) {
 		Application app = clientManager.getApplication();
 		return daoService.getNbProgressSMS(msgId, app);
 	}
@@ -125,7 +152,7 @@ public class DomainService implements InitializingBean {
 	 * @throws AuthenticationFailed 
 	 * @throws Exception 
 	 */
-	public int getNbErrorSMS(final Integer msgId) {
+	private int getNbErrorSMS(final Integer msgId) {
 		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR.name());
 		list.add(SmsStatus.ERROR_PRE_BL.name());
@@ -139,7 +166,7 @@ public class DomainService implements InitializingBean {
 	/**
 	 * @return the number of SMS in error.
 	 */
-	public Set<String> getListNumErreur(final Integer msgId) {
+	private Set<String> getListNumErreur(final Integer msgId) {
 		// list criteria for HQL query 
 		List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR.name());
