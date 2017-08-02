@@ -86,7 +86,7 @@
 
 	<bean 
 		id="daoService" 
-		class="org.esupportail.smsuapi.dao.HibernateDaoServiceImpl" 
+		class="org.esupportail.smsuapi.dao.DaoService" 
 		lazy-init="true"
 		>
 		<description>
