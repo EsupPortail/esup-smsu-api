@@ -20,11 +20,6 @@
 	<context:annotation-config />
 		
 	<bean 
-		id="reporting" 
-		class="org.esupportail.smsuapi.services.remote.Reporting">
-	</bean>
-	
-	<bean 
 		id="testConnexion" 
 		class="org.esupportail.smsuapi.services.remote.TestConnexion">
 	</bean>
