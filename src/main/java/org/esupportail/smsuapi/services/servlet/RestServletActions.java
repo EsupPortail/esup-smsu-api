@@ -23,7 +23,6 @@ public class RestServletActions {
 	@Autowired private org.esupportail.smsuapi.business.SendSmsManager sendSms;
 	@Autowired private org.esupportail.smsuapi.domain.DomainService domainService;
 	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
-	@Autowired private org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws InsufficientQuotaException {
 		Integer id = sendSMS(getInteger(req, "id", null),
@@ -72,7 +71,7 @@ public class RestServletActions {
 		for (int i = 0; i < ids.length; i++) {
 			list.add(new MsgIdAndPhone(Integer.parseInt(ids[i]), phoneNumbers[i]));
 		}
-		return smsuapiStatus.getStatus(list);
+		return domainService.getStatus(list);
 	}
 
 	boolean isAuthValid() {
@@ -142,13 +141,6 @@ public class RestServletActions {
 	 */
 	public void setDomainService(final org.esupportail.smsuapi.domain.DomainService domainService) {
 		this.domainService = domainService;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 */
-	public void setSmsuapiStatus(final org.esupportail.smsuapi.services.remote.SmsuapiStatus smsuapiStatus) {
-		this.smsuapiStatus = smsuapiStatus;
 	}
 
 }

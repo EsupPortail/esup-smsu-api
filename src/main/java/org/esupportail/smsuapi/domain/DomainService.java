@@ -16,6 +16,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
+import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.esupportail.ws.remote.beans.TrackInfos;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -125,9 +126,26 @@ public class DomainService implements InitializingBean {
 		return nums;
 	}
 
-	public Sms getSms(Integer msgId, String phoneNumber) {
+	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone) {
+		{
+			final StringBuilder sb = new StringBuilder(500);
+			logger.info("Receive request for SmsuapiStatus.getStatus:");
+			for (MsgIdAndPhone m : listMsgIdAndPhone) sb.append(" " + m);
+			logger.info(sb.toString());
+        }
+        
 		Application app = clientManager.getApplication();
-		
+
+		List<String> l = new ArrayList<>();
+
+		for (MsgIdAndPhone m : listMsgIdAndPhone) {
+			Sms sms = getSms(m.getMsgId(), m.getPhoneNumber(), app);
+			l.add(sms == null ? null : sms.getStateAsEnum().toString());
+		}
+		return l;
+	}
+
+    private Sms getSms(Integer msgId, String phoneNumber, Application app) {
 		List<Sms> l = daoService.getSms(app, msgId, phoneNumber);
 		if (l.size() == 0) {
 			return null;
