@@ -174,9 +174,7 @@ public class DaoService extends HibernateDaoSupport
 			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
 			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
 			criteria.add(Restrictions.in(Sms.PROP_STATE, list));
-			List<Sms> sms = getHibernateTemplate().findByCriteria(criteria);  
-			return  sms;   
-			
+			return getHibernateTemplate().findByCriteria(criteria);  
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -209,21 +207,14 @@ public class DaoService extends HibernateDaoSupport
 		criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID,id));
 		criteria.add(Restrictions.eq(Sms.PROP_APP,app));
 		criteria.add(Restrictions.eq(Sms.PROP_PHONE, phoneNumber));
-		List<Sms> lstSms = getHibernateTemplate().findByCriteria(criteria);
-		
-		return lstSms;
+		return getHibernateTemplate().findByCriteria(criteria);
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Sms> getSms(SmsStatus status) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
 		criteria.add(Restrictions.eq(Sms.PROP_STATE, status.name()));
-		List<Sms> lstSms = getHibernateTemplate().findByCriteria(criteria);		
-		return lstSms;
-	}
-
-	public List<Sms> getSmss() {
-		return getHibernateTemplate().loadAll(Sms.class);
+		return getHibernateTemplate().findByCriteria(criteria);		
 	}
 
 	/**
@@ -251,14 +242,6 @@ public class DaoService extends HibernateDaoSupport
 	/**
 	 * @param sms
 	 */
-	public void deleteSms(final Sms sms) {
-		deleteObject(sms);
-	}
-
-	
-	/**
-	 * @param sms
-	 */
 	public void updateSms(final Sms sms) {
 		updateObject(sms);
 	}
@@ -269,14 +252,12 @@ public class DaoService extends HibernateDaoSupport
 	 * (org.esupportail.smsuapi.dao.beans.Application, org.esupportail.smsuapi.dao.beans.Account)
 	 */
 	public Date getDateOfOlderSmsByApplicationAndAccount(final Application application, final Account account) {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Sms.class);
+		final Criteria criteria = getCurrentSession().createCriteria(Sms.class);
 		criteria.add(Restrictions.eq(Sms.PROP_APP, application));
 		criteria.add(Restrictions.eq(Sms.PROP_ACC, account));
 		
 		criteria.setProjection(Projections.min(Sms.PROP_DATE));
-		final Date result = (Date) criteria.uniqueResult();
-		return result;
+		return (Date) criteria.uniqueResult();
 	}
 	
 	/* (non-Javadoc)
@@ -368,10 +349,7 @@ public class DaoService extends HibernateDaoSupport
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Application> getAllApplications() {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Application.class);
-		final List<Application> allApplicationList = criteria.list();
-		return allApplicationList;
+		return getCurrentSession().createCriteria(Application.class).list();
 	}
  	
 	/**
@@ -385,11 +363,9 @@ public class DaoService extends HibernateDaoSupport
 	 * @see org.esupportail.smsuapi.dao.DaoService#getApplicationByName(java.lang.String)
 	 */
 	public Application getApplicationByName(final String name) {
-		Session currentSession = getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Application.class);
+		Criteria criteria = getCurrentSession().createCriteria(Application.class);
 		criteria.add(Restrictions.eq(Application.PROP_NAME, name));
-		Application application = (Application) criteria.uniqueResult();
-		return application;
+		return (Application) criteria.uniqueResult();
 	}
 	
 	//////////////////////////////////////////////////////////////
@@ -410,29 +386,14 @@ public class DaoService extends HibernateDaoSupport
 	 * @see org.esupportail.smsuapi.dao.DaoService#isPhoneNumberInBlackList(java.lang.String)
 	 */
 	public boolean isPhoneNumberInBlackList(final String phoneNumber) {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Blacklist.class);
+		final Criteria criteria = getCurrentSession().createCriteria(Blacklist.class);
 		criteria.add(Restrictions.eq(Blacklist.PROP_BLA_PHONE, phoneNumber));
-		final Blacklist phoneNumberInBlacklist =  (Blacklist) criteria.uniqueResult();
-		
-		boolean retVal;
-		if (phoneNumberInBlacklist != null) {
-			retVal = true;
-		} else {
-			retVal = false;
-		}
-		
-		return retVal;
+		return criteria.uniqueResult() != null;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Blacklist> getListPhoneNumbersInBlackList() {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Blacklist.class);
-		
-		final List<Blacklist> listPhoneNumbersInBlackList =  criteria.list();
-		
-		return listPhoneNumbersInBlackList;
+        return getCurrentSession().createCriteria(Blacklist.class).list();
 	}
 	//////////////////////////////////////////////////////////////
 	// Statistic
@@ -452,8 +413,6 @@ public class DaoService extends HibernateDaoSupport
 	 */
 	public boolean isStatisticExistsForApplicationAndAccountAndDate(final Application application,
 							final Account account, final Date date) {
-		final Session currentSession = getCurrentSession();
-		
 		final Calendar dateAsCal = new GregorianCalendar();
 		dateAsCal.setTime(date);
 		final int year = dateAsCal.get(Calendar.YEAR);
@@ -469,51 +428,15 @@ public class DaoService extends HibernateDaoSupport
 		hql.append("       month(stats.id.Month) = :month and");
 		hql.append("       day(stats.id.Month) = :day");
 		
-		final Query query = currentSession.createQuery(hql.toString());
+		final Query query = getCurrentSession().createQuery(hql.toString());
 		query.setInteger("app_id", application.getId());
 		query.setInteger("acc_id", account.getId());
 		query.setInteger("year", year);
 		query.setInteger("month", month);
 		query.setInteger("day", day);
-		
-		final Statistic result = (Statistic) query.uniqueResult();
-		
-		boolean exist;
-		if (result != null) {
-			exist = true;
-		} else {
-			exist = false;
-		}
-
-		return exist;
+		return query.uniqueResult() != null;
 	}
 	
-	/**
-	 * Return Statistic.
-	 * @param month
-	 * @param year
-	 * @return
-	 */
-	public Statistic getStatisticByApplicationAndMonthAndYear(final Application application, 
-			final int month, final int year) {
-		final Session currentSession = getCurrentSession();
-		
-		final StringBuilder hql = new StringBuilder(200);
-		hql.append("select stats from Statistic as stats ");
-		hql.append(" where stats.id.App.id = :app_id and ");
-		hql.append("       year(stats.id.Month) = :year and");
-		hql.append("       month(stats.id.Month) = :month");
-		
-		final Query query = currentSession.createQuery(hql.toString());
-		query.setInteger("app_id", application.getId());
-		query.setInteger("year", year);
-		query.setInteger("month", month);
-		
-		final Statistic result = (Statistic) query.uniqueResult();
-		return result;
-	}
-	
-
 	@SuppressWarnings("unchecked")
 	public List<Map<String,?>> getAppsAndCountsToTreat() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
