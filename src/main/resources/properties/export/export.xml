@@ -19,12 +19,6 @@
 	<!-- for spring annotation @Autowired -->
 	<context:annotation-config />
 		
-	<bean 
-		id="testConnexion" 
-		class="org.esupportail.smsuapi.services.remote.TestConnexion">
-	</bean>
-
-
 	<bean id="restServletActions"
 	      class="org.esupportail.smsuapi.services.servlet.RestServletActions">
 	</bean>

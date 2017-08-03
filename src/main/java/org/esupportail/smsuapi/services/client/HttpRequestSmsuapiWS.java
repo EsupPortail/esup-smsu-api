@@ -83,6 +83,7 @@ public class HttpRequestSmsuapiWS {
 		}
 	}
 
+    @Deprecated
 	public String testConnexion() throws HttpException {
 		Pair[] params = {};
 		JsonNode json = request("TestConnexion", params);

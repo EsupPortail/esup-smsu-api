@@ -157,20 +157,6 @@ public class DomainService implements InitializingBean {
 		}
 	}
 
-	/**
-	 * @see org.esupportail.smsuapi.domain.DomainService#testConnexion()
-	 */
-	public String testConnexion() {
-
-		String sReturn = "Application reconnue : ";
-		String application = clientManager.getClientName();
-
-		if (application.equals(""))
-		    return "ERROR : " + clientManager.getNoBasicAuthErrorMessage();
-		else 
-		    return sReturn + application;
-	}
-
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////

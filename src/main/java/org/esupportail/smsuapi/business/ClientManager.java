@@ -40,20 +40,6 @@ public class ClientManager {
 		return "no basic auth received by smsuapi. You must use Basic Auth";
 	}
 
-	/**
-	 * @return the client name, "unknown" if the name can not be found.
-	 * @throws IllegalArgumentException
-	 */
-	public String getClientName() throws IllegalArgumentException {
-		String cn = getBasicAuthUser();
-		if (cn == null) { 
-			logger.info(getNoBasicAuthErrorMessage());
-			return "";
-		} else {
-			return cn;
-		}
-	}
-
 	private HttpServletRequest getHttpServletRequest() {
 		// need <listener> RequestContextListener in web.xml
 		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -107,11 +93,6 @@ public class ClientManager {
 		String userPass = decodeBase64(matcher.group(1));
 		logger.debug("found basic auth " + userPass);
 		return userPass.split(":", 2);
-	}
-
-	private String getBasicAuthUser() {
-		String[] userAndPassword = getBasicAuth();
-		return userAndPassword == null ? null : userAndPassword[0];
 	}
 
 	private String decodeBase64(String s) {
