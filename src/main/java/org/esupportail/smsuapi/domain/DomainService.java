@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.esupportail.commons.utils.Assert;
-import org.esupportail.smsuapi.business.ClientManager;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -33,11 +32,6 @@ public class DomainService implements InitializingBean {
 	 * {@link DaoService}.
 	 */
 	private DaoService daoService;
-
-	/**
-	 *  {@link ClientManager}.
-	 */
-	private ClientManager clientManager;
 
 	/**
 	 * A logger.
@@ -73,12 +67,10 @@ public class DomainService implements InitializingBean {
 	//////////////////////////////////////////////////////////////
 	// WS SendTrack methods
     //////////////////////////////////////////////////////////////
- 	public TrackInfos getTrackInfos(final Integer msgId) 
+ 	public TrackInfos getTrackInfos(final Integer msgId, Application app) 
 			throws UnknownMessageIdException {
         logger.info("WS SendTrack receives the client request with parameter msgId = " + msgId);
         
-        Application app = clientManager.getApplication();
-    
 		TrackInfos infos = new TrackInfos();
 		infos.setNbDestTotal(daoService.getNbDest(msgId, app));
         if (infos.getNbDestTotal() == 0) {
@@ -126,7 +118,7 @@ public class DomainService implements InitializingBean {
 		return nums;
 	}
 
-	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone) {
+	public List<String> getStatus(List<MsgIdAndPhone> listMsgIdAndPhone, Application app) {
 		{
 			final StringBuilder sb = new StringBuilder(500);
 			logger.info("Receive request for SmsuapiStatus.getStatus:");
@@ -134,8 +126,6 @@ public class DomainService implements InitializingBean {
 			logger.info(sb.toString());
         }
         
-		Application app = clientManager.getApplication();
-
 		List<String> l = new ArrayList<>();
 
 		for (MsgIdAndPhone m : listMsgIdAndPhone) {
@@ -155,13 +145,6 @@ public class DomainService implements InitializingBean {
 		} else {
 			return l.get(0);
 		}
-	}
-
-	///////////////////////////////////////
-	//  Mutators
-	//////////////////////////////////////
-	public void setClientManager(final ClientManager clientManager) {
-		this.clientManager = clientManager;
 	}
 
 }

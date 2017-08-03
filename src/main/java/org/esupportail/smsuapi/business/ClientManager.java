@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * @author xphp8691
@@ -39,23 +37,18 @@ public class ClientManager {
 	public String getNoBasicAuthErrorMessage() {
 		return "no basic auth received by smsuapi. You must use Basic Auth";
 	}
-
-	private HttpServletRequest getHttpServletRequest() {
-		// need <listener> RequestContextListener in web.xml
-		return ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-	}
-
-	public Application getApplication() throws AuthenticationFailed {
-		String[] basicAuth = getBasicAuth();
+    
+	public Application getApplication(HttpServletRequest req) throws AuthenticationFailed {
+		String[] basicAuth = getBasicAuth(req);
 		if (basicAuth != null) 
 			return getApplicationByBasicAuth(basicAuth);
 		
 		throw new AuthenticationFailed(getNoBasicAuthErrorMessage());
 	}
 
-	public Application getApplicationOrNull() {
+	public Application getApplicationOrNull(HttpServletRequest req) {
 		try {
-			return getApplication();
+			return getApplication(req);
 		} catch (AuthenticationFailed e) {
 			logger.error("" + e);
 			return null;
@@ -82,8 +75,7 @@ public class ClientManager {
 		return app.getPassword();
 	}
 
-	private String[] getBasicAuth() {
-		HttpServletRequest request = getHttpServletRequest();
+	private String[] getBasicAuth(HttpServletRequest request) {
 		String authHeader = request.getHeader("Authorization");
 		if (authHeader == null) return null;
 

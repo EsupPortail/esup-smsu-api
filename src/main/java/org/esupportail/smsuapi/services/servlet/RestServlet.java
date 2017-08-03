@@ -40,7 +40,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 	}
 
 	private void executeMethodRaw(Method m, HttpServletRequest req, HttpServletResponse resp) throws Throwable {
-		if (!restServletActions.isAuthValid()) {
+		if (!restServletActions.isAuthValid(req)) {
 			answerBasicAuthNeeded(resp);
 			return;
 		}

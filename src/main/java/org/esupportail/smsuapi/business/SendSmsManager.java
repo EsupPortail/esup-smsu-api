@@ -63,10 +63,9 @@ public class SendSmsManager {
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	public void checkQuotaOk(final Integer nbDest, Account account) 
+	public void checkQuotaOk(final Integer nbDest, Account account, Application app) 
 	throws InsufficientQuotaException {
 
-		Application app = clientManager.getApplication();
 		{
 			if (account == null) account = app.getAcc();
 
@@ -80,13 +79,12 @@ public class SendSmsManager {
 		/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	public Account mayCreateAccountAndCheckQuotaOk(final Integer nbDest, final String labelAccount) 
+	public Account mayCreateAccountAndCheckQuotaOk(final Integer nbDest, String labelAccount, Application app) 
 	throws InsufficientQuotaException {
 	    logger.info("mayCreateAccountCheckQuotaOk method with parameters : " + 
 				     " - nbDest = " + nbDest + 
                      " - labelAccount = " + labelAccount);
                           
-		Application app = clientManager.getApplication();
 		{
 			Account acc = labelAccount == null ? app.getAcc() :
 				daoService.getAccByLabel(labelAccount);
@@ -96,7 +94,7 @@ public class SendSmsManager {
 				daoService.addAccount(acc);
 				throw new InsufficientQuotaException("Quota error: account " + labelAccount + " has been created with quota of 0");
 			}		
-			checkQuotaOk(nbDest, acc);
+			checkQuotaOk(nbDest, acc, app);
 			return acc;
 		}
 	}
@@ -111,7 +109,7 @@ public class SendSmsManager {
 	 */
 	public Integer sendSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
-			final String labelAccount, final String msgContent) throws InsufficientQuotaException {
+			final String labelAccount, final String msgContent, Application app) throws InsufficientQuotaException {
 
                 logger.info("Receive from SendSms client message : " + 
 				     " - message id = " + msgId + 
@@ -123,7 +121,7 @@ public class SendSmsManager {
 
 			checkPhoneNumbers(smsPhones);
 			
-			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount);
+			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount, app);
 			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
 			msgId = smss.size() > 0 ? smss.get(0).getInitialId() : null; 
 
@@ -146,10 +144,8 @@ public class SendSmsManager {
 
 	private List<Sms> saveSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
-			final String labelAccount) throws InsufficientQuotaException {
+			final String labelAccount, Application app) throws InsufficientQuotaException {
 
-		Application app = clientManager.getApplicationOrNull();
-		
 		// check if the sms already exists (in case of FO problem...)
 		if (msgId != null && app != null) {
 			for (String smsPhone: smsPhones) {
@@ -161,7 +157,7 @@ public class SendSmsManager {
 			}
 		}
 		
-		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
+		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount, app);
 		
 		List<Sms> list = new ArrayList<>();
 			for (String smsPhone : smsPhones) {

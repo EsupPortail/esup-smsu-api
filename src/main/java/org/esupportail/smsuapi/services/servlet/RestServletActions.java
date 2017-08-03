@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
@@ -29,7 +30,8 @@ public class RestServletActions {
 			getInteger(req, "senderId", null),
 			getStrings(req, "phoneNumber"),
 			getString(req, "account", null), 
-			getString(req, "message"));
+            getString(req, "message"),
+            getApplication(req));
 		return put(singletonMap("status", (Object)"OK"), "id", id);
 	}
 
@@ -38,14 +40,15 @@ public class RestServletActions {
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
 	private Integer sendSMS(Integer msgId, Integer senderId, 
-			     String[] smsPhones, String labelAccount, String msgContent) throws InsufficientQuotaException {
-		sendSms.mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount);
-		return sendSms.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent);
+                 String[] smsPhones, String labelAccount, String msgContent, 
+                 Application app) throws InsufficientQuotaException {
+		sendSms.mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount, app);
+		return sendSms.sendSMS(msgId, senderId, smsPhones, labelAccount, msgContent, app);
 	}
 
 	public Object wsActionMayCreateAccountCheckQuotaOk(HttpServletRequest req) throws InsufficientQuotaException {
 		sendSms.mayCreateAccountAndCheckQuotaOk(
-				getInteger(req, "nbDest"), getString(req, "account"));
+				getInteger(req, "nbDest"), getString(req, "account"), getApplication(req));
 		return singletonMap("status", "OK");
 	}
 	
@@ -58,7 +61,7 @@ public class RestServletActions {
 	}
 
     	public Object wsActionMessageInfos(HttpServletRequest req) throws UnknownMessageIdException {    
-		return domainService.getTrackInfos(getInteger(req, "id"));
+		return domainService.getTrackInfos(getInteger(req, "id"), getApplication(req));
 	}
 
     	public Object wsActionMessageStatus(HttpServletRequest req) throws UnknownMessageIdException {
@@ -71,12 +74,16 @@ public class RestServletActions {
 		for (int i = 0; i < ids.length; i++) {
 			list.add(new MsgIdAndPhone(Integer.parseInt(ids[i]), phoneNumbers[i]));
 		}
-		return domainService.getStatus(list);
+		return domainService.getStatus(list, getApplication(req));
 	}
 
-	boolean isAuthValid() {
-		return clientManager.getApplicationOrNull() != null;
-	}
+	boolean isAuthValid(HttpServletRequest req) {
+		return clientManager.getApplicationOrNull(req) != null;
+    }
+    
+    Application getApplication(HttpServletRequest req) {
+        return clientManager.getApplication(req);
+    }
 
 
 	static String[] getStrings(HttpServletRequest req, String name) {
