@@ -25,13 +25,6 @@ public class ClientManager {
 	private final Logger logger = Logger.getLogger(getClass());
 
 	
-	/**
-	 * constructor.
-	 */
-	public ClientManager() {
-		super();
-	}
-
 	public String getNoBasicAuthErrorMessage() {
 		return "no basic auth received by smsuapi. You must use Basic Auth";
 	}

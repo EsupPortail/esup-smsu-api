@@ -34,13 +34,6 @@ public class DomainService {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 
-	/**
-	 * Bean constructor.
-	 */
-	public DomainService() {
-		super();
-	}
-
 	//////////////////////////////////////////////////////////////
 	// WS SendTrack methods
     //////////////////////////////////////////////////////////////
