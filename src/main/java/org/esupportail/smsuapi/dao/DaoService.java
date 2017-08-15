@@ -344,14 +344,6 @@ public class DaoService extends HibernateDaoSupport
 	// APPLICATION
 	//////////////////////////////////////////////////////////////
 	
-	/* (non-Javadoc)
-	 * @see org.esupportail.smsuapi.dao.DaoService#getAllApplications()
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Application> getAllApplications() {
-		return getCurrentSession().createCriteria(Application.class).list();
-	}
- 	
 	/**
 	 * @param application
 	 */
@@ -481,26 +473,6 @@ public class DaoService extends HibernateDaoSupport
 		}
 		getHibernateTemplate().update(merged);
 		getCurrentSession().getTransaction().commit();
-		if (logger.isDebugEnabled()) {
-			logger.debug("done.");
-		}
-	}
-
-	/**
-	 * Delete an object from the database.
-	 * @param object
-	 */
-	protected void deleteObject(final Object object) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("merging " + object + "...");
-		}
-		getCurrentSession().beginTransaction();
-		Object merged = getHibernateTemplate().merge(object);
-		if (logger.isDebugEnabled()) {
-			logger.debug("done, deleting " + merged + "...");
-		}
-		getHibernateTemplate().delete(merged);
-                getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}

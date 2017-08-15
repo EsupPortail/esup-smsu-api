@@ -58,59 +58,6 @@ public class StatisticBuilder {
 			}
 
 		}
-
-	}
-
-
-	/**
-	 * Build the statistic for all application and account for the previous month.
-	 */
-	public void buildAllStatisticForThePreviousMonth() {
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("Calling buildAllStatisticForThePreviousMonth");
-		}
-
-		final long nowInMillis = System.currentTimeMillis();
-		final Calendar calendar = new GregorianCalendar();
-		calendar.setTimeInMillis(nowInMillis);
-		final int previusMonthIndex = calendar.get(Calendar.MONTH) - 1;
-		calendar.set(Calendar.MONTH, previusMonthIndex);
-
-		final Date previousMonthAsDate = calendar.getTime();
-
-		buildAllStatisticForAMonth(previousMonthAsDate);
-	}
-
-
-	/**
-	 * Create stats in DB for all application and account for the month.
-	 * @param month
-	 */
-	public void buildAllStatisticForAMonth(final Date month) {
-
-		if (logger.isDebugEnabled()) {
-			logger.debug("Start build all statistique with parameter : \n" + " - month : " + month);
-		}
-
-		@SuppressWarnings("unused")
-		final List<Application> applicationList = daoService.getAllApplications();
-		final List<Map<String,?>> list = daoService.getAppsAndCountsToTreat();
-
-		for (Map<String,?> map : list) {
-			
-			final Application application = (Application) map.get(Sms.PROP_APP);
-			final Account account = (Account) map.get(Sms.PROP_ACC);
-
-			if (logger.isDebugEnabled()) {
-				logger.debug("Calling statistic builder with parameters : \n" + 
-					     " - application id : " + application.getId() + "\n" + 
-					     " - account id : " + account.getId() + "\n" + 
-					     " - month : " + month);
-			}
-
-			buildStatisticForAMonth(application, account, month);
-		}		
 	}
 
 
