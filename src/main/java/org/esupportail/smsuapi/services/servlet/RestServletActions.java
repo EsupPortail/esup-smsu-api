@@ -127,27 +127,4 @@ public class RestServletActions {
 		return m;
 	}	
 
-	
-	
-	/**
-	 * Standard setter used by spring.
-	 */
-	public void setClientManager(final org.esupportail.smsuapi.business.ClientManager clientManager) {
-		this.clientManager = clientManager;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 */
-	public void setSendSms(final org.esupportail.smsuapi.business.SendSmsManager sendSms) {
-		this.sendSms = sendSms;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 */
-	public void setDomainService(final org.esupportail.smsuapi.domain.DomainService domainService) {
-		this.domainService = domainService;
-	}
-
 }
