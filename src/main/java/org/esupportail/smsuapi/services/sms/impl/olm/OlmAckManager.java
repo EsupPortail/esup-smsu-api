@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.ackmanagement.AckManager;
 import org.esupportail.smsuapi.services.sms.ackmanagement.Acknowledgment;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.cvf.util.mgs.mode.sgs.Manager;
 import fr.cvf.util.mgs.mode.sgs.message.request.SMText;
@@ -24,10 +25,7 @@ public class OlmAckManager extends Manager {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 	
-	/**
-	 *  
-	 */
-	private AckManager ackManager;
+	@Autowired private AckManager ackManager;
 
 	/**
 	 * Success status value. 
@@ -166,12 +164,4 @@ public class OlmAckManager extends Manager {
 		this.olmInvalidMSISDNCauseCode = olmInvalidMSISDNCauseCode;
 	}
 	
-	/**
-	 * Standard setter used by Spring.
-	 * @param ackManager
-	 */
-	public void setAckManager(final AckManager ackManager) {
-		this.ackManager = ackManager;
-	}
-
 }

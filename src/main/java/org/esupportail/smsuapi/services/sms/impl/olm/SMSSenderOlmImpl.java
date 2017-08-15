@@ -2,6 +2,7 @@ package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.cvf.util.mgs.message.NotificationLevel;
 import fr.cvf.util.mgs.mode.sgs.impl.message.request.RequestFactory;
@@ -27,7 +28,7 @@ public class SMSSenderOlmImpl extends OldISMSSender {
 	/**
 	 * Olm connector used to send message.
 	 */
-	private OlmConnector olmConnector;
+	@Autowired private OlmConnector olmConnector;
 	
 	/**
 	 * use to simulate sending.
@@ -87,13 +88,6 @@ public class SMSSenderOlmImpl extends OldISMSSender {
 	 * Mutator.
 	 *******************/
 
-	/**
-	 * Standard setter used by Spring.
-	 */
-	public void setOlmConnector(final OlmConnector olmConnector) {
-		this.olmConnector = olmConnector;
-	}
-	
 	/**
 	 * Standard setter used by spring.
 	 * @param simulateMessageSending

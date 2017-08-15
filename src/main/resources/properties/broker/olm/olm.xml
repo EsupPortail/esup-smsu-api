@@ -20,7 +20,6 @@
 		<description>
 			Olm implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="olmConnector" ref="olmConnector"/>
 		<property name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
 		</property>
@@ -33,8 +32,6 @@
 			Olm connector wrapper. This class is used to wrap the olm broker connector and
 			make it usable with spring.			
 		</description>
-		<property name="olmAckManger" ref="olmAckManager"/>
-		<property name="errorManager" ref="oldErrorManager"/>
 		<property name="connectorName" value="smsuapi"/>
 		<property name="olmConnectorPropertyFile" value="${sms.connector.olm.libmgs.file}"/>
 	</bean>
@@ -51,7 +48,6 @@
 		<description>
 			olm ack manager. It convert the olm ack into ack usable by api-smsu
 		</description>
-		<property name="ackManager" ref="ackManager"/>
 		<property name="olmSentStatusCode"> 
 			<value type="int">0</value>
 		</property>
@@ -77,6 +73,5 @@
 		<description>
 			It is the business layer of ack managment. It manages the ack whatever the broker.
 		</description>
-		<property name="daoService" ref="daoService"/>
 	</bean>
 </beans>

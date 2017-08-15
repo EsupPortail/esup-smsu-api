@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.esupportail.commons.utils.Assert;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -17,7 +16,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.esupportail.ws.remote.beans.TrackInfos;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 
@@ -26,12 +25,9 @@ import org.springframework.beans.factory.InitializingBean;
  * 
  * See /properties/domain/domain-example.xml
  */
-public class DomainService implements InitializingBean {
+public class DomainService {
 
-	/**
-	 * {@link DaoService}.
-	 */
-	private DaoService daoService;
+	@Autowired private DaoService daoService;
 
 	/**
 	 * A logger.
@@ -43,25 +39,6 @@ public class DomainService implements InitializingBean {
 	 */
 	public DomainService() {
 		super();
-	}
-
-	/**
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(this.daoService, 
-				"property daoService of class " + this.getClass().getName() + " can not be null");
-	}
-
-	//////////////////////////////////////////////////////////////
-	// Misc
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * @param daoService the daoService to set
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
 	}
 
 	//////////////////////////////////////////////////////////////

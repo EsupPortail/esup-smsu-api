@@ -30,8 +30,6 @@
 		<description>
 			Smsenvoi implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="daoService" ref="daoService"/>
-		<property name="requestSmsenvoi" ref="requestSmsenvoi"/>
 		<property name="sendsms_url" value="http://www.smsenvoi.com/getapi/sendsms/" />
 		<property name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
 		<property name="simulateMessageSending">
@@ -42,8 +40,6 @@
 	<!-- schedule ackStatusSmsenvoi  -->
 	<bean id="ackStatusSmsenvoi" class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.AckStatusSmsenvoi">
 		<property name="checkdelivery_url" value="http://www.smsenvoi.com/getapi/checkdelivery/" />
-		<property name="daoService" ref="daoService"/>
-		<property name="requestSmsenvoi" ref="requestSmsenvoi"/>
 		<property name="nbHoursBeforeGivingUp" value="36"/>
 	</bean>
 
@@ -52,7 +48,6 @@
 	</bean>
 
 	<bean id="smsuapiStatusJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="ackStatusSmsenvoiJob" />
 		<property name="startDelay" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000"/>
 		<property name="repeatInterval" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000" />
 	</bean>

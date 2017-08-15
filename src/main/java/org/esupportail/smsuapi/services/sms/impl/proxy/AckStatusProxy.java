@@ -14,15 +14,12 @@ import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class AckStatusProxy {
 		
-	private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
-	
-	/**
-	 * Used to manage db.
-	 */
-	private DaoService daoService;
+	@Autowired private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
+	@Autowired private DaoService daoService;
 	
 	/**
 	 * use to simulate sending.
@@ -105,21 +102,6 @@ public class AckStatusProxy {
 	/*******************
 	 * Mutator.
 	 *******************/
-
-	/**
-	 * Standard setter used by Spring.
-	 */
-	public void setHttpRequestSmsuapiWS(HttpRequestSmsuapiWS httpRequestSmsuapiWS) {
-		this.httpRequestSmsuapiWS = httpRequestSmsuapiWS;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 * @param daoService
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
-	}
 
 	/**
 	 * Standard setter used by spring.

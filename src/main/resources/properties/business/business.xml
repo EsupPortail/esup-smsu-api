@@ -9,26 +9,19 @@
 	<bean id="sendSmsManager"
 		class="org.esupportail.smsuapi.business.SendSmsManager">
 		<description>The business layer concerning the sending.</description>
-		<property name="daoService" ref="daoService" />
-		<property name="smsSender" ref="smsSenderImpl" />
-		<property name="schedulerUtils" ref="schedulerUtils"/>
-		<property name="clientManager" ref="clientManager"/>
 		<property name="phoneNumberPattern" value="[ +0-9]*"/>
 	</bean>
 	
 	<bean id="statisticBuilder"
 		class="org.esupportail.smsuapi.business.stats.StatisticBuilder">
-		<property name="daoService" ref="daoService"/>
 	</bean>
 	
 	<bean id="blackListManager"
 		class="org.esupportail.smsuapi.business.BlackListManager">
-		<property name="daoService" ref="daoService"/>
 	</bean>
 	
 	<bean id="clientManager"
 		class="org.esupportail.smsuapi.business.ClientManager">
-		<property name="daoService" ref="daoService"/>
 	</bean>
 	
 	<bean id="purgeSms"
@@ -36,7 +29,6 @@
 		<property name="seniorityDay">
 			<value type="int">${purge.sms.seniorityDay}</value>
 		</property>
-		<property name="daoService" ref="daoService"/>
 	</bean>
 	
 </beans>

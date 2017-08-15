@@ -1,6 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.cvf.util.mgs.Connector;
 import fr.cvf.util.mgs.ConnectorFactory;
@@ -32,12 +33,12 @@ public class OlmConnector implements InitializingBean {
 	/**
 	 * The olm ack manger impl.
 	 */
-	private OlmAckManager olmAckManger;
+	@Autowired private OlmAckManager olmAckManger;
 	
 	/**
 	 * The olm error and warning manager.
 	 */
-	private ErrorManager errorManager;
+	@Autowired private ErrorManager errorManager;
 	
 	
 	/* (non-Javadoc)
@@ -81,19 +82,4 @@ public class OlmConnector implements InitializingBean {
 		this.olmConnectorPropertyFile = olmConnectorPropertyFile;
 	}
 	
-	/**
-	 * Standard setter used by Spring.
-	 * @param olmAckManger
-	 */
-	public void setOlmAckManger(final OlmAckManager olmAckManger) {
-		this.olmAckManger = olmAckManger;
-	}
-	
-	/**
-	 * Standard setter used by spring.
-	 * @param errorManager
-	 */
-	public void setErrorManager(final ErrorManager errorManager) {
-		this.errorManager = errorManager;
-	}
 }

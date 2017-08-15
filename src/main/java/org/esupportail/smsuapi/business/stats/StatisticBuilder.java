@@ -14,6 +14,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.dao.beans.StatisticPK;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * This class manage the statistic creation.
@@ -31,7 +32,7 @@ public class StatisticBuilder {
 	/**
 	 * Use to get database informations.
 	 */
-	private DaoService daoService;
+	@Autowired private DaoService daoService;
 
 	/**
 	 * Build all non already computed statistic whatever the application, account or date.
@@ -254,21 +255,6 @@ public class StatisticBuilder {
 			}
 
 			return listOfMarkerDate;
-		}
-
-
-
-		/***********************
-		 * Mutator
-		 */
-
-
-		/**
-		 * Standard setter used by Spring.
-		 * @param daoService
-		 */
-		public void setDaoService(final DaoService daoService) {
-			this.daoService = daoService;
 		}
 
 	}

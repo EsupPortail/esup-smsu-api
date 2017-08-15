@@ -6,6 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Manage the purge in table SMS.
@@ -22,7 +23,7 @@ public class PurgeSms {
 	/**
 	 * Used to manage db.
 	 */
-	private DaoService daoService;
+	@Autowired private DaoService daoService;
 
 	/**
 	 * A logger.
@@ -76,12 +77,4 @@ public class PurgeSms {
 		this.seniorityDay = seniorityDay;
 	}
 	
-
-	/**
-	 * Standard setter used by spring.
-	 * @param daoService
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
-	}
 }

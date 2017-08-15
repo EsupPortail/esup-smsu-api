@@ -15,6 +15,7 @@ import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -30,25 +31,10 @@ public class SendSmsManager {
 
 	private String phoneNumberPattern;
 	
-	/**
-	 * {@link DaoService}.
-	 */
-	protected DaoService daoService;
-
-	/**
-	 * {@link ISMSSender}.
-	 */
-	protected ISMSSender smsSender;
-
-	/**
-	 * Used to launch task.
-	 */
-	protected SchedulerUtils schedulerUtils;
-
-	/**
-	 *  {@link ClientManager}.
-	 */
-	protected ClientManager clientManager;
+	@Autowired private DaoService daoService;
+	@Autowired private ISMSSender smsSender;
+	@Autowired private SchedulerUtils schedulerUtils;
+	@Autowired private ClientManager clientManager;
 
 	//////////////////////////////////////////////////////////////
 	// Constructeur
@@ -231,32 +217,6 @@ public class SendSmsManager {
 	///////////////////////////////////////
 	//  Mutators
 	//////////////////////////////////////
-
-	/**
-	 * @param daoService the daoService to set
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
-	}
-
-	public void setSmsSender(final ISMSSender smsSender) {
-		this.smsSender = smsSender;
-	}
-
-	/**
-	 * Standard setter used by spring.
-	 * @param schedulerUtils
-	 */
-	public void setSchedulerUtils(final SchedulerUtils schedulerUtils) {
-		this.schedulerUtils = schedulerUtils;
-	}
-
-	/**
-	 * @param clientManager
-	 */
-	public void setClientManager(final ClientManager clientManager) {
-		this.clientManager = clientManager;
-	}
 
 	public void setPhoneNumberPattern(String phoneNumberPattern) {
 		this.phoneNumberPattern = phoneNumberPattern;

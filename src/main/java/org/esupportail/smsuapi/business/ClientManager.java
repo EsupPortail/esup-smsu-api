@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author xphp8691
@@ -16,10 +17,7 @@ import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
  */
 public class ClientManager {
 
-	/**
-	 * 
-	 */
-	private DaoService daoService;
+	@Autowired DaoService daoService;
 	
 	/**
 	 * A logger.
@@ -90,14 +88,5 @@ public class ClientManager {
 	private String decodeBase64(String s) {
 		return new String(Base64.decodeBase64(s.getBytes()));
 	}
-
-	/**
-	 * Standard setter used by spring.
-	 * @param daoService
-	 */
-	public void setDaoService(DaoService daoService) {
-		this.daoService = daoService;
-	}
-
 
 }

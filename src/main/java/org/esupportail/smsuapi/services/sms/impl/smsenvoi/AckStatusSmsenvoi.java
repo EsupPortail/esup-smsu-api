@@ -13,15 +13,12 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.impl.proxy.AckStatusProxy;
 import org.esupportail.smsuapi.utils.HttpException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class AckStatusSmsenvoi {
 	
-	/**
-	 * Used to manage db.
-	 */
-	private DaoService daoService;
-
-	private RequestSmsenvoi requestSmsenvoi;
+	@Autowired private DaoService daoService;
+	@Autowired private RequestSmsenvoi requestSmsenvoi;
 
 	private String checkdelivery_url;
 	
@@ -118,18 +115,6 @@ public class AckStatusSmsenvoi {
 	/*******************
 	 * Mutator.
 	 *******************/
-
-	/**
-	 * Standard setter used by spring.
-	 * @param daoService
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
-	}
-
-	public void setRequestSmsenvoi(final RequestSmsenvoi requestSmsenvoi) {
-		this.requestSmsenvoi = requestSmsenvoi;
-	}
 
 	public void setCheckdelivery_url(String checkdelivery_url) {
 		this.checkdelivery_url = checkdelivery_url;

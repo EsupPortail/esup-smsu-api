@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -20,10 +21,7 @@ public class BlackListManager {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 
-	/**
-	 * {@link DaoService}.
-	 */
-	private DaoService daoService;
+	@Autowired private DaoService daoService;
 
 	
 	//////////////////////////////////////////////////////////////
@@ -66,16 +64,4 @@ public class BlackListManager {
 		return setPhoneNumbersInBlackList;
 	}
 
-	
-	///////////////////////////////////////
-	//  Mutators
-	//////////////////////////////////////
-	
-	/**
-	 * @param daoService the daoService to set
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
-	}
-	
 }

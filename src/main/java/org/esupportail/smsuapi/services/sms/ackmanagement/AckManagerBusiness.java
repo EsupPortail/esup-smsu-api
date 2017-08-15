@@ -8,6 +8,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *  
@@ -20,10 +21,7 @@ public class AckManagerBusiness {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 	
-	/**
-	 * Hibernate template. 
-	 */
-	private DaoService daoService;
+	@Autowired private DaoService daoService;
 
 	/**
 	 * Business layer to mange ack.
@@ -91,21 +89,6 @@ public class AckManagerBusiness {
 			
 			daoService.addBlacklist(blackList);
 		}
-	}
-	
-	
-	
-	/***
-	 * Mutator
-	 */
-	
-	
-	/**
-	 * Standard setter used by spring.
-	 * @param hibernateDaoServiceImpl
-	 */
-	public void setDaoService(final DaoService daoService) {
-		this.daoService = daoService;
 	}
 	
 }

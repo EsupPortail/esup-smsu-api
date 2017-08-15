@@ -25,7 +25,6 @@
 		<description>
 			Proxy implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="sendSms" ref="sendSmsWS" />
 		<property name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
 		</property>
@@ -41,8 +40,6 @@
 
 	<!-- schedule ackStatusProxy  -->
 	<bean id="ackStatusProxy" class="org.esupportail.smsuapi.services.sms.impl.proxy.AckStatusProxy">
-		<property name="smsuapiStatus" ref="smsuapiStatusWS" />
-		<property name="daoService" ref="daoService"/>
 		<property name="nbHoursBeforeGivingUp" value="12"/>
 	</bean>
 
@@ -51,7 +48,6 @@
 	</bean>
 
 	<bean id="smsuapiStatusJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="ackStatusProxyJob" />
 		<property name="startDelay" value="${sms.connector.proxy.acknoledgeStatus.repeatInterval}000"/>
 		<property name="repeatInterval" value="${sms.connector.proxy.acknoledgeStatus.repeatInterval}000" />
 	</bean>
