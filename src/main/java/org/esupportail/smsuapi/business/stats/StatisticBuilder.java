@@ -120,7 +120,11 @@ public class StatisticBuilder {
 		}
 	}
 
-
+        private Calendar toGregorianCalendar(Date d) {
+            Calendar c = new GregorianCalendar();
+            c.setTime(d);
+            return c;
+        }
 
 		/**
 		 * Return the first day of month at 00h00.
@@ -128,13 +132,14 @@ public class StatisticBuilder {
 		 * @return
 		 */
 		private Date getFirstDayOfMonth(final Date date) {
-			final Calendar calendar = new GregorianCalendar();
-			calendar.setTime(date);
+			final Calendar calendar = toGregorianCalendar(date);
+
 			calendar.set(Calendar.DAY_OF_MONTH, 1);
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
+
 			return calendar.getTime();
 		}
 
@@ -144,17 +149,25 @@ public class StatisticBuilder {
 		 * @return
 		 */
 		private Date getLastDayOfMonth(final Date date) {
-			final Calendar calendar = new GregorianCalendar();
-			calendar.setTime(date);
-			final int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-			calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth);
+			final Calendar calendar = toGregorianCalendar(date);
+
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			calendar.set(Calendar.HOUR_OF_DAY, 23);
 			calendar.set(Calendar.MINUTE, 59);
 			calendar.set(Calendar.SECOND, 59);
 			calendar.set(Calendar.MILLISECOND, 999);
+
 			return calendar.getTime();
 		}
 
+        private Date getNowMinusAMonth() {
+			final Calendar previousMonthAsCal = new GregorianCalendar();
+			previousMonthAsCal.setTimeInMillis(System.currentTimeMillis());
+			previousMonthAsCal.set(Calendar.MONTH, previousMonthAsCal.get(Calendar.MONTH) - 1);
+
+			return previousMonthAsCal.getTime();
+        }
+        
 		/**
 		 * Return the date to use in db in column stat_month of table statistic for a specific month.
 		 * @param date
@@ -177,34 +190,18 @@ public class StatisticBuilder {
 				final Account account,
 				final Date startDate) {
 
-
 			final List<Date> retVal = new LinkedList<>();
 
-			final Calendar previousMonthAsCal = new GregorianCalendar();
-			previousMonthAsCal.setTimeInMillis(System.currentTimeMillis());
-			final int previusMonthIndex = previousMonthAsCal.get(Calendar.MONTH) - 1;
-			previousMonthAsCal.set(Calendar.MONTH, previusMonthIndex);
+			final Date endDate = getLastDayOfMonth(getNowMinusAMonth());
 
-			final Date previousMonth = previousMonthAsCal.getTime();
-
-			final Date endDate = getLastDayOfMonth(previousMonth);
-
-			final List<Date> markerDateList = getListOfMarkerDateBetWeenTwoDates(startDate, endDate);
-
-			for(Date markerDate : markerDateList) {
-				final boolean statAlreadyComputed = daoService.isStatisticExistsForApplicationAndAccountAndDate(application, 
+			for(Date markerDate : getListOfMarkerDateBetWeenTwoDates(startDate, endDate)) {
+				if (!daoService.isStatisticExistsForApplicationAndAccountAndDate(application, 
 						account, 
-						markerDate);
-
-				if (!statAlreadyComputed) {
+						markerDate)) {
 					retVal.add(markerDate);
 				}
-
 			}
-
 			return retVal;
-
-
 		}
 
 		/**
@@ -217,20 +214,15 @@ public class StatisticBuilder {
 
 			final List<Date> listOfMarkerDate = new LinkedList<>();
 
-			final Calendar startDateAsCal = new GregorianCalendar();
-			startDateAsCal.setTime(startDate);
-
-			final Calendar endDateAsCal = new GregorianCalendar();
-			endDateAsCal.setTime(endDate);
+			final Calendar startDateAsCal = toGregorianCalendar(startDate);
+			final Calendar endDateAsCal = toGregorianCalendar(endDate);
 
 			while (startDateAsCal.before(endDateAsCal)) {
-				final Date markerDate = getMarkerDateOfMonth(startDateAsCal.getTime());
-				listOfMarkerDate.add(markerDate);
-
+				listOfMarkerDate.add(getMarkerDateOfMonth(startDateAsCal.getTime()));
 				startDateAsCal.add(Calendar.MONTH, 1);
 			}
 
 			return listOfMarkerDate;
-		}
-
+        }
+        
 	}
