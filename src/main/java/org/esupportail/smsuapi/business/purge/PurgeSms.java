@@ -30,20 +30,8 @@ public class PurgeSms {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 	
-	/**
-	 * 
-	 */
 	public void purgeSms() {
-		// compute de limite date
-		final long currentTimeInMillis = System.currentTimeMillis();
-		final Calendar seniorityDateAsCal = new GregorianCalendar();
-		seniorityDateAsCal.setTimeInMillis(currentTimeInMillis);
-		
-		seniorityDateAsCal.add(Calendar.DAY_OF_YEAR, -seniorityDay);
-		
-		final Date seniorityDateAsDate = seniorityDateAsCal.getTime();
-		
-		purgeSmsOlderThan(seniorityDateAsDate);
+		purgeSmsOlderThan(getNowMinusDays(seniorityDay));
 	}
 	
 	/**
@@ -59,7 +47,15 @@ public class PurgeSms {
 			logger.debug("End purge of SMS table, result : \n" + 
 				     " - number of sms deleted : " + nbSmsDeleted);
 	}
-	
+    
+    private Date getNowMinusDays(int days) {
+		// compute de limite date
+		final Calendar seniorityDateAsCal = new GregorianCalendar();
+		seniorityDateAsCal.setTimeInMillis(System.currentTimeMillis());
+		seniorityDateAsCal.add(Calendar.DAY_OF_YEAR, -days);
+		
+        return seniorityDateAsCal.getTime();
+    }
 	
 	/******************
 	 * Mutator
