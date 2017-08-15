@@ -38,11 +38,7 @@ public class StatisticBuilder {
 	 * Build all non already computed statistic whatever the application, account or date.
 	 */
 	public void buildAllStatistics() {
-
-		final List<Map<String,?>> list = daoService.getAppsAndCountsToTreat();
-		
-		for (Map<String,?> map : list) {
-			
+		for (Map<String,?> map : daoService.getAppsAndCountsToTreat()) {
 			// get the date of older SMS for this app and account
 			final Application application = (Application) map.get(Sms.PROP_APP);
 			final Account account = (Account) map.get(Sms.PROP_ACC);
@@ -51,8 +47,7 @@ public class StatisticBuilder {
 			// previous method returns null, so we have to check it.
 			if (olderSmsDate != null) {
 				// get the list of month where stats was not computed since the date of the older SMS in DB
-				final List<Date> monthToComputeStatsList = getListOfMarkerDateForNonComputedStats(application, account, olderSmsDate);
-				for (Date monthToComputeStats : monthToComputeStatsList) {
+				for (Date monthToComputeStats : getListOfMarkerDateForNonComputedStats(application, account, olderSmsDate)) {
 					// compute the stats for this specific app, account and month
 					buildStatisticForAMonth(application, account, monthToComputeStats);
 				}
@@ -61,21 +56,18 @@ public class StatisticBuilder {
 		}
 	}
 
-
 	/**
 	 * Create stats in DB for the specified application and account for the month.
 	 * @param application
 	 * @param account
 	 * @param month
 	 */
-	public void buildStatisticForAMonth(final Application application, final Account account,
-			final Date month) {
-
-		final Date firstDayOfMonth = getFirstDayOfMonth(month);
-		final Date lastDayOfMonth = getLastDayOfMonth(month);
-		final Date markerDate = getMarkerDateOfMonth(month);
-
-		buildStatistics(application, account, firstDayOfMonth, lastDayOfMonth, markerDate);
+	private void buildStatisticForAMonth(Application application, Account account, Date month) {
+        buildStatistics(
+            application, account,
+            getFirstDayOfMonth(month),
+            getLastDayOfMonth(month), 
+            getMarkerDateOfMonth(month));
 	}
 
 	/**
@@ -103,31 +95,19 @@ public class StatisticBuilder {
 		if (nbSms > 0) {
 			final int nbSmsInError = daoService.getNbOfSmsInErrorByAppAndAccountAndDate(application, account, beginDate, endDate);
 
-			final Long nbSmsAsLong = new Long(nbSms);
-			final Long nbSmsInErrorAsLong = new Long(nbSmsInError);
-
-			// Building the PK
-			final StatisticPK statisticPK = new StatisticPK();
-			statisticPK.setApp(application);
-			statisticPK.setAcc(account);
-			statisticPK.setMonth(markerDate);
-
-			// Building the stats
-			final Statistic statistic = new Statistic();
-			statistic.setId(statisticPK);
-			statistic.setNbSms(nbSmsAsLong);
-			statistic.setNbSmsInError(nbSmsInErrorAsLong);
-
 			// store it in DB
-			daoService.addStatistic(statistic);
+			daoService.addStatistic(new Statistic(
+                new StatisticPK(application, account, markerDate), 
+                new Long(nbSms), new Long(nbSmsInError)
+            ));
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("End of building statistic, result : \n" + 
 					     " - application id : " + application.getId() + "\n" + 
 					     " - account id : " + account.getId() + "\n" + 
 					     " - marker date : " + markerDate + "\n" + 
-					     " - Nb sms : " + nbSmsAsLong + "\n" + 
-					     " - Nb sms in error : " + nbSmsInErrorAsLong);
+					     " - Nb sms : " + nbSms + "\n" + 
+					     " - Nb sms in error : " + nbSmsInError);
 			}
 		} else {
 			if (logger.isDebugEnabled()) {
@@ -155,8 +135,7 @@ public class StatisticBuilder {
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
-			final Date retVal = calendar.getTime();
-			return retVal;
+			return calendar.getTime();
 		}
 
 		/**
@@ -173,8 +152,7 @@ public class StatisticBuilder {
 			calendar.set(Calendar.MINUTE, 59);
 			calendar.set(Calendar.SECOND, 59);
 			calendar.set(Calendar.MILLISECOND, 999);
-			final Date retVal = calendar.getTime();
-			return retVal;
+			return calendar.getTime();
 		}
 
 		/**
@@ -183,8 +161,7 @@ public class StatisticBuilder {
 		 * @return
 		 */
 		private Date getMarkerDateOfMonth(final Date date) {
-			final Date retVal = getFirstDayOfMonth(date); 
-			return retVal;
+			return getFirstDayOfMonth(date); 
 		}
 
 
@@ -203,9 +180,8 @@ public class StatisticBuilder {
 
 			final List<Date> retVal = new LinkedList<>();
 
-			final long nowInMillis = System.currentTimeMillis();
 			final Calendar previousMonthAsCal = new GregorianCalendar();
-			previousMonthAsCal.setTimeInMillis(nowInMillis);
+			previousMonthAsCal.setTimeInMillis(System.currentTimeMillis());
 			final int previusMonthIndex = previousMonthAsCal.get(Calendar.MONTH) - 1;
 			previousMonthAsCal.set(Calendar.MONTH, previusMonthIndex);
 

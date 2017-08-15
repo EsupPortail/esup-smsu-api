@@ -308,12 +308,9 @@ public class DaoService extends HibernateDaoSupport
 	 * @see org.esupportail.smsuapi.dao.DaoService#deleteSmsOlderThan(java.util.Date)
 	 */
 	public int deleteSmsOlderThan(final Date date) {
-		final Session currentSession = getCurrentSession();
+		final String hql = "delete from Sms as sms where sms.Date < :date";
 		
-		final StringBuilder hql = new StringBuilder(200);
-		hql.append("delete from Sms as sms where  sms.Date < :date");
-		
-		final Query query = currentSession.createQuery(hql.toString());
+		final Query query = getCurrentSession().createQuery(hql);
 		query.setTimestamp("date", date);
 		
 		final int nbSmsDeleted = query.executeUpdate();

@@ -61,14 +61,13 @@ public class OlmAckManager extends Manager {
 				     "  - pnm retry number : " + result.getPNMRetryNumber());
 		}
 		
-		final int rcpSmid = result.getSmid();
 		final int rcpStatus = result.getStatus();
 		final int rcpCause = result.getCause();
 		
 		final Acknowledgment acknowledgment = new Acknowledgment();
 
 		// common elements
-		acknowledgment.setSmsId(rcpSmid);
+		acknowledgment.setSmsId(result.getSmid());
 		// Ok case
 		if (rcpStatus == olmSentStatusCode) {
 			acknowledgment.setSmsStatus(SmsStatus.DELIVERED);
