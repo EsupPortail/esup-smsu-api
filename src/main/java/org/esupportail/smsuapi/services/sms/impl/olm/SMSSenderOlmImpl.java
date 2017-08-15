@@ -65,10 +65,7 @@ public class SMSSenderOlmImpl extends OldISMSSender {
 			// only send the message if required
 			if (!simulateMessageSending) {
 				olmConnector.submit(smText);
-				if (logger.isDebugEnabled()) {
-					logger.debug("message with : " + 
-						  " - id : " + smsId + "successfully sent");
-				}
+                logger.debug("message with : " + " - id : " + smsId + "successfully sent");
 			} else {
 				logger.warn("Message with id : " + smsId + " not sent because simlation mode is enable");
 			}

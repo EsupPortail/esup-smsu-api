@@ -52,16 +52,12 @@ public class PurgeSms {
 	 */
 	private void purgeSmsOlderThan(final Date date) {
 		
-		if (logger.isDebugEnabled()) {
 			logger.debug("Starting purge of SMS table with parameter : \n" + " - date : " + date);
-		}
 		
 		final int nbSmsDeleted = daoService.deleteSmsOlderThan(date);
 		
-		if (logger.isDebugEnabled()) {
 			logger.debug("End purge of SMS table, result : \n" + 
 				     " - number of sms deleted : " + nbSmsDeleted);
-		}
 	}
 	
 	

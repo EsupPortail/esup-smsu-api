@@ -72,10 +72,7 @@ public class SchedulerUtils {
 			
 			scheduler.scheduleJob(jobDetail, trigger);
 			
-			if (logger.isDebugEnabled()) {
-				logger.debug("Job successfully launched");
-				
-			}
+            logger.debug("Job successfully launched");
 		} catch (SchedulerException e) {
 			logger.warn("An error occurs launching the job with parameter : \n" + 
 				    " - jobName : " + jobName + "\n" + 

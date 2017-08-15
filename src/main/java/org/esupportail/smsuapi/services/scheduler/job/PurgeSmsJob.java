@@ -20,15 +20,11 @@ public class PurgeSmsJob extends AbstractQuartzJob {
 	
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext,	final JobDataMap jobDataMap) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Launching Quartz task PurgeSmsJob now");
-		}
+        logger.debug("Launching Quartz task PurgeSmsJob now");
 		
 		final PurgeSms purgeSms = (PurgeSms) applicationContext.getBean("purgeSms");
 		purgeSms.purgeSms();
 		
-		if (logger.isDebugEnabled()) {
-			logger.debug("End of Quartz task PurgeSmsJob");
-		}
+        logger.debug("End of Quartz task PurgeSmsJob");
 	}
 }

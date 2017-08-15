@@ -90,10 +90,7 @@ public class OlmAckManager extends Manager {
 	 * @see fr.cvf.util.mgs.mode.sgs.Manager#manage(fr.cvf.util.mgs.mode.sgs.message.response.MMSMO)
 	 */
 	public boolean manage(final MMSMO mmsMO) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Invoking manage with parameter MMSMO method");
-		}
-		
+        logger.debug("Invoking manage with parameter MMSMO method");
 		return true;
 	}
 	
@@ -102,10 +99,7 @@ public class OlmAckManager extends Manager {
 	 * @see fr.cvf.util.mgs.mode.sgs.Manager#manage(fr.cvf.util.mgs.mode.sgs.message.response.SMMO)
 	 */
 	public boolean manage(final SMMO smMO) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Invoking manage with parameter SMMO method");
-		}
-		
+        logger.debug("Invoking manage with parameter SMMO method");
 		return true;
 	}
 

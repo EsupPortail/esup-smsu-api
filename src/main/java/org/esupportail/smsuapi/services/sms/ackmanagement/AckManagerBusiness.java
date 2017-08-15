@@ -50,9 +50,8 @@ public class AckManagerBusiness {
 	}
 
 	private void manageAck(final Sms sms, final SmsStatus smsStatus) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Updating in DB SMS with : " + " - sms_id : " + sms.getId());
-		}		
+        logger.debug("Updating in DB SMS with : " + " - sms_id : " + sms.getId());
+
 		sms.setStateAsEnum(smsStatus);
 		sms.setAckDate(new Date());
 		daoService.updateSms(sms);

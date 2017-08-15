@@ -53,10 +53,7 @@ public class SMSSenderGammu extends OldISMSSender {
 				String cmdSensSmsReturn = execCmd(new String[] {"gammu", "-c", gammuConfigFileFullPath, "--sendsms", "text", smsRecipient}, smsMessage);
 				logger.info(cmdSensSmsReturn);
 
-				if (logger.isDebugEnabled()) {
-					logger.debug("message with : " + 
-							" - id : " + smsId + "successfully sent");
-				}
+                logger.debug("message with : " + " - id : " + smsId + "successfully sent");
 			} else {
 				logger.warn("Message with id : " + smsId + " not sent because simlation mode is enable");
 			}

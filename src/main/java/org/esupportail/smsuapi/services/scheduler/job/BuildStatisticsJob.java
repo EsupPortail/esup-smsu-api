@@ -21,18 +21,12 @@ public class BuildStatisticsJob extends AbstractQuartzJob {
 	
 	@Override
 	protected void executeJob(final ApplicationContext applicationContext, final JobDataMap jobDataMap) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Launching Quartz task BuildStatisticsJob now");
-		}
+        logger.debug("Launching Quartz task BuildStatisticsJob now");
 		
 		final StatisticBuilder statisticBuilder = (StatisticBuilder) applicationContext.getBean("statisticBuilder");
 		statisticBuilder.buildAllStatistics();
 
-		
-		if (logger.isDebugEnabled()) {
-			logger.debug("End of Quartz task BuildStatisticsJob");
-		}
-			
+        logger.debug("End of Quartz task BuildStatisticsJob");
 	}
 
 }
