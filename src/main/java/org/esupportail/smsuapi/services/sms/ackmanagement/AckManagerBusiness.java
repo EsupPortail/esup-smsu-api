@@ -67,27 +67,15 @@ public class AckManagerBusiness {
 	 * @param application
 	 */
 	private void putPhoneNumberInBlackList(final String phoneNumber, final Application application ) {
-		final boolean isPhoneNumberAlreadyInBL = daoService.isPhoneNumberInBlackList(phoneNumber);
-		
 		// if phone number is not already in the bl (it should not append) put the phone number
 		// put the phone number in the black list
-		if (! isPhoneNumberAlreadyInBL) {
-			
-			final Blacklist blackList = new Blacklist();
-			final Date currentDate = new Date(System.currentTimeMillis());
-			blackList.setApp(application);
-			blackList.setDate(currentDate);
-			blackList.setPhone(phoneNumber);
-						
-			if (logger.isDebugEnabled()) {
+        if (daoService.isPhoneNumberInBlackList(phoneNumber)) return;
 				logger.debug("Adding to black list : \n" + 
 					     " - Phone number : " + phoneNumber + "\n" + 
-					     " - Application id : " + application.getId() + "\n" + 
-					     " - Date : " + currentDate);
-			}
+					     " - Application id : " + application.getId() + "\n");
 			
-			daoService.addBlacklist(blackList);
-		}
+			final Date currentDate = new Date(System.currentTimeMillis());
+			daoService.addBlacklist(new Blacklist(application, currentDate, phoneNumber));
 	}
 	
 }

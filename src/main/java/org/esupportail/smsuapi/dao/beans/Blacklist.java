@@ -69,12 +69,10 @@ public class Blacklist  implements Serializable {
 	 * Constructor for required fields.
 	 */
 	public Blacklist(
-			final java.lang.Integer id,
 			final Application app,
 			final java.util.Date blaDate,
 			final String blaPhone) {
 
-		this.setId(id);
 		this.setApp(app);
 		this.setDate(blaDate);
 		this.setPhone(blaPhone);
