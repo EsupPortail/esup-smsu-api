@@ -14,11 +14,11 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 public class BackChannelAck implements org.springframework.web.HttpRequestHandler {
 
-    @Autowired
+    @Inject
     private DaoService daoService;
 
     private final Logger logger = Logger.getLogger(getClass());

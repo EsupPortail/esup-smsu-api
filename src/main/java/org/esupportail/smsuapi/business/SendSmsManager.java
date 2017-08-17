@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
@@ -15,7 +17,6 @@ import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -31,20 +32,9 @@ public class SendSmsManager {
 
 	private String phoneNumberPattern;
 	
-	@Autowired private DaoService daoService;
-	@Autowired private ISMSSender smsSender;
-	@Autowired private SchedulerUtils schedulerUtils;
-	@Autowired private ClientManager clientManager;
-
-	//////////////////////////////////////////////////////////////
-	// Constructeur
-	//////////////////////////////////////////////////////////////
-	/**
-	 * constructor.
-	 */
-	public SendSmsManager() {
-		super();
-	}
+	@Inject private DaoService daoService;
+	@Inject private ISMSSender smsSender;
+	@Inject private SchedulerUtils schedulerUtils;
 
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()

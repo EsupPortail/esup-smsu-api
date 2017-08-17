@@ -13,17 +13,17 @@ import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 public class RestServletActions {
 
 	@SuppressWarnings("unused")
 	private final Logger logger = Logger.getLogger(getClass());
 
-	@Autowired private org.esupportail.smsuapi.business.ClientManager clientManager;
-	@Autowired private org.esupportail.smsuapi.business.SendSmsManager sendSms;
-	@Autowired private org.esupportail.smsuapi.domain.DomainService domainService;
-	@Autowired private org.esupportail.smsuapi.business.BlackListManager blackListManager;
+	@Inject private org.esupportail.smsuapi.business.ClientManager clientManager;
+	@Inject private org.esupportail.smsuapi.business.SendSmsManager sendSms;
+	@Inject private org.esupportail.smsuapi.domain.DomainService domainService;
+	@Inject private org.esupportail.smsuapi.business.BlackListManager blackListManager;
 
     	public Object wsActionSendSms(HttpServletRequest req) throws InsufficientQuotaException {
 		Integer id = sendSMS(getInteger(req, "id", null),

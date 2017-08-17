@@ -2,7 +2,7 @@ package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 import fr.cvf.util.mgs.message.NotificationLevel;
 import fr.cvf.util.mgs.mode.sgs.impl.message.request.RequestFactory;
@@ -28,7 +28,7 @@ public class SMSSenderOlmImpl extends OldISMSSender {
 	/**
 	 * Olm connector used to send message.
 	 */
-	@Autowired private OlmConnector olmConnector;
+	@Inject private OlmConnector olmConnector;
 	
 	/**
 	 * use to simulate sending.

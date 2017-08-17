@@ -14,7 +14,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.dao.beans.StatisticPK;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  * This class manage the statistic creation.
@@ -32,7 +32,7 @@ public class StatisticBuilder {
 	/**
 	 * Use to get database informations.
 	 */
-	@Autowired private DaoService daoService;
+	@Inject private DaoService daoService;
 
 	/**
 	 * Build all non already computed statistic whatever the application, account or date.

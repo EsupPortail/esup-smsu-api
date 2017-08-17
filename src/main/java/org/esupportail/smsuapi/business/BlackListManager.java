@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 
 /**
@@ -21,7 +21,7 @@ public class BlackListManager {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 
-	@Autowired private DaoService daoService;
+	@Inject private DaoService daoService;
 
 	
 	//////////////////////////////////////////////////////////////

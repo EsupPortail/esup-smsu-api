@@ -14,12 +14,12 @@ import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils.Pair;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 public class AckStatusProxy {
 		
-	@Autowired private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
-	@Autowired private DaoService daoService;
+	@Inject private HttpRequestSmsuapiWS httpRequestSmsuapiWS;
+	@Inject private DaoService daoService;
 	
 	/**
 	 * use to simulate sending.

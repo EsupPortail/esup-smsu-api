@@ -8,7 +8,7 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  *  
@@ -21,7 +21,7 @@ public class AckManagerBusiness {
 	 */
 	private final Logger logger = Logger.getLogger(getClass());
 	
-	@Autowired private DaoService daoService;
+	@Inject private DaoService daoService;
 
 	/**
 	 * Business layer to mange ack.

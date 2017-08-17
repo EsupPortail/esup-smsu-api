@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  * @author xphp8691
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class ClientManager {
 
-	@Autowired DaoService daoService;
+	@Inject DaoService daoService;
 	
 	/**
 	 * A logger.

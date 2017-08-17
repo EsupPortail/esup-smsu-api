@@ -13,12 +13,12 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.impl.proxy.AckStatusProxy;
 import org.esupportail.smsuapi.utils.HttpException;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 public class AckStatusSmsenvoi {
 	
-	@Autowired private DaoService daoService;
-	@Autowired private RequestSmsenvoi requestSmsenvoi;
+	@Inject private DaoService daoService;
+	@Inject private RequestSmsenvoi requestSmsenvoi;
 
 	private String checkdelivery_url;
 	

@@ -13,7 +13,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 
 /**
@@ -33,8 +33,8 @@ public class SMSSenderSmsenvoiImpl extends OldISMSSender {
 	 */
 	private boolean simulateMessageSending;
 	
-	@Autowired private DaoService daoService;
-	@Autowired private RequestSmsenvoi requestSmsenvoi;
+	@Inject private DaoService daoService;
+	@Inject private RequestSmsenvoi requestSmsenvoi;
 
 	private String sendsms_url;
 

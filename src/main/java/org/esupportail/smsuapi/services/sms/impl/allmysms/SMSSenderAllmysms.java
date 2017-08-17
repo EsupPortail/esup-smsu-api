@@ -10,7 +10,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoiImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpEntity;
@@ -37,7 +37,7 @@ public class SMSSenderAllmysms implements ISMSSender {
 
     private JsonNode from;
 
-    @Autowired
+    @Inject
     private DaoService daoService;
     protected RestTemplate restTemplate;
 

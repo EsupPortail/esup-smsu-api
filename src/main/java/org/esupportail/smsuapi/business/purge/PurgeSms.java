@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 /**
  * Manage the purge in table SMS.
@@ -23,7 +23,7 @@ public class PurgeSms {
 	/**
 	 * Used to manage db.
 	 */
-	@Autowired private DaoService daoService;
+	@Inject private DaoService daoService;
 
 	/**
 	 * A logger.

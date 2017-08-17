@@ -16,7 +16,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.esupportail.ws.remote.beans.TrackInfos;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 
 
 
@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DomainService {
 
-	@Autowired private DaoService daoService;
+	@Inject private DaoService daoService;
 
 	/**
 	 * A logger.
