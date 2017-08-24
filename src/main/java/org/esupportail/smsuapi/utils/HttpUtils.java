@@ -63,6 +63,7 @@ public class HttpUtils {
 
     public static String requestPOST(HttpURLConnection conn, List<Pair> params) throws HttpException {
         //conn.setUseCaches(false);
+        conn.setInstanceFollowRedirects(false); // disallow 302 (we would like to still allow 303...)
      	conn.setDoOutput(true); // true indicates POST request
 
     	try {
@@ -77,7 +78,13 @@ public class HttpUtils {
     private static String requestRaw(HttpURLConnection conn) throws HttpException {
     	try {
 			conn.connect();			
-        	if (conn.getResponseCode() >= 400) {
+            int code = conn.getResponseCode();
+        	if (code >= 300 && code < 400 && code != 304) {
+                // NB: tomcat will add a trailing slash, cf response.sendRedirect in CoyoteAdapter.java
+                HttpException e = new HttpException.BadRedirect(conn);
+                logger.error(e);
+                throw e;
+            } else if (code >= 400) {
             	logger.error(conn.getURL() + " error: " + conn.getResponseMessage());
             	throw new HttpException.WithStatusCode(conn);
             }

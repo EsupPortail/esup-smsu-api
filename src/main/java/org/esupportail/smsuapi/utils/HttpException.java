@@ -15,6 +15,17 @@ public class HttpException extends Exception {
 		}
 	}
 	
+	static public class BadRedirect extends HttpException {
+        private String err;
+		public BadRedirect(HttpURLConnection conn) {
+            err = "badly configured url, smsuapi sent a Redirect to " + conn.getHeaderField("Location") + " instead of " + conn.getURL();       
+        }
+        
+		public String toString() {
+			return "HttpException: " + err;
+		}
+	}
+	
 	static public class WithStatusCode extends HttpException {
 		private int statusCode = -1;
 		private String messageLine;
