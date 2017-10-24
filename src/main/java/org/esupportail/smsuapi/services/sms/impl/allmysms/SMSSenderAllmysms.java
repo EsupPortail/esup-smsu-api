@@ -10,6 +10,10 @@ import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoiImpl;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Required;
@@ -72,6 +76,10 @@ public class SMSSenderAllmysms implements ISMSSender {
     }
 
     private void save_message_id(SMSBroker sms, AllmysmsResponse response) {
+      Set<String> invalidNumbers = new HashSet<>(Arrays.asList(
+            response.invalidNumbers != null ? response.invalidNumbers.split("\\|") : new String[] {}
+      ));
+        
       int i = 0;
       for (SMSBroker.Rcpt s : sms.rcpts) {
         Sms smsDB = daoService.getSms(s.id);
@@ -79,9 +87,10 @@ public class SMSSenderAllmysms implements ISMSSender {
         if (response.status == null || response.status != 100) {
             logger.error("allmysend send failed: " + response);
             smsDB.setStateAsEnum(SmsStatus.ERROR);
-        }
-
-        if (response.smsIds != null) {
+        } else if (invalidNumbers.contains(smsDB.getPhone())) {
+            smsDB.setStateAsEnum(SmsStatus.ERROR_POST_BL);
+        } else if (response.smsIds != null) {
+            logger.debug("getting response for " + smsDB.getPhone() + ", it should be #" + i + " in smsIds");
             AllmysmsResponse.SmsId respIds = response.smsIds.get(i++);
             smsDB.setBrokerId(respIds.smsId);
         }
