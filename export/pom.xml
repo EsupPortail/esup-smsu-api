@@ -3,7 +3,7 @@
   <groupId>org.esup-portail</groupId>
   <artifactId>esup-smsu-api</artifactId>
   <packaging>jar</packaging>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Provide web-services to send SMS. 
