@@ -6,7 +6,9 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AllmysmsResponse {
     public static class SmsId {
         public String phoneNumber;
