@@ -43,8 +43,9 @@
 		<property name="nbHoursBeforeGivingUp" value="12"/>
 	</bean>
 
-	<bean id="ackStatusProxyJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean id="ackStatusProxyJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="org.esupportail.smsuapi.services.sms.impl.proxy.AckStatusProxyJob"/>
+        <property name="durability" value="true" />
 	</bean>
 
 	<bean id="smsuapiStatusJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">

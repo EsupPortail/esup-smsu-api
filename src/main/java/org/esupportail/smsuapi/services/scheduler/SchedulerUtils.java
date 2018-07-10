@@ -12,6 +12,9 @@ import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 
+import static org.quartz.TriggerBuilder.*;
+import static org.quartz.JobBuilder.*;
+
 /**
  * Provide tools to manage quartz tasks.
  * @author PRQD8824
@@ -54,12 +57,7 @@ public class SchedulerUtils {
 			jobDataMap.put(keyName, smsMessageList);
 		
 			// create trigger
-			final Trigger trigger = new SimpleTrigger(jobName, groupName);
-
-			trigger.setVolatility(false);
-	        trigger.setStartTime(new Date(now));
-
-
+			final Trigger trigger = newTrigger().withIdentity(jobName, groupName).build();
 			
 			if (logger.isDebugEnabled()) {
 				logger.debug("Launching job with parameter : \n" + 
@@ -67,8 +65,9 @@ public class SchedulerUtils {
 					     " - groupName : " + groupName + "\n");
 			}
 			
-			JobDetail jobDetail = new JobDetail(jobName, groupName, SuperviseSmsSending.class);
-			jobDetail.setJobDataMap(jobDataMap);
+			JobDetail jobDetail = newJob(SuperviseSmsSending.class)
+                .withIdentity(jobName, groupName)
+			    .usingJobData(jobDataMap).build();
 			
 			scheduler.scheduleJob(jobDetail, trigger);
 			

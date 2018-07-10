@@ -416,7 +416,7 @@ public class DaoService extends HibernateDaoSupport
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String,?>> getAppsAndAccounts() {
-		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
+		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
 		
 		criteria.setProjection(Projections.projectionList()
 				.add( Projections.distinct(Projections.projectionList()
@@ -449,7 +449,7 @@ public class DaoService extends HibernateDaoSupport
 		}
 		getCurrentSession().beginTransaction();
 		for (Object object : objects)
-		getHibernateTemplate().save(object);
+		getCurrentSession().save(object);
 		getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");

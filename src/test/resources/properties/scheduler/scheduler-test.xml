@@ -7,11 +7,12 @@
 
 	
 	<!-- Statistic generation -->
-	<bean id="buildStatisticsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean id="buildStatisticsJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="org.esupportail.smsuapi.services.scheduler.job.BuildStatisticsJob"/>
+        <property name="durability" value="true" />
 	</bean>
 	
-	<bean id="buildStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	<bean id="buildStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
     	<property name="jobDetail" ref="buildStatisticsJob" />
 		<!-- Cron expression -->
 		<property name="cronExpression"> 
@@ -20,11 +21,12 @@
 	</bean>
 	
 	<!-- Purge sms -->
-	<bean id="purgeSmsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+	<bean id="purgeSmsJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="org.esupportail.smsuapi.services.scheduler.job.PurgeSmsJob"/>
+        <property name="durability" value="true" />
 	</bean>
 	
-	<bean id="purgeSmsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	<bean id="purgeSmsTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
     	<property name="jobDetail" ref="purgeSmsJob" />
 		<!-- Cron expression -->
 		<property name="cronExpression"> 
