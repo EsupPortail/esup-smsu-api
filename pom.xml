@@ -160,7 +160,7 @@
 		</dependency>
 		<dependency>
 		  <groupId>org.esupportail</groupId>
-		  <artifactId>esup-commons2-web</artifactId>
+		  <artifactId>esup-commons2-core</artifactId>
 		  <version>${esup-commons-version}</version>
 		<exclusions>
 		  <!-- spring-asm is no more in spring 3.2.x -->
@@ -201,7 +201,13 @@
 		  <version>4.10</version>
 		  <scope>test</scope>
 		</dependency>
-		
+
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-test</artifactId>
+		  <scope>test</scope>
+		</dependency>
+
 		<dependency>
 		    <groupId>org.apache.derby</groupId>
 		    <artifactId>derby</artifactId>
