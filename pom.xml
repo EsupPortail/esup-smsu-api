@@ -109,6 +109,12 @@
 		  <version>[1.6, 1.99]</version>
 		</dependency>
             
+		<dependency>
+		  <groupId>log4j</groupId>
+		  <artifactId>log4j</artifactId>
+		  <version>[1.2.12, 1.2.99]</version>
+		</dependency>
+
 
 		<dependency>
 		  <groupId>org.springframework</groupId>
@@ -131,8 +137,8 @@
 		<!-- hibernate connection pooling -->
 		<dependency>
 		  <groupId>org.hibernate</groupId>
-		  <artifactId>hibernate-c3p0</artifactId>
-		  <version>3.6.10.Final</version>
+		  <artifactId>hibernate-entitymanager</artifactId>
+		  <version>4.1.12.Final</version>
 		</dependency>
 		
 		<dependency>

@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -22,8 +21,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
+import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -35,7 +33,6 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
 
     protected static final Logger logger = Logger.getLogger(SmsuApiTestDerbySetup.class);
 
-    @Named("jdbcSessionFactory")
     @Inject protected SessionFactory jdbcSessionFactory;
 
 	@Inject 
@@ -79,11 +76,12 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
     }
 
     protected void closeSession(Session session, SessionFactory sessionFactory) {
-        SessionFactoryUtils.closeSession(session);
+        session.close();
     }
 
     protected Session getSession() throws DataAccessResourceFailureException {
-        Session session = SessionFactoryUtils.getSession(jdbcSessionFactory, true);
+        TransactionSynchronizationManager.hasResource(jdbcSessionFactory);
+        Session session = jdbcSessionFactory.openSession();
         FlushMode flushMode = this.flushMode;
         if (flushMode != null) {
             session.setFlushMode(flushMode);
