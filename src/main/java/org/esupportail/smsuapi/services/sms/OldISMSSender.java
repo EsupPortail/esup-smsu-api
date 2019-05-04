@@ -6,7 +6,7 @@ package org.esupportail.smsuapi.services.sms;
  * @author PRQD8824
  *
  */
-public abstract class OldISMSSender {
+public abstract class OldISMSSender implements ISMSSender {
     static public class SMSBroker {
 
         /**
