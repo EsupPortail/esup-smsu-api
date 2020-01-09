@@ -1,19 +1,22 @@
 package org.esupportail.smsuapi.services.servlet;
 
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
-import javax.inject.Inject;
 
 public class RestServletActions {
 
@@ -76,6 +79,18 @@ public class RestServletActions {
 		}
 		return domainService.getStatus(list, getApplication(req));
 	}
+    	
+   public Object wsActionApereoCasHandle(HttpServletRequest req) throws InsufficientQuotaException {
+		Integer id = sendSMS(null,
+				null,
+				getStrings(req, "to"),
+				null, 
+	            getBodyReqString(req, null),
+	            getApplication(req));
+		return put(singletonMap("status", (Object)"OK"), "id", id);
+	}
+    	
+
 
 	boolean isAuthValid(HttpServletRequest req) {
 		return clientManager.getApplicationOrNull(req) != null;
@@ -93,11 +108,25 @@ public class RestServletActions {
 	}
 	static String getString(HttpServletRequest req, String name) {
 		String val = getString(req, name, null);
+		if(val == null && req.getServletPath() != null && req.getServletPath().endsWith("/apereo-cas")) {
+			val = "ApereoCasHandle";
+		}
 		if (val == null) throw new InvalidParameterException("\"" + name + "\" parameter is mandatory");
 		return val;
 	}
 	static String getString(HttpServletRequest req, String name, String defaultValue) {
 		String val = req.getParameter(name);
+		return val != null ? val : defaultValue;
+	}
+	
+	private String getBodyReqString(HttpServletRequest req, String defaultValue) {
+		String val;
+		try {
+			val = IOUtils.toString(req.getReader());
+		} catch (IOException e) {
+			logger.debug("IOException reading message as body Request", e);
+			throw new InvalidParameterException("IOException reading message as body Request : " +  e.getMessage());
+		}
 		return val != null ? val : defaultValue;
 	}
 
@@ -125,6 +154,6 @@ public class RestServletActions {
 	private <A,B> Map<A,B> put(Map<A,B> m, A k, B v) {
 		m.put(k,v);
 		return m;
-	}	
+	}
 
 }
