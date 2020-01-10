@@ -108,7 +108,8 @@ public class RestServletActions {
 	}
 	static String getString(HttpServletRequest req, String name) {
 		String val = getString(req, name, null);
-		if(val == null && req.getServletPath() != null && req.getServletPath().endsWith("/apereo-cas")) {
+		if("action".equals(name) && val == null && req.getServletPath() != null && req.getServletPath().endsWith("/apereo-cas")) {
+			// Hack for make esup-smus-api a SMS Sender for Apereo CAS : https://apereo.github.io/cas/6.0.x/notifications/SMS-Messaging-Configuration.html#rest
 			val = "ApereoCasHandle";
 		}
 		if (val == null) throw new InvalidParameterException("\"" + name + "\" parameter is mandatory");
