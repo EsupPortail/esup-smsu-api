@@ -12,7 +12,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
-import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
@@ -36,7 +35,7 @@ public class HttpUtils {
 	
 	public static HttpURLConnection basicAuth(HttpURLConnection uc, String username, String password) { 
         String userpass = username + ":" + password;
-        String basicAuth = "Basic " + DatatypeConverter.printBase64Binary(userpass.getBytes());
+        String basicAuth = "Basic " + java.util.Base64.getEncoder().encodeToString(userpass.getBytes());
         uc.setRequestProperty ("Authorization", basicAuth);
         return uc;
 	}
