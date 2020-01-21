@@ -64,7 +64,7 @@ public class RestServlet implements org.springframework.web.HttpRequestHandler {
 	}
 	private void answerError(HttpServletResponse resp, Throwable e) {
 		String exnName = e.getClass().getSimpleName();
-		if (exnName.equals("UnknownMessageIdException") || exnName.equals("InvalidParameterException") || exnName.equals("InsufficientQuotaException")) {
+		if (exnName.equals("UnknownMessageIdException") || exnName.equals("InvalidParameterException") || exnName.equals("InsufficientQuotaException") || exnName.equals("AlreadySentException")) {
 			// known exceptions, no need to pollute logs with backtrace
 			logger.error(""+e);
 		} else {

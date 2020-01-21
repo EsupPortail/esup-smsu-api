@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
+import org.esupportail.smsuapi.exceptions.AlreadySentException;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils;
 import org.esupportail.smsuapi.utils.HttpUtils.Pair;
@@ -179,6 +180,8 @@ public class HttpRequestSmsuapiWS {
                     Unchecked.throw_(new UnknownMessageIdException());
                 } else if (error.equals("InvalidParameterException")) {
                     throw new InvalidParameterException(jsonErr.path("message").getTextValue());
+                } else if (error.equals("AlreadySentException")) {
+                    throw new AlreadySentException(jsonErr.path("message").getTextValue());
                 } else if (error.equals("InsufficientQuotaException")) {
                     Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
                 }
