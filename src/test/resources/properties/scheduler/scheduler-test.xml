@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	
+	<!-- Statistic generation -->
+	<bean id="buildStatisticsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.esupportail.smsuapi.services.scheduler.job.BuildStatisticsJob"/>
+	</bean>
+	
+	<bean id="buildStatisticsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="buildStatisticsJob" />
+		<!-- Cron expression -->
+		<property name="cronExpression"> 
+			<value>${quartz.buildStatisticsTrigger.cronExpression}</value>
+		</property>
+	</bean>
+	
+	<!-- Purge sms -->
+	<bean id="purgeSmsJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.esupportail.smsuapi.services.scheduler.job.PurgeSmsJob"/>
+	</bean>
+	
+	<bean id="purgeSmsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="purgeSmsJob" />
+		<!-- Cron expression -->
+		<property name="cronExpression"> 
+			<value>${quartz.purgeSmsTrigger.cronExpression}</value>
+		</property>
+	</bean>
+	
+	<bean id="quartzExceptionHandler"
+		class="org.esupportail.smsuapi.services.scheduler.QuartzExceptionHandler">
+	</bean>
+
+
+	<bean id="schedulerUtils" class="org.esupportail.smsuapi.services.scheduler.SchedulerUtils">
+		<property name="scheduler" ref="schedulerSmsuapi" />
+	</bean>
+
+	<!-- The Scheduler   -->
+	<bean id="schedulerSmsuapi"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+		destroy-method="destroy">
+
+		<property name="waitForJobsToCompleteOnShutdown" value="true" />
+		<property name="overwriteExistingJobs" value="true" />
+		<property name="autoStartup" value="true" />
+		<property name="triggers">
+        	<list>
+        		<ref bean="buildStatisticsTrigger" />
+        		<ref bean="purgeSmsTrigger" />
+          	</list>
+    	</property>
+		<property name="applicationContextSchedulerContextKey">
+			<value>applicationContext</value>
+		</property>
+	</bean>
+
+</beans>

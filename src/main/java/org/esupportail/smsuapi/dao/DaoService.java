@@ -356,7 +356,7 @@ public class DaoService extends HibernateDaoSupport
 		criteria.add(Restrictions.eq(Application.PROP_NAME, name));
 		return (Application) criteria.uniqueResult();
 	}
-	
+
 	//////////////////////////////////////////////////////////////
 	// Black list
 	//////////////////////////////////////////////////////////////

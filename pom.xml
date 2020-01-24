@@ -126,7 +126,13 @@
 		<dependency>
 		  <groupId>org.hibernate</groupId>
 		  <artifactId>hibernate-c3p0</artifactId>
-		  <version>3.3.2.GA</version>
+		  <version>3.6.10.Final</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-simple</artifactId>
+		    <version>1.6.1</version>
 		</dependency>
 
 		<dependency>
@@ -142,6 +148,10 @@
 		  <exclusion>
 		    <groupId>hsqldb</groupId>
 		    <artifactId>hsqldb</artifactId>
+		  </exclusion>
+		  <exclusion>
+		  	<groupId>org.hibernate</groupId>
+		  	<artifactId>hibernate-annotations</artifactId>
 		  </exclusion>
 		</exclusions>
 		</dependency>
@@ -187,6 +197,12 @@
 		  <artifactId>junit</artifactId>
 		  <version>4.10</version>
 		  <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.apache.derby</groupId>
+		    <artifactId>derby</artifactId>
+		    <version>10.14.2.0</version>
 		</dependency>
 		
   </dependencies>
