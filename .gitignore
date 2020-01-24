@@ -7,3 +7,4 @@ deploy
 .classpath
 .settings
 logs
+derby.log

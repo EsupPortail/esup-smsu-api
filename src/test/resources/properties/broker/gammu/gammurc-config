@@ -1,0 +1,13 @@
+# Gammu configuration file :
+# http://wammu.eu/docs/manual/config/index.html
+
+[gammu]
+
+port = /dev/ttyUSB0
+model = 
+connection = at19200
+synchronizetime = yes
+logfile = 
+logformat = nothing
+use_locking = 
+gammuloc = 
