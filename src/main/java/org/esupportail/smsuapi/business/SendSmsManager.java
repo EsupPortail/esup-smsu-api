@@ -15,6 +15,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
+import org.esupportail.smsuapi.exceptions.AlreadySentException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 
@@ -128,13 +129,13 @@ public class SendSmsManager {
 				if (!daoService.getSms(app, msgId, smsPhone).isEmpty()) {
 					String msg = "SMS already sent! Check for a problem with the application : " + app.getName();
 					logger.error(msg);
-					throw new InvalidParameterException(msg);
+					throw new AlreadySentException(msg);
 				}
 			}
 		}
 		
 		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount, app);
-		
+
 		List<Sms> list = new ArrayList<>();
 			for (String smsPhone : smsPhones) {
 				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, app);
