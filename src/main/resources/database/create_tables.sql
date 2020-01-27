@@ -7,6 +7,7 @@ create table statistic (APP_ID integer not null, ACC_ID integer not null, STAT_M
 alter table application add index FK5CA40550173096CF (INS_ID), add constraint FK5CA40550173096CF foreign key (INS_ID) references institution (INS_ID);
 alter table application add index FK5CA4055018242B51 (ACC_ID), add constraint FK5CA4055018242B51 foreign key (ACC_ID) references account (ACC_ID);
 alter table blacklist add index FK4F74291D311F0354 (APP_ID), add constraint FK4F74291D311F0354 foreign key (APP_ID) references application (APP_ID);
+create index check_already_sent on sms (SMS_INITIAL_ID, SMS_PHONE);
 alter table sms add index FK1BD59311F0354 (APP_ID), add constraint FK1BD59311F0354 foreign key (APP_ID) references application (APP_ID);
 alter table sms add index FK1BD5918242B51 (ACC_ID), add constraint FK1BD5918242B51 foreign key (ACC_ID) references account (ACC_ID);
 alter table statistic add index FK83F27950311F0354 (APP_ID), add constraint FK83F27950311F0354 foreign key (APP_ID) references application (APP_ID);

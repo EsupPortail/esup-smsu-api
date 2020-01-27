@@ -1,0 +1,1 @@
+create index check_already_sent on sms (SMS_INITIAL_ID, SMS_PHONE);
