@@ -8,7 +8,7 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
-import org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoiImpl;
+import org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoi;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -100,7 +100,7 @@ public class SMSSenderAllmysms implements ISMSSender {
     }
 
     private String computeSenderlabel(SMSBroker sms) {
-        return SMSSenderSmsenvoiImpl.computeSenderlabel(logger, from, sms.accountLabel);
+        return SMSSenderSmsenvoi.computeSenderlabel(logger, from, sms.accountLabel);
     }
 
     @Required

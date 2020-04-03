@@ -19,50 +19,32 @@
 		<property name="keyStorePassword" value="${global.keypass}" />
 	</bean-->
 
-	<bean id="requestSmsenvoi"
-		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.RequestSmsenvoi">
-		<property name="account_email" value="${sms.connector.smsenvoi.account.email}" />
-		<property name="account_apikey" value="${sms.connector.smsenvoi.account.apikey}" />
-	</bean>
-
 	<bean id="smsSenderImpl"
-		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoiImpl">
+		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoi">
 		<description>
 			Smsenvoi implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="sendsms_url" value="http://www.smsenvoi.com/getapi/sendsms/" />
+		<property name="user_key" value="${sms.connector.smsenvoi.account.user_key}" />
+		<property name="access_token" value="${sms.connector.smsenvoi.account.access_token}" />
+		<property name="sendsms_url" value="https://api.smsenvoi.com/API/v1.0/REST/sms" />
 		<property name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
 		<property name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
 		</property>
+		<property name="restTemplate">
+				<bean class="org.springframework.web.client.RestTemplate">
+					<property name="messageConverters">
+						<list>
+							<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+						</list>
+					</property>
+				</bean>
+			</property>
+
 	</bean>
 
-	<!-- schedule ackStatusSmsenvoi  -->
-	<bean id="ackStatusSmsenvoi" class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.AckStatusSmsenvoi">
-		<property name="checkdelivery_url" value="http://www.smsenvoi.com/getapi/checkdelivery/" />
-		<property name="nbHoursBeforeGivingUp" value="36"/>
-	</bean>
-
-	<bean id="ackStatusSmsenvoiJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="org.esupportail.smsuapi.services.sms.impl.smsenvoi.AckStatusSmsenvoiJob"/>
-	</bean>
-
-	<bean id="smsuapiStatusJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="startDelay" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000"/>
-		<property name="repeatInterval" value="${sms.connector.smsenvoi.acknoledgeStatus.repeatInterval}000" />
-	</bean>
-
-
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="schedulerName">
-			<value>schedulerSmsuapiSmsenvoi</value>
-		</property>
-		<property name="triggers">
-        		<list> <ref bean="smsuapiStatusJobTrigger" /> </list>
-    		</property>
-		<property name="applicationContextSchedulerContextKey">
-			<value>applicationContext</value>
-		</property>
+	<bean id="backChannelAck"
+	    class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.BackChannelAck">
 	</bean>
 
 </beans>
