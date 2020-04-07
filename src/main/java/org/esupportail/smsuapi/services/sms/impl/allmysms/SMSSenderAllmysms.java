@@ -80,12 +80,14 @@ public class SMSSenderAllmysms implements ISMSSender {
             response.invalidNumbers != null ? response.invalidNumbers.split("\\|") : new String[] {}
       ));
         
+      boolean error = response.status == null || response.status != 100;
+      if (error) logger.error("allmysend send failed: " + response);
+
       int i = 0;
       for (SMSBroker.Rcpt s : sms.rcpts) {
         Sms smsDB = daoService.getSms(s.id);
 
-        if (response.status == null || response.status != 100) {
-            logger.error("allmysend send failed: " + response);
+        if (error) {
             smsDB.setStateAsEnum(SmsStatus.ERROR);
         } else if (invalidNumbers.contains(smsDB.getPhone())) {
             smsDB.setStateAsEnum(SmsStatus.ERROR_POST_BL);
