@@ -222,14 +222,11 @@ public class DaoService extends HibernateDaoSupport
 	 * @param sms
 	 */
 	public synchronized void addSms(final Sms sms) {
-		if (sms.getInitialId() == null) {
-			sms.setInitialId(getNewInitialId(sms.getApp()));
-		}
 		addObject(sms);
 	}
 
 	
-	private Integer getNewInitialId(Application app) {
+	public Integer getNewInitialId(Application app) {
 		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
 		criteria.setProjection( Projections.max(Sms.PROP_INITIAL_ID) )
 				.add(Restrictions.eq(Sms.PROP_APP, app));

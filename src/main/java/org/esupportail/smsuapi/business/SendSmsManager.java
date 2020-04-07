@@ -137,6 +137,11 @@ public class SendSmsManager {
 		Account account = mayCreateAccountAndCheckQuotaOk(smsPhones.length, labelAccount, app);
 
 		List<Sms> list = new ArrayList<>();
+
+		if (msgId == null) {
+                    msgId = daoService.getNewInitialId(app);
+		}
+
 			for (String smsPhone : smsPhones) {
 				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, app);
 				if (msgId == null) {
@@ -171,7 +176,7 @@ public class SendSmsManager {
 		sms.setSenderId(senderId);
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
 		sms.setDate(new Date());
-		daoService.addSms(sms); // if null initialId, it will compute a new unique initialId
+		daoService.addSms(sms);
 
 		if (!isBlacklisted) {
 			account.setConsumedSms(account.getConsumedSms() + 1);
