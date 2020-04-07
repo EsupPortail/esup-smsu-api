@@ -217,15 +217,6 @@ public class DaoService extends HibernateDaoSupport
 		return getHibernateTemplate().findByCriteria(criteria);		
 	}
 
-	/**
-	 * 
-	 * @param sms
-	 */
-	public synchronized void addSms(final Sms sms) {
-		addObject(sms);
-	}
-
-	
 	public Integer getNewInitialId(Application app) {
 		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
 		criteria.setProjection( Projections.max(Sms.PROP_INITIAL_ID) )
@@ -445,6 +436,19 @@ public class DaoService extends HibernateDaoSupport
 			logger.debug("adding " + object + "...");
 		}
 		getCurrentSession().beginTransaction();
+		getHibernateTemplate().save(object);
+		getCurrentSession().getTransaction().commit();
+		if (logger.isDebugEnabled()) {
+			logger.debug("done.");
+		}
+	}
+
+	public void addObjects(final List<?> objects) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("adding " + objects + "...");
+		}
+		getCurrentSession().beginTransaction();
+		for (Object object : objects)
 		getHibernateTemplate().save(object);
 		getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {

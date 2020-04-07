@@ -146,13 +146,14 @@ public class SendSmsManager {
 			for (String smsPhone : smsPhones) {
 				boolean isBlacklisted = daoService.getBlackLListByPhone(smsPhone) != 0;
 				if (!isBlacklisted) count++;
-				Sms sms = saveSMSNoCheck(msgId, senderId, smsPhone, account, app, isBlacklisted);
+				Sms sms = createSms(msgId, senderId, smsPhone, account, app, isBlacklisted);
 				if (msgId == null) {
 					// the app did not give an "initialId", the first SMS did get a new initialId, re-use it for the others sms
 					msgId = sms.getInitialId();
 				}
 				list.add(sms);
 			}
+			daoService.addObjects(list);
 
 			if (count > 0) {
 				account.setConsumedSms(account.getConsumedSms() + count);
@@ -174,8 +175,8 @@ public class SendSmsManager {
 		return list.isEmpty() ? null : new SMSBroker(list, msgContent, smss.get(0).getAcc().getLabel());
 	}
 
-	protected Sms saveSMSNoCheck(final Integer msgId, final Integer senderId,
-			final String smsPhone, Account account, Application app, boolean isBlacklisted) {
+	protected Sms createSms(final Integer msgId, final Integer senderId,
+			final String smsPhone, Account account, Application app, boolean isBlacklisted) {			
 		Sms sms = new Sms();
 		sms.setAcc(account);
 		sms.setApp(app);
@@ -184,8 +185,6 @@ public class SendSmsManager {
 		sms.setSenderId(senderId);
 		sms.setStateAsEnum(isBlacklisted ? SmsStatus.ERROR_PRE_BL : SmsStatus.IN_PROGRESS);
 		sms.setDate(new Date());
-		daoService.addSms(sms);
-
 		return sms;		
 	}
 
