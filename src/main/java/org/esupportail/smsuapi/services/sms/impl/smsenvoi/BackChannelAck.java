@@ -30,6 +30,10 @@ public class BackChannelAck implements org.esupportail.smsuapi.services.sms.IBac
         String recipient = getParameter(req, "recipient");
         String delivery_date = getParameter(req, "delivery_date");
         String order_id = getParameter(req, "order_id");
+
+        // smsenvoi do not always properly urlencode the parameter in case of status TIMEOUT. So "+" becomes a space.
+        if (recipient.startsWith(" ")) recipient = recipient.replace(" ", "+");
+
         Sms sms = daoService.getSmsByBrokerId(broker_id(order_id, recipient));
         if (sms == null) {
             logger.error("back-channel ack: unknown smsId " + broker_id(order_id, recipient));
