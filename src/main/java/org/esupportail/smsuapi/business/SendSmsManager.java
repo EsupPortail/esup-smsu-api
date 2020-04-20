@@ -177,7 +177,9 @@ public class SendSmsManager implements InitializingBean {
 				list.add(new SMSBroker.Rcpt(sms.getId(), sms.getPhone()));
 			}
 		}
-		return list.isEmpty() ? null : new SMSBroker(list, msgContent, smss.get(0).getAcc().getLabel());
+		if (list.isEmpty()) return null;
+		Account account = smss.get(0).getAcc();
+		return new SMSBroker(list, msgContent, account.getLabel(), account.getBroker());
 	}
 
 	protected Sms createSms(final Integer msgId, final Integer senderId,
@@ -197,7 +199,17 @@ public class SendSmsManager implements InitializingBean {
 	 * Used to send message in state waiting_for_sending.
 	 */
 	public void sendWaitingForSendingSms(final SMSBroker smsMessage) {
-		smsSenders.get(defaultBroker).sendMessage(smsMessage);
+		String broker = smsMessage.broker != null ? smsMessage.broker : defaultBroker;
+		ISMSSender smsSender = smsSenders.get(broker);
+		if (smsSender != null) {
+		    smsSender.sendMessage(smsMessage);
+		} else {
+		    String err = smsMessage.broker == null ?
+		         "unknown default broker ''" + broker + "'" :
+		         "unknown broker '" + broker + "' for account '" + smsMessage.accountLabel + "'";
+		    String suggestion = "uncomment <import> " + broker + ".xml in broker.xml";
+		    logger.error(err + ". " + suggestion);
+		}
     }
 
 	public static String join(Object[] elements, CharSequence separator) {

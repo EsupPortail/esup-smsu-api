@@ -1,4 +1,4 @@
-create table account (ACC_ID integer not null auto_increment, ACC_LABEL varchar(32) not null unique, ACC_QUOTA bigint, ACC_CONSUMED_SMS bigint not null, primary key (ACC_ID)) ENGINE=InnoDB;
+create table account (ACC_ID integer not null auto_increment, ACC_LABEL varchar(32) not null unique, ACC_QUOTA bigint, ACC_CONSUMED_SMS bigint not null, ACC_BROKER varchar(255), primary key (ACC_ID)) ENGINE=InnoDB;
 create table application (APP_ID integer not null auto_increment, APP_NAME varchar(32) not null unique, APP_CERTIFCATE blob, APP_QUOTA bigint not null, APP_CONSUMED_SMS bigint not null, ACC_ID integer not null, INS_ID integer not null, primary key (APP_ID)) ENGINE=InnoDB;
 create table blacklist (BLA_ID integer not null auto_increment, BLA_DATE datetime not null, BLA_PHONE varchar(255) not null unique, APP_ID integer not null, primary key (BLA_ID)) ENGINE=InnoDB;
 create table institution (INS_ID integer not null auto_increment, INS_LABEL varchar(32) not null unique, primary key (INS_ID)) ENGINE=InnoDB;

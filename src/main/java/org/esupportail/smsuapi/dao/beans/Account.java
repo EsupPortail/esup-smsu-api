@@ -69,6 +69,12 @@ public class Account implements Serializable {
 	private java.util.Set<Application> applications;
 
 	/**
+	 * Broker to use to send SMS. If null, the defaultBroker "sms.connector.name" will be used
+	 */
+	private String broker;
+
+
+	/**
 	 * Bean constructor.
 	 */
 	public Account() {
@@ -216,6 +222,15 @@ public class Account implements Serializable {
 		this.applications = applications;
 	}
 
+	public String getBroker() {
+		return broker;
+	}
+
+	public void setBroker(final String broker) {
+		this.broker = broker;
+	}
+
+
 	/**
 	 * Add the application to the collection of applications associated to the account.
 	 * @param application
@@ -262,7 +277,7 @@ public class Account implements Serializable {
 	@Override
 	public String toString() {
 		return "Account#" + hashCode() + "[id=[" + id + "], label=[" + label 
-		+ "], quota=[" + quota + "], number of consumed sms =[" + consumedSms +  "]]";
+		+ "], quota=[" + quota + "], number of consumed sms =[" + consumedSms +  "], broker=[" + broker + "]]";
 	}
 
 

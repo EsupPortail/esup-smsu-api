@@ -18,5 +18,6 @@
 			<key column="ACC_ID"/>
 			<one-to-many class="Application"/>
 		</set>
+		<property name="Broker" column="ACC_BROKER" type="string" length="255"/>
 	</class>
 </hibernate-mapping>

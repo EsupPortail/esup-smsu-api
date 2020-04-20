@@ -20,10 +20,12 @@ public class SMSBroker implements Serializable {
 	public List<Rcpt> rcpts;
 	public String message;
 	public String accountLabel;
+	public String broker;
 
-	public SMSBroker(List<Rcpt> rcpts, final String message, final String accountLabel) {
+	public SMSBroker(List<Rcpt> rcpts, final String message, final String accountLabel, String broker) {
 		this.rcpts = rcpts;
 		this.message  = message;
 		this.accountLabel = accountLabel;
+		this.broker = broker;
 	}
 }
