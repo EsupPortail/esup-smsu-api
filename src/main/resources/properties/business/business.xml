@@ -10,6 +10,7 @@
 		class="org.esupportail.smsuapi.business.SendSmsManager">
 		<description>The business layer concerning the sending.</description>
 		<property name="phoneNumberPattern" value="[ +0-9]*"/>
+		<property name="defaultBroker" value="${sms.connector.name}"/>
 	</bean>
 	
 	<bean id="statisticBuilder"

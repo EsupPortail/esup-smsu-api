@@ -14,5 +14,8 @@ public interface ISMSSender {
 	 * @param smsMessage
 	 */
 	void sendMessage(SMSBroker smsMessage);
-	
+
+	default String getId() {
+	    return getClass().getPackage().getName().replaceFirst(".*\\.", "");
+	}
 }

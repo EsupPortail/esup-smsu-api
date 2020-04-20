@@ -2,7 +2,9 @@ package org.esupportail.smsuapi.business;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,13 +20,15 @@ import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.AlreadySentException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 
 /**
  * Business layer concerning smsu service.
  *
  */
-public class SendSmsManager {
+public class SendSmsManager implements InitializingBean {
 
 	/**
 	 * Log4j logger.
@@ -32,9 +36,10 @@ public class SendSmsManager {
 	protected final Logger logger = Logger.getLogger(getClass());
 
 	private String phoneNumberPattern;
+	private String defaultBroker;
 	
+	private Map<String, ISMSSender> smsSenders;
 	@Inject private DaoService daoService;
-	@Inject private ISMSSender smsSender;
 	@Inject private SchedulerUtils schedulerUtils;
 
 	/**
@@ -192,7 +197,7 @@ public class SendSmsManager {
 	 * Used to send message in state waiting_for_sending.
 	 */
 	public void sendWaitingForSendingSms(final SMSBroker smsMessage) {
-		smsSender.sendMessage(smsMessage);
+		smsSenders.get(defaultBroker).sendMessage(smsMessage);
     }
 
 	public static String join(Object[] elements, CharSequence separator) {
@@ -218,4 +223,23 @@ public class SendSmsManager {
 		this.phoneNumberPattern = phoneNumberPattern;
 	}
 
+    @Required
+    public void setDefaultBroker(String defaultBroker) {
+        this.defaultBroker = defaultBroker;
+    }
+
+    @Inject
+    @Required
+    public void setSmsSenders(List<ISMSSender> smsSenders) {
+        this.smsSenders = new HashMap<>();
+        for (ISMSSender smsSender : smsSenders) {
+            this.smsSenders.put(smsSender.getId(), smsSender);
+        }
+    }
+
+	public void afterPropertiesSet() {
+        if (!this.smsSenders.containsKey(defaultBroker)) {
+            throw new RuntimeException("unknonwn defaultBroker " + defaultBroker + ". Known brokers: " + this.smsSenders.keySet());
+        }
+    }
 }
