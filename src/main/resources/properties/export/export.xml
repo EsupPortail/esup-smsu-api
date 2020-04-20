@@ -26,5 +26,9 @@
 	<bean id="rest"
 	      class="org.esupportail.smsuapi.services.servlet.RestServlet">
 	</bean>
-	
+
+	<bean id="backChannelAck"
+          class="org.esupportail.smsuapi.services.servlet.BackChannelAckServlet">
+	</bean>
+
 </beans>

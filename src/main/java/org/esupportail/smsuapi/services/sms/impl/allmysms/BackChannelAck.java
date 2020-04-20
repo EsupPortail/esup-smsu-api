@@ -1,6 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.allmysms;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,33 +17,36 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.apache.log4j.Logger;
 import javax.inject.Inject;
 
-public class BackChannelAck implements org.springframework.web.HttpRequestHandler {
+public class BackChannelAck implements org.esupportail.smsuapi.services.sms.IBackChannelAck {
 
     @Inject
     private DaoService daoService;
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String smsId = req.getParameter("smsId");
-        if (smsId == null) {
-            logger.error("back-channel ack: no smsId !?");
-            return;
-        }
+    public void mayHandleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException, InvalidParameterException {
+        String smsId = getParameter(req, "smsId");
+        String receptionDate = getParameter(req, "receptionDate");
         Sms sms = daoService.getSmsByBrokerId(smsId);
         if (sms == null) {
             logger.error("back-channel ack: unknown smsId " + smsId);
         } else {
             sms.setStateAsEnum(getStatus(req));
             try {
-                sms.setAckDate(parseReceptionDate(req.getParameter("receptionDate"))); // update acknowledge date (we could use "receptionDate" param, but it should be ok)
+                sms.setAckDate(parseReceptionDate(receptionDate)); // update acknowledge date (we could use "receptionDate" param, but it should be ok)
             } catch (ParseException e) {
-                logger.error("back-channel ack: invalid date " + req.getParameter("receptionDate"));
+                logger.error("back-channel ack: invalid date " + receptionDate);
             }
             daoService.updateSms(sms);
         }
         // NB: returning "OK" even if smsId not found in DB: Useful when subscribing the webhook
         resp.getWriter().write("OK");
+    }
+
+    private String getParameter(HttpServletRequest req, String name) {
+        String val = req.getParameter(name);
+        if (val == null) throw new InvalidParameterException("allmysms back-channel ack: no " + name);
+        return val;
     }
 
     private SmsStatus getStatus(HttpServletRequest req) {

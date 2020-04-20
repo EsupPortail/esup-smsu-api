@@ -43,7 +43,7 @@
 
 	</bean>
 
-	<bean id="backChannelAck"
+	<bean
 	    class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.BackChannelAck">
 	</bean>
 

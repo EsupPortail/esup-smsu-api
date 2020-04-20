@@ -1,6 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
 
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +17,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.apache.log4j.Logger;
 import javax.inject.Inject;
 
-public class BackChannelAck implements org.springframework.web.HttpRequestHandler {
+public class BackChannelAck implements org.esupportail.smsuapi.services.sms.IBackChannelAck {
 
     @Inject
     private DaoService daoService;
@@ -24,12 +25,11 @@ public class BackChannelAck implements org.springframework.web.HttpRequestHandle
     private final Logger logger = Logger.getLogger(getClass());
 
     // 
-    public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void mayHandleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException, InvalidParameterException {
         // Example: ?_dummy=x&recipient=%2B33623456789&delivery_date=20200403190115&order_id=20&status=DLVRD
         String recipient = getParameter(req, "recipient");
         String delivery_date = getParameter(req, "delivery_date");
         String order_id = getParameter(req, "order_id");
-        if (recipient == null || delivery_date == null || order_id == null) return;
         Sms sms = daoService.getSmsByBrokerId(broker_id(order_id, recipient));
         if (sms == null) {
             logger.error("back-channel ack: unknown smsId " + broker_id(order_id, recipient));
@@ -46,7 +46,7 @@ public class BackChannelAck implements org.springframework.web.HttpRequestHandle
 
     private String getParameter(HttpServletRequest req, String name) {
         String val = req.getParameter(name);
-        if (val == null) logger.error("back-channel ack: no " + name + " !?");
+        if (val == null) throw new InvalidParameterException("smsenvoi back-channel ack: no " + name);
         return val;
     }
 
