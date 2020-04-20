@@ -11,7 +11,7 @@
 		This file is referenced by /properties/applicationContext.xml.
 	-->
 
-	<bean id="smsSenderImpl"
+	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.allmysms.SMSSenderAllmysms">
 		<description>
 			Allmysms implementation of the broker, this class manage the sms sending

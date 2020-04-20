@@ -15,7 +15,7 @@
 	<!-- used by AckManagerThread -->
 	<bean id="applicationContextHolder" class="org.esupportail.commons.context.ApplicationContextHolder" />
 
-	<bean id="smsSenderImpl"
+	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.olm.SMSSenderOlmImpl">
 		<description>
 			Olm implementation of the broker, this class manage the sms sending

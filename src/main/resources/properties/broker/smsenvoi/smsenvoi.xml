@@ -19,7 +19,7 @@
 		<property name="keyStorePassword" value="${global.keypass}" />
 	</bean-->
 
-	<bean id="smsSenderImpl"
+	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.smsenvoi.SMSSenderSmsenvoi">
 		<description>
 			Smsenvoi implementation of the broker, this class manage the sms sending

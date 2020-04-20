@@ -20,7 +20,7 @@
 		<property name="keyStorePassword" value="${global.keypass}" />
 	</bean>
 
-	<bean id="smsSenderImpl"
+	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.proxy.SMSSenderProxyImpl">
 		<description>
 			Proxy implementation of the broker, this class manage the sms sending
