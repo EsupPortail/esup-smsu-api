@@ -91,7 +91,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <esup-commons-version>[0.3.3, 0.3.99]</esup-commons-version>
-    <spring-version>3.2.3.RELEASE</spring-version>
+    <spring-version>4.3.19.RELEASE</spring-version>
   </properties>
 
   <repositories>
