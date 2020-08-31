@@ -415,7 +415,7 @@ public class DaoService extends HibernateDaoSupport
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String,?>> getAppsAndCountsToTreat() {
+	public List<Map<String,?>> getAppsAndAccounts() {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Sms.class);
 		
 		criteria.setProjection(Projections.projectionList()

@@ -38,7 +38,7 @@ public class StatisticBuilder {
 	 * Build all non already computed statistic whatever the application, account or date.
 	 */
 	public void buildAllStatistics() {
-		for (Map<String,?> map : daoService.getAppsAndCountsToTreat()) {
+		for (Map<String,?> map : daoService.getAppsAndAccounts()) {
 			// get the date of older SMS for this app and account
 			final Application application = (Application) map.get(Sms.PROP_APP);
 			final Account account = (Account) map.get(Sms.PROP_ACC);
