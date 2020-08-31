@@ -262,7 +262,7 @@ public class DaoService extends HibernateDaoSupport
 		criteria.add(Restrictions.between(Sms.PROP_DATE, startDate, endDate));
 		
 		criteria.setProjection(Projections.rowCount());
-		final Integer count = (Integer) criteria.uniqueResult();
+		final Long count = (Long) criteria.uniqueResult();
 		return count.intValue();
 	}
 	
@@ -287,7 +287,7 @@ public class DaoService extends HibernateDaoSupport
 				    ));      
 				          
 		criteria.setProjection(Projections.rowCount());
-		final Integer count = (Integer) criteria.uniqueResult();
+		final Long count = (Long) criteria.uniqueResult();
 		return count.intValue();
 	}
 	
