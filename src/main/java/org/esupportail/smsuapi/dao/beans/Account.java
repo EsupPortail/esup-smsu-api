@@ -59,11 +59,6 @@ public class Account implements Serializable {
 	private java.lang.Long consumedSms;
 
 	/**
-	 * Collection of SMS associated to the account.
-	 */
-	private java.util.Set<Sms> sms;
-
-	/**
 	 * Number of consumed SMS.
 	 */
 	private java.util.Set<Application> applications;
@@ -177,34 +172,6 @@ public class Account implements Serializable {
 	 */
 	public void setConsumedSms(final java.lang.Long consumedSms) {
 		this.consumedSms = consumedSms;
-	}
-
-
-
-	/**
-	 * Return the value associated with the column: Sms.
-	 */
-	public java.util.Set<Sms> getSms() {
-		return sms;
-	}
-
-	/**
-	 * Set the value related to the column: Sms.
-	 * @param sms the Sms value
-	 */
-	public void setSms(final java.util.Set<Sms> sms) {
-		this.sms = sms;
-	}
-
-	/**
-	 * Add the sms to the collection of sms associated to the account.
-	 * @param sms
-	 */
-	public void addToSms(final Sms sms) {
-		if (null == getSms()) {
-			setSms(new java.util.TreeSet<Sms>());
-		}
-		getSms().add(sms);
 	}
 
 	/**

@@ -39,11 +39,6 @@ public class Institution  implements Serializable {
 	private java.lang.String label;
 
 	/**
-//	 * Collection of applications associated to the institution.
-	 */
-	private java.util.Set<Application> applications;
-
-	/**
 	 * Bean constructor.
 	 */
 	public Institution() {
@@ -94,36 +89,6 @@ public class Institution  implements Serializable {
 	public void setLabel(final java.lang.String label) {
 		this.label = label;
 	}
-
-
-
-	/**
-	 * Return the value associated with the column: Applications.
-	 */
-	public java.util.Set<Application> getApplications() {
-		return applications;
-	}
-
-	/**
-	 * Set the value related to the column: Applications.
-	 * @param applications the Applications value
-	 */
-	public void setApplications(final java.util.Set<Application> applications) {
-		this.applications = applications;
-	}
-
-	/**
-	 * Add the application to the collection associated to the institution.
-	 * @param application
-	 */
-	public void addToApplications(final Application application) {
-		if (null == getApplications()) {
-			setApplications(new java.util.TreeSet<Application>());
-		}
-		getApplications().add(application);
-	}
-
-
 
 
 	/**

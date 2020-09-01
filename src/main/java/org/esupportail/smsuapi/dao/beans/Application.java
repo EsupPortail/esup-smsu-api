@@ -89,11 +89,6 @@ public class Application  implements Serializable, Comparable<Application> {
 	private Institution ins;
 
 	/**
-	 * Collection of SMS associated to the application.
-	 */
-	private java.util.Set<Sms> sms;
-	
-	/**
 	 * Collection of phone number in blacklist.
 	 */
 	private java.util.Set<Blacklist> blacklists;
@@ -265,33 +260,6 @@ public class Application  implements Serializable, Comparable<Application> {
 		this.ins = ins;
 	}
 
-
-
-	/**
-	 * Return the value associated with the column: Sms.
-	 */
-	public java.util.Set<Sms> getSms() {
-		return sms;
-	}
-
-	/**
-	 * Set the value related to the column: Sms.
-	 * @param sms the Sms value
-	 */
-	public void setSms(final java.util.Set<Sms> sms) {
-		this.sms = sms;
-	}
-
-	/**
-	 * Add a sms to the collection of sms associated to the application.
-	 * @param sms
-	 */
-	public void addToSms(final Sms sms) {
-		if (null == getSms()) {
-			setSms(new java.util.TreeSet<Sms>());
-		}
-		getSms().add(sms);
-	}
 
 	/**
 	 * Return the value associated with the column: Blacklists.

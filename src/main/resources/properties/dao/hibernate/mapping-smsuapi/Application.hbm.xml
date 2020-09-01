@@ -15,10 +15,6 @@
 		</many-to-one>
 		<many-to-one name="Ins" column="INS_ID" class="Institution" not-null="true">
 		</many-to-one>
-		<set name="Sms" inverse="true">
-			<key column="APP_ID"/>
-			<one-to-many class="Sms"/>
-		</set>
 		<set name="Blacklists" inverse="true">
 			<key column="APP_ID"/>
 			<one-to-many class="Blacklist"/>
