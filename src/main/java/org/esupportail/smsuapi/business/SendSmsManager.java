@@ -179,7 +179,7 @@ public class SendSmsManager implements InitializingBean {
 		}
 		if (list.isEmpty()) return null;
 		Account account = smss.get(0).getAcc();
-		return new SMSBroker(list, msgContent, account.getLabel(), account.getBroker());
+		return new SMSBroker(list, msgContent, account);
 	}
 
 	protected Sms createSms(final Integer msgId, final Integer senderId,
