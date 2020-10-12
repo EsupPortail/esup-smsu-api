@@ -23,11 +23,15 @@ public class SMSBroker implements Serializable {
 	public String message;
 	public String accountLabel;
 	public String broker;
+	public String brokerLogin;
+	public String brokerPassword;
 
 	public SMSBroker(List<Rcpt> rcpts, final String message, Account account) {
 		this.rcpts = rcpts;
 		this.message  = message;
 		this.accountLabel = account.getLabel();
 		this.broker = account.getBroker();
+		this.brokerLogin = account.getBrokerLogin();
+		this.brokerPassword = account.getBrokerPassword();
 	}
 }

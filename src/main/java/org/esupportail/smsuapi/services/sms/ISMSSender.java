@@ -13,7 +13,7 @@ public interface ISMSSender {
 	 * Send the specified message.
 	 * @param smsMessage
 	 */
-	void sendMessage(SMSBroker smsMessage);
+	void sendMessage(SMSBroker smsMessage, String force_login, String force_password);
 
 	default String getId() {
 	    return getClass().getPackage().getName().replaceFirst(".*\\.", "");

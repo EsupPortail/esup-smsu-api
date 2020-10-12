@@ -24,6 +24,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.esupportail.smsuapi.utils.HttpUtils;
+import static org.esupportail.smsuapi.utils.Various.firstNonNull;
 
 /**
  * Allmysms.com sender.
@@ -45,7 +46,7 @@ public class SMSSenderAllmysms implements ISMSSender {
     private DaoService daoService;
     protected RestTemplate restTemplate;
 
-    public synchronized void sendMessage(final SMSBroker sms) {
+    public synchronized void sendMessage(final SMSBroker sms, String forceLogin, String forcePassword) {
         try {
             if (logger.isDebugEnabled()) {
                 final String messageISOLatin = new String(sms.message.getBytes(), "ISO-8859-1");
@@ -55,8 +56,8 @@ public class SMSSenderAllmysms implements ISMSSender {
             AllmysmsRequest req = new AllmysmsRequest(sms.message, sms.rcpts, computeSenderlabel(sms));
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("login", account_login);
-            params.add("apiKey", account_apikey);
+            params.add("login", firstNonNull(forceLogin, account_login));
+            params.add("apiKey", firstNonNull(forcePassword, account_apikey));
             params.add("smsData", req.toJson());
 
             // restTemplate will use here jacksonHttpMessageConverter for response json->object

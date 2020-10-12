@@ -15,5 +15,7 @@
 			<one-to-many class="Application"/>
 		</set>
 		<property name="Broker" column="ACC_BROKER" type="string" length="255"/>
+		<property name="BrokerLogin" column="ACC_BROKER_LOGIN" type="string" length="255"/>
+		<property name="BrokerPassword" column="ACC_BROKER_PASSWORD" type="string" length="255"/>
 	</class>
 </hibernate-mapping>

@@ -58,7 +58,8 @@ public abstract class OldISMSSender implements ISMSSender {
 	 */
 	public abstract void sendMessage(SMSBroker smsMessage);
 
-    public void sendMessage(org.esupportail.smsuapi.domain.beans.sms.SMSBroker smsMessageList) {
+    public void sendMessage(org.esupportail.smsuapi.domain.beans.sms.SMSBroker smsMessageList, String force_login, String force_password) {
+        if (force_login != null || force_password != null) throw new RuntimeException("broker does not handle forced login/password");
         for (org.esupportail.smsuapi.domain.beans.sms.SMSBroker.Rcpt rcpt : smsMessageList.rcpts) {
             sendMessage(new SMSBroker(rcpt.id, rcpt.recipient, smsMessageList.message, smsMessageList.accountLabel));
         }

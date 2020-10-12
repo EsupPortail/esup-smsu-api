@@ -65,6 +65,14 @@ public class Account implements Serializable {
 	 */
 	private String broker;
 
+	/**
+	 * Broker login/user_key to use to send SMS. If null, broker's "sms.connector.xxx.account.login" (or similar) from config.properties will be used
+	 */
+	private String brokerLogin;
+	/**
+	 * Password/api_key/access_token to use to send SMS. If null, broker's "sms.connector.xxx.account.password" (or similar) from config.properties will be used
+	 */
+	private String brokerPassword;
 
 	/**
 	 * Bean constructor.
@@ -194,6 +202,22 @@ public class Account implements Serializable {
 		this.broker = broker;
 	}
 
+	public String getBrokerLogin() {
+		return brokerLogin;
+	}
+
+	public void setBrokerLogin(final String brokerLogin) {
+		this.brokerLogin = brokerLogin;
+	}
+
+	public String getBrokerPassword() {
+		return brokerPassword;
+	}
+
+	public void setBrokerPassword(final String brokerPassword) {
+		this.brokerPassword = brokerPassword;
+	}
+
 
 	/**
 	 * Add the application to the collection of applications associated to the account.
@@ -241,7 +265,7 @@ public class Account implements Serializable {
 	@Override
 	public String toString() {
 		return "Account#" + hashCode() + "[id=[" + id + "], label=[" + label 
-		+ "], quota=[" + quota + "], number of consumed sms =[" + consumedSms +  "], broker=[" + broker + "]]";
+		+ "], quota=[" + quota + "], number of consumed sms =[" + consumedSms +  "], broker=[" + broker + "], brokerLogin=[" + brokerLogin + "]]";
 	}
 
 

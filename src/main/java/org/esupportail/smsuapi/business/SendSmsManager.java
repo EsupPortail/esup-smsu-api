@@ -202,7 +202,7 @@ public class SendSmsManager implements InitializingBean {
 		String broker = smsMessage.broker != null ? smsMessage.broker : defaultBroker;
 		ISMSSender smsSender = smsSenders.get(broker);
 		if (smsSender != null) {
-		    smsSender.sendMessage(smsMessage);
+		    smsSender.sendMessage(smsMessage, smsMessage.brokerLogin, smsMessage.brokerPassword);
 		} else {
 		    String err = smsMessage.broker == null ?
 		         "unknown default broker ''" + broker + "'" :

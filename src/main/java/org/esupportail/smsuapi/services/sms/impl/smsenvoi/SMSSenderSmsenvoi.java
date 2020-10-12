@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.esupportail.smsuapi.utils.HttpUtils;
+import static org.esupportail.smsuapi.utils.Various.firstNonNull;
 
 /**
  * Smsenvoi.com sender.
@@ -38,7 +39,11 @@ public class SMSSenderSmsenvoi implements ISMSSender {
     private DaoService daoService;
     protected RestTemplate restTemplate;
 
-    public synchronized void sendMessage(final SMSBroker sms) {
+    public void sendMessage(final SMSBroker sms) {
+        sendMessage(sms, null, null);
+    }
+
+    public synchronized void sendMessage(final SMSBroker sms, String force_user_key, String force_access_token) {
         try {
             if (logger.isDebugEnabled()) {
                 final String messageISOLatin = new String(sms.message.getBytes(), "ISO-8859-1");
@@ -52,8 +57,8 @@ public class SMSSenderSmsenvoi implements ISMSSender {
 
             HttpHeaders requestHeaders = new HttpHeaders();	
             requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-            requestHeaders.add("user_key", user_key);
-            requestHeaders.add("Access_token", access_token);
+            requestHeaders.add("user_key", firstNonNull(force_user_key, user_key));
+            requestHeaders.add("Access_token", firstNonNull(force_access_token, access_token));
 
             SmsenvoiResponse resp;
             ResponseEntity<SmsenvoiResponse> respEntity = null;
