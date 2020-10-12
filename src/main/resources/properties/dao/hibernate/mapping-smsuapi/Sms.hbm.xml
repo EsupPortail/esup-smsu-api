@@ -14,9 +14,9 @@
 		<property name="Date" column="SMS_DATE" type="timestamp" not-null="true"/>
 		<property name="AckDate" column="SMS_ACK_DATE" type="timestamp" not-null="false"/>
 		<property name="Phone" column="SMS_PHONE" type="string" not-null="false" length="255" index="check_already_sent"/>
-		<many-to-one name="App" column="APP_ID" class="Application" not-null="true">
+		<many-to-one name="App" column="APP_ID" class="Application" not-null="true" foreign-key="FK_sms_app">
 		</many-to-one>
-		<many-to-one name="Acc" column="ACC_ID" class="Account" not-null="true">
+		<many-to-one name="Acc" column="ACC_ID" class="Account" not-null="true" foreign-key="FK_sms_acc">
 		</many-to-one>
 	</class>
 </hibernate-mapping>

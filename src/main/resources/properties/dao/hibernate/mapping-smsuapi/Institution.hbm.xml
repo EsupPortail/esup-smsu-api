@@ -7,6 +7,6 @@
 		<id name="Id" type="integer" column="INS_ID">
 			<generator class="native"/>
 		</id>
-		<property name="Label" column="INS_LABEL" type="string" not-null="true" length="32" unique="true"/>
+		<property name="Label" column="INS_LABEL" type="string" not-null="true" length="32" unique-key="UK_INS_LABEL"/>
 	</class>
 </hibernate-mapping>
