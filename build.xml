@@ -113,6 +113,15 @@
 	    </configuration>
 	    <hbm2ddl export="no" destdir="src/main/resources/database" outputfilename="create_tables.sql"/>
 	  </hibernatetool>
+	  <hibernatetool>
+	    <classpath><path location="${build.classes}"/></classpath>
+	    <configuration propertyfile="src/test/resources/properties/config.properties">
+	      <fileset dir="src/main/resources/properties/dao">
+		<include name="**/*.hbm.xml"/>
+	      </fileset>
+	    </configuration>
+	    <hbm2ddl export="no" destdir="src/test/resources/database" outputfilename="test-derby-create_tables.sql"/>
+	  </hibernatetool>
 	</target>
 
 	<target name="hotswap" depends="tstamp,compile">
