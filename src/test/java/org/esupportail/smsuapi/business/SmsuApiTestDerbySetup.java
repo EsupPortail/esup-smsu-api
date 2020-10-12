@@ -53,6 +53,7 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
         for(String sqlFile : new String[]{"database/test-derby-create_tables.sql", "database/test-derby-populate_tables.sql"}) {
 	        ClassPathResource sqlCreateTablesRes = new ClassPathResource(sqlFile);
 	        for(String sql : (List<String>)IOUtils.readLines(sqlCreateTablesRes.getInputStream())) {
+	        	sql = sql.replaceFirst(";$", "");
 	        	logger.info(sql);
 	        	connection.createStatement().execute(sql);
 	        }
