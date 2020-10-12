@@ -58,9 +58,6 @@ public class Account implements Serializable {
 	 */
 	private java.lang.Long consumedSms;
 
-	/**
-	 * Number of consumed SMS.
-	 */
 	private java.util.Set<Application> applications;
 
 	/**
