@@ -5,7 +5,6 @@ import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.services.sms.IBackChannelAck;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Servlet used to receive back-channel acks. 
@@ -22,7 +22,7 @@ public class BackChannelAckServlet implements org.springframework.web.HttpReques
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    @Inject List<IBackChannelAck> mayAcks;
+    @Autowired(required = false) List<IBackChannelAck> mayAcks;
 
     public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<String> errs = new LinkedList<>();
