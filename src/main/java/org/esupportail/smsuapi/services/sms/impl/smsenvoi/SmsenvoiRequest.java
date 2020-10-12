@@ -3,8 +3,6 @@ package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.IOException;
-
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 
 public class SmsenvoiRequest {

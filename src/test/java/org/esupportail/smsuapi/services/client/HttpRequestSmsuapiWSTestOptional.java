@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
-import org.esupportail.smsuapi.services.client.SmsuapiWS;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.ws.remote.beans.TrackInfos;
 import org.junit.Test;
