@@ -35,7 +35,7 @@
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
 						<list>
-							<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+							<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 						</list>
 					</property>
 				</bean>
