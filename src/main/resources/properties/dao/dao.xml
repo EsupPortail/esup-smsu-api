@@ -68,9 +68,7 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
-	<bean id="OneHibernateSessionPerRequest"
-	      class="org.esupportail.smsuapi.dao.AutoFlushOpenSessionInViewFilter">
-	      <property name="sessionFactoryBeanName" value="sessionFactory" />
-	</bean>
+	<bean id="OneHibernateTransactionPerRequest"
+	      class="org.esupportail.smsuapi.web.TransactionManagerFilter" />
 		
 </beans>

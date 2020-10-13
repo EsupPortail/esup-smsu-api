@@ -438,9 +438,7 @@ public class DaoService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("adding " + object + "...");
 		}
-		getCurrentSession().beginTransaction();
 		getCurrentSession().save(object);
-		getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}
@@ -450,10 +448,8 @@ public class DaoService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("adding " + objects + "...");
 		}
-		getCurrentSession().beginTransaction();
 		for (Object object : objects)
 		getCurrentSession().save(object);
-		getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}
@@ -467,13 +463,11 @@ public class DaoService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("merging " + object + "...");
 		}
-		getCurrentSession().beginTransaction();
 		Object merged = getCurrentSession().merge(object);
 		if (logger.isDebugEnabled()) {
 			logger.debug("done, updating " + merged + "...");
 		}
 		getCurrentSession().update(merged);
-		getCurrentSession().getTransaction().commit();
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}
