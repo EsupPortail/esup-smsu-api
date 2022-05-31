@@ -90,7 +90,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <esup-commons-version>[0.3.3, 0.3.99]</esup-commons-version>
     <spring-version>4.3.29.RELEASE</spring-version>
   </properties>
 
@@ -115,12 +114,6 @@
 		  <groupId>org.springframework</groupId>
 		  <artifactId>spring-core</artifactId>
 		  <version>${spring-version}</version>
-		</dependency>
-
-		<dependency>
-		  <groupId>org.esupportail</groupId>
-		  <artifactId>esup-commons2-core</artifactId>
-		  <version>${esup-commons-version}</version>
 		</dependency>
 
 		<dependency>
