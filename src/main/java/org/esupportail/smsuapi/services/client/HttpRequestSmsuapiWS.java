@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
@@ -78,7 +78,7 @@ public class HttpRequestSmsuapiWS {
 		};
 		try {
 			JsonNode json = request("MessageInfos", params);
-			return (new ObjectMapper()).readValue(json, TrackInfos.class);
+			return (new ObjectMapper()).treeToValue(json, TrackInfos.class);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -88,7 +88,7 @@ public class HttpRequestSmsuapiWS {
 	public String testConnexion() throws HttpException {
 		Pair[] params = {};
 		JsonNode json = request("TestConnexion", params);
-		return json.getTextValue();		
+		return json.textValue();		
 	}
 
 	public Set<String> getListPhoneNumbersInBlackList() throws HttpException {
@@ -102,26 +102,26 @@ public class HttpRequestSmsuapiWS {
 				new Pair("phoneNumber", phoneNumber),
 		};
 		JsonNode json = request("IsBlacklisted", params);
-		return json.getBooleanValue();
+		return json.booleanValue();
 	}
     
 	private Integer convertToInteger(JsonNode json) {
-		return json.isInt() ? json.getIntValue() : null;
+		return json.isInt() ? json.intValue() : null;
 	}
 	
 	private List<String> convertToStringList(JsonNode json) {
 		List<String> l = new LinkedList<>();
-		Iterator<JsonNode> it = json.getElements();		
+		Iterator<JsonNode> it = json.elements();		
 		while (it.hasNext())
-			l.add(it.next().getTextValue());
+			l.add(it.next().textValue());
 		return l;
 	}
 	
 	private Set<String> convertToStringSet(JsonNode json) {
 		HashSet<String> l = new HashSet<>();
-		Iterator<JsonNode> it = json.getElements();		
+		Iterator<JsonNode> it = json.elements();		
 		while (it.hasNext())
-			l.add(it.next().getTextValue());
+			l.add(it.next().textValue());
 		return l;
 	}
 
@@ -174,16 +174,16 @@ public class HttpRequestSmsuapiWS {
         else if (e.getStatusCode() == 400) {
             JsonNode jsonErr = HttpUtils.json_decode(e.getErrorMessage());
             if (jsonErr != null) {
-                String error = jsonErr.path("error").getTextValue();
+                String error = jsonErr.path("error").textValue();
                 if (error == null) {
                 } else if (error.equals("UnknownMessageIdException")) {
                     Unchecked.throw_(new UnknownMessageIdException());
                 } else if (error.equals("InvalidParameterException")) {
-                    throw new InvalidParameterException(jsonErr.path("message").getTextValue());
+                    throw new InvalidParameterException(jsonErr.path("message").textValue());
                 } else if (error.equals("AlreadySentException")) {
-                    throw new AlreadySentException(jsonErr.path("message").getTextValue());
+                    throw new AlreadySentException(jsonErr.path("message").textValue());
                 } else if (error.equals("InsufficientQuotaException")) {
-                    Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").getTextValue()));
+                    Unchecked.throw_(new InsufficientQuotaException(jsonErr.path("message").textValue()));
                 }
             }
         }

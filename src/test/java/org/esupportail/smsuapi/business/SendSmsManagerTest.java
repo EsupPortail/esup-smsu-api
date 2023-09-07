@@ -1,6 +1,6 @@
 package org.esupportail.smsuapi.business;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.inject.Inject;
 
@@ -9,7 +9,7 @@ import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class SendSmsManagerTest extends SmsuApiTestDerbySetup {
 

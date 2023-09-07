@@ -1,6 +1,6 @@
 package org.esupportail.smsuapi;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /* not run by default. You can use the following to run it: 

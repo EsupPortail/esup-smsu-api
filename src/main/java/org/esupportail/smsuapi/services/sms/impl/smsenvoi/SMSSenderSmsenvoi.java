@@ -1,7 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.smsenvoi;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
@@ -99,9 +99,9 @@ public class SMSSenderSmsenvoi implements ISMSSender {
     }
 
     public static String computeSenderlabel(Logger logger, JsonNode from, String accountLabel) {
-        String label = from.path(accountLabel).getTextValue();
+        String label = from.path(accountLabel).textValue();
         if (label == null) {
-            label = from.path("").getTextValue();
+            label = from.path("").textValue();
             if (label == null)
                 logger.info("no default senderlabel (cf sms.connector.smsenvoi.from.mapJSON), no sender label will be used");
             else
