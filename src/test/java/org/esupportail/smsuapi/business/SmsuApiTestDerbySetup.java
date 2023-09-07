@@ -15,21 +15,20 @@ import org.esupportail.smsuapi.dao.beans.Application;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.orm.hibernate4.SessionHolder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/properties/applicationContext-test.xml")
-public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
+@SpringJUnitConfig(locations = "classpath:/properties/applicationContext-test.xml")
+@TestInstance(Lifecycle.PER_CLASS)
+public class SmsuApiTestDerbySetup {
 
     protected static final Logger logger = Logger.getLogger(SmsuApiTestDerbySetup.class);
 
@@ -43,7 +42,7 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
 	static final String ACCOUNT_NAME = "esup-smsu-api-account";
 	static final String APP_NAME = "esup-smsu-api-test-app";
     
-    @BeforeClass
+    @BeforeAll
     public static void initDerbyDb() throws Exception {
     	Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         Connection connection = DriverManager.getConnection("jdbc:derby:memory:smsuapi;user=smsuapi;password=esup;create=true");
@@ -61,14 +60,14 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
         logger.info(s.getResultSet());
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         Session session = getSession();
-        TransactionSynchronizationManager.bindResource(jdbcSessionFactory,new SessionHolder(session));
+        TransactionSynchronizationManager.bindResource(jdbcSessionFactory, new SessionHolder(session));
         logger.debug("Hibernate session is bound");
     }
 
-	@After
+	@AfterEach
     public void tearDown() throws Exception {
         SessionHolder sessionHolder = (SessionHolder) TransactionSynchronizationManager.unbindResource(jdbcSessionFactory);
         closeSession(sessionHolder.getSession(), jdbcSessionFactory);
@@ -84,7 +83,7 @@ public class SmsuApiTestDerbySetup extends AbstractJUnit4SpringContextTests {
         Session session = jdbcSessionFactory.openSession();
         FlushMode flushMode = this.flushMode;
         if (flushMode != null) {
-            session.setFlushMode(flushMode);
+            session.setHibernateFlushMode(flushMode);
         }
         return session;
     }

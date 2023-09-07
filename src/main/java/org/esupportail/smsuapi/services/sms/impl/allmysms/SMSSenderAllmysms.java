@@ -1,7 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.allmysms;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonNode;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;

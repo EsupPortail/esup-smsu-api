@@ -3,7 +3,8 @@ package org.esupportail.ws.remote.beans;
 import java.io.Serializable;
 import java.util.HashSet;
 
-import org.codehaus.jackson.annotate.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 
 /**
  * The class that represents accounts.

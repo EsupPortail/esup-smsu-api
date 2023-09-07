@@ -33,7 +33,7 @@
 
 	<target name="download" depends="download-jars" />
 		
-	<property name="jetty-version" value="8.1.9.v20130131" />
+	<property name="jetty-version" value="9.4.52.v20230823" />
 
 	<target name="download-jars" depends="prepare" if="need-download-jars">
           <artifact:remoteRepository id="https_central" url="https://repo.maven.apache.org/maven2" />
@@ -74,11 +74,8 @@
 			optimize="${compile.optimize}">
 			<classpath refid="compile.classpath" />
 		</javac>
-		<copy todir="${build.classes}/properties" overwrite="true" >
-			<fileset dir="src/main/resources/properties" />
-		</copy>
-		<copy todir="${build.classes}/database" overwrite="true" >
-			<fileset dir="src/main/resources/database" />
+		<copy todir="${build.classes}" overwrite="true" >
+			<fileset dir="src/main/resources" />
 		</copy>
 	</target>
 
@@ -168,7 +165,7 @@
 	      <artifact:remoteRepository id="https_central" url="https://repo.maven.apache.org/maven2" />
 	      <artifact:dependencies filesetId="ant-extra.fileset">
 		<remoteRepository refid="https_central" />
-		<dependency groupId="org.mortbay.jetty" artifactId="jetty-ant" version="${jetty-version}" />
+		<dependency groupId="org.eclipse.jetty" artifactId="jetty-ant" version="${jetty-version}" />
 		<dependency groupId="org.hibernate" artifactId="hibernate-tools" version="4.3.5.Final" />
 	      </artifact:dependencies>
 
@@ -187,12 +184,12 @@
 	  </path>
 	  <taskdef classpathref="jetty.plugin.classpath" resource="tasks.properties" loaderref="jetty.loader" />
 
-	  <jetty tempDirectory="tmp/jetty-temp" jettyPort="${jetty.port}">
-	    <webApp name="myApp" warfile="src/main/webapp" contextpath="/">
+	  <jetty.run tempDirectory="tmp/jetty-temp" jettyPort="${jetty.port}">
+	    <webApp displayName="myApp" war="src/main/webapp" contextpath="/">
 	      <lib dir="${build.dir}/WEB-INF/lib" includes="*.jar" />
 	      <classes dir="${build.classes}" includes="*.class" />
 	    </webApp>
-	  </jetty>
+	  </jetty.run>
 	</target>
 
 </project>

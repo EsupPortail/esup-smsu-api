@@ -1,14 +1,14 @@
 package org.esupportail.smsuapi.services.servlet;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.esupportail.ws.remote.beans.TrackInfos;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class RestServletTest {
 
