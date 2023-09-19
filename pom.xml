@@ -108,6 +108,11 @@
 		  <artifactId>commons-beanutils</artifactId>
 		  <version>[1.6, 1.99]</version>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.libphonenumber</groupId>
+			<artifactId>libphonenumber</artifactId>
+			<version>8.13.16</version>
+		</dependency>
             
 		<dependency>
 		  <groupId>ch.qos.reload4j</groupId>

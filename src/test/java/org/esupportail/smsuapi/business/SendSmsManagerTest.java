@@ -2,6 +2,8 @@ package org.esupportail.smsuapi.business;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.IntStream;
+
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -42,11 +44,11 @@ public class SendSmsManagerTest extends SmsuApiTestDerbySetup {
 		assertEquals(nb_msg, j);
 	}
 
+	
+	private final int phoneNumberStart = 600000000;
 	private String[] getPhoneNumbers(int nb_msg) {
-		String[] phoneNumbers = new String[nb_msg];
-		for (int i = 0 ; i < nb_msg ; i++) {
-			phoneNumbers[i] = Integer.toString(1000000000 + i);
-		}
-		return phoneNumbers;
+		return IntStream.range(phoneNumberStart, phoneNumberStart + nb_msg) //
+				.mapToObj(i -> "+33" + i) //
+				.toArray(String[]::new);
 	}
 }

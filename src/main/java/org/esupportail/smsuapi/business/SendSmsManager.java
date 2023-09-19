@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
@@ -23,6 +24,10 @@ import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.PhoneNumberUtil.PhoneNumberFormat;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 
 /**
  * Business layer concerning smsu service.
@@ -35,12 +40,14 @@ public class SendSmsManager implements InitializingBean {
 	 */
 	protected final Logger logger = Logger.getLogger(getClass());
 
-	private String phoneNumberPattern;
+	private Pattern phoneNumberPattern;
 	private String defaultBroker;
 	
 	private Map<String, ISMSSender> smsSenders;
 	@Inject private DaoService daoService;
 	@Inject private SchedulerUtils schedulerUtils;
+	
+	private final PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
@@ -101,7 +108,7 @@ public class SendSmsManager implements InitializingBean {
 				     " - message = " + msgContent);
 
 
-			checkPhoneNumbers(smsPhones);
+			checkAndFormatPhoneNumbers(smsPhones);
 			
 			List<Sms> smss = saveSMS(msgId, senderId, smsPhones, labelAccount, app);
 			// if the client did not give a msgId, a new one has been found, take it from first smss (since all smss have the same initialId)
@@ -116,13 +123,36 @@ public class SendSmsManager implements InitializingBean {
 			return msgId;
 	}
 
-	private void checkPhoneNumbers(final String[] smsPhones) {
-		for (String smsPhone : smsPhones) {
-			if (!smsPhone.matches(phoneNumberPattern))
+	/**
+	 * @return Format on E164 format. For example : +33606060606
+	 */
+	private void checkAndFormatPhoneNumbers(final String[] smsPhones) {
+		for (int i = 0; i < smsPhones.length; i++) {
+			String smsPhone = smsPhones[i];
+			
+			if (!phoneNumberPattern.matcher(smsPhone).matches()) {
 				throw new InvalidParameterException("invalid phoneNumber \"" + smsPhone + "\"");
+			}
+			smsPhones[i] = formatPhoneNumber(smsPhone);
 		}
 	}
-
+	
+	private String formatPhoneNumber(String phoneNumber) {
+		// Add "+" if necessary
+		// (If client does not encode an international number (by replacing "+" with "%2B"), the "+" disappears)
+		if (!phoneNumber.startsWith("+") && !phoneNumber.startsWith("0")) {
+			logger.warn("\"" + phoneNumber + "\" not encoded correctly");
+			phoneNumber = "+" + phoneNumber;
+		}
+		
+		try {
+			PhoneNumber phoneNumberObj = phoneNumberUtil.parse(phoneNumber, "FR");
+			return phoneNumberUtil.format(phoneNumberObj, PhoneNumberFormat.E164);
+		} catch (NumberParseException e) {
+			logger.warn("invalid phoneNumber \"" + phoneNumber + "\"", e);
+			return phoneNumber;
+		}
+	}
 
 	private List<Sms> saveSMS(Integer msgId, final Integer senderId,
 			final String[] smsPhones, 
@@ -232,7 +262,7 @@ public class SendSmsManager implements InitializingBean {
 	//////////////////////////////////////
 
 	public void setPhoneNumberPattern(String phoneNumberPattern) {
-		this.phoneNumberPattern = phoneNumberPattern;
+		this.phoneNumberPattern = Pattern.compile(phoneNumberPattern);
 	}
 
     @Required
