@@ -89,13 +89,9 @@ public class SMSSenderSmsenvoi implements ISMSSender {
     private void save_message_id(SMSBroker sms, String broker_id) {
         for (SMSBroker.Rcpt s : sms.rcpts) {
             Sms smsDB = daoService.getSms(s.id);
-            smsDB.setBrokerId(BackChannelAck.broker_id(broker_id, international_phone_number(s.recipient)));
+            smsDB.setBrokerId(BackChannelAck.broker_id(broker_id, s.recipient));
             daoService.updateSms(smsDB);
         }
-    }
-
-    private String international_phone_number(String s) {
-        return s.replaceFirst("^0", "+33").replace(" ", "");
     }
 
     public static String computeSenderlabel(Logger logger, JsonNode from, String accountLabel) {
