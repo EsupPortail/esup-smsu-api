@@ -27,6 +27,8 @@ public class SMSSenderDmc extends OldISMSSender {
 	
 	protected String dmcWsUrl;
 	
+	protected String from;
+
 	protected String cookieJsessionId = null;
 
 	protected RestTemplate restTemplate;
@@ -55,7 +57,7 @@ public class SMSSenderDmc extends OldISMSSender {
 			if (!simulateMessageSending) {
 					
 				HttpHeaders requestHeaders = new HttpHeaders();	
-				DmcMessageUnitaire messageUnitaire = new DmcMessageUnitaire(smsMessage, smsRecipient);
+				DmcMessageUnitaire messageUnitaire = new DmcMessageUnitaire(smsMessage, this.from, smsRecipient);
 				
 				// DMC is waiting for a mix with application/x-www-form-urlencoded and json data ... 
 				// so restTemplate uses here only FormHttpMessageConverter - the object->json is made directly with ObjectMapper
@@ -121,6 +123,10 @@ public class SMSSenderDmc extends OldISMSSender {
 	@Required
 	public void setDmcWsUrl(String dmcWsUrl) {
 		this.dmcWsUrl = dmcWsUrl;
+	}
+
+	public void setFrom(String from) {
+		this.from = from;
 	}
 
 	@Required

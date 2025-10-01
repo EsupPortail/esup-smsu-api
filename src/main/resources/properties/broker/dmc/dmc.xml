@@ -19,6 +19,7 @@
 				</bean>
 			</property>
 			<property name="dmcWsUrl" value="https://www.dmc.sfr-sh.fr/DmcWS/1.5.1/JsonService/MessagesUnitairesWS/addSingleCall"/>
+			<property name="from" value="${sms.connector.dmc.from}"/>
 			<property name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
