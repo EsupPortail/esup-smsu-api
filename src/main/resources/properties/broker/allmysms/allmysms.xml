@@ -16,18 +16,18 @@
 		<description>
 			Allmysms implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="account_login" value="${sms.connector.allmysms.account.login}" />
-		<property name="account_apikey" value="${sms.connector.allmysms.account.apikey}" />
-		<property name="sendsms_url" value="https://api.allmysms.com/http/9.0/sendSms/" />
-		<property name="simulate_sendsms_url" value="https://api.allmysms.com/http/9.0/simulateCampaign/" />
+		<constructor-arg name="account_login" value="${sms.connector.allmysms.account.login}" />
+		<constructor-arg name="account_apikey" value="${sms.connector.allmysms.account.apikey}" />
+		<constructor-arg name="sendsms_url" value="https://api.allmysms.com/http/9.0/sendSms/" />
+		<constructor-arg name="simulate_sendsms_url" value="https://api.allmysms.com/http/9.0/simulateCampaign/" />
 		<!--
-		<property name="simulate_sendsms_url" value="http://localhost:8081/DEBUG/" />
+		<constructor-arg name="simulate_sendsms_url" value="http://localhost:8081/DEBUG/" />
 		-->		
-		<property name="from_mapJSON" value="${sms.connector.allmysms.from.mapJSON}" />
-		<property name="simulateMessageSending">
+		<constructor-arg name="from_mapJSON" value="${sms.connector.allmysms.from.mapJSON}" />
+		<constructor-arg name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
-		</property>
-		<property name="restTemplate">
+		</constructor-arg>
+		<constructor-arg name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
 						<list>
@@ -36,7 +36,7 @@
 						</list>
 					</property>
 				</bean>
-			</property>
+			</constructor-arg>
 
 	</bean>
 

@@ -22,7 +22,6 @@ import org.esupportail.smsuapi.exceptions.AlreadySentException;
 import org.esupportail.smsuapi.services.scheduler.SchedulerUtils;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Required;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
@@ -48,6 +47,12 @@ public class SendSmsManager implements InitializingBean {
 	@Inject private SchedulerUtils schedulerUtils;
 	
 	private final PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+
+
+    public SendSmsManager(String phoneNumberPattern, String defaultBroker) {
+        this.phoneNumberPattern = Pattern.compile(phoneNumberPattern);
+        this.defaultBroker = defaultBroker;
+    }
 
 	/**
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
@@ -261,17 +266,7 @@ public class SendSmsManager implements InitializingBean {
 	//  Mutators
 	//////////////////////////////////////
 
-	public void setPhoneNumberPattern(String phoneNumberPattern) {
-		this.phoneNumberPattern = Pattern.compile(phoneNumberPattern);
-	}
-
-    @Required
-    public void setDefaultBroker(String defaultBroker) {
-        this.defaultBroker = defaultBroker;
-    }
-
     @Inject
-    @Required
     public void setSmsSenders(List<ISMSSender> smsSenders) {
         this.smsSenders = new HashMap<>();
         for (ISMSSender smsSender : smsSenders) {

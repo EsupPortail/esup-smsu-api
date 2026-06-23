@@ -9,8 +9,8 @@
 	<bean id="sendSmsManager"
 		class="org.esupportail.smsuapi.business.SendSmsManager">
 		<description>The business layer concerning the sending.</description>
-		<property name="phoneNumberPattern" value=".*"/>
-		<property name="defaultBroker" value="${sms.connector.name}"/>
+		<constructor-arg name="phoneNumberPattern" value=".*"/>
+		<constructor-arg name="defaultBroker" value="${sms.connector.name}"/>
 	</bean>
 	
 	<bean id="statisticBuilder"

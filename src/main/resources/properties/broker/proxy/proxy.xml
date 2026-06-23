@@ -33,9 +33,9 @@
 
 	<bean id="httpRequestSmsuapiWS"
 		class="org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS">
-		<property name="username" value="${sms.connector.proxy.ws.username}" />
-		<property name="password" value="${sms.connector.proxy.ws.password}" />
-		<property name="url" value="${sms.connector.proxy.ws.address}" />
+		<constructor-arg name="username" value="${sms.connector.proxy.ws.username}" />
+		<constructor-arg name="password" value="${sms.connector.proxy.ws.password}" />
+		<constructor-arg name="url" value="${sms.connector.proxy.ws.address}" />
 	</bean>
 
 	<!-- schedule ackStatusProxy  -->

@@ -16,7 +16,6 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +44,20 @@ public class SMSSenderAllmysms implements ISMSSender {
     @Inject
     private DaoService daoService;
     protected RestTemplate restTemplate;
+
+
+    public SMSSenderAllmysms(final boolean simulateMessageSending, String from_mapJSON, String sendsms_url, String simulate_sendsms_url, RestTemplate restTemplate, String account_login, String account_apikey) {
+        this.simulateMessageSending = simulateMessageSending;
+        this.wsUrl = sendsms_url;
+        this.simulate_wsUrl = simulate_sendsms_url;
+        this.restTemplate = restTemplate;
+        this.account_login = account_login;
+        this.account_apikey = account_apikey;
+
+        this.from = HttpUtils.json_decode(from_mapJSON);
+        if (this.from == null)
+            logger.error("invalid from_mapJSON: " + from_mapJSON);
+    }
 
     public synchronized void sendMessage(final SMSBroker sms, String forceLogin, String forcePassword) {
         try {
@@ -104,42 +117,6 @@ public class SMSSenderAllmysms implements ISMSSender {
 
     private String computeSenderlabel(SMSBroker sms) {
         return SMSSenderSmsenvoi.computeSenderlabel(logger, from, sms.accountLabel);
-    }
-
-    @Required
-    public void setSimulateMessageSending(final boolean simulateMessageSending) {
-        this.simulateMessageSending = simulateMessageSending;
-    }
-
-    @Required
-    public void setSendsms_url(String wsUrl) {
-        this.wsUrl = wsUrl;
-    }
-
-    @Required
-    public void setSimulate_sendsms_url(String simulate_wsUrl) {
-        this.simulate_wsUrl = simulate_wsUrl;
-    }
-
-    @Required
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    public void setFrom_mapJSON(String from_mapJSON) {
-        this.from = HttpUtils.json_decode(from_mapJSON);
-        if (this.from == null)
-            logger.error("invalid from_mapJSON: " + from_mapJSON);
-    }
-
-    @Required
-    public void setAccount_login(String account_login) {
-        this.account_login = account_login;
-    }
-
-    @Required
-    public void setAccount_apikey(String account_apikey) {
-        this.account_apikey = account_apikey;
     }
 
 }

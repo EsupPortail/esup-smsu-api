@@ -6,7 +6,6 @@ import org.apache.commons.io.IOUtils;
 import org.esupportail.commons.services.logging.Logger;
 import org.esupportail.commons.services.logging.LoggerImpl;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.ClassPathResource;
 
 
@@ -24,6 +23,20 @@ public class SMSSenderGammu extends OldISMSSender {
 	private String gammuConfigFileFullPath;
 
 	private String pinCode;
+
+
+    public SMSSenderGammu(
+        boolean simulateMessageSending,
+        String gammuConfigFileCpRessource,
+        String pinCode
+    ) throws IOException {
+        this.simulateMessageSending = simulateMessageSending;
+
+        ClassPathResource gammuConfRessource = new ClassPathResource(gammuConfigFileCpRessource);
+        this.gammuConfigFileFullPath = gammuConfRessource.getFile().getAbsolutePath();
+
+        this.pinCode = pinCode;
+    }
 
 	public synchronized void sendMessage(final SMSBroker sms) {
 
@@ -84,23 +97,6 @@ public class SMSSenderGammu extends OldISMSSender {
 
 		// std output
 		return IOUtils.toString(process.getInputStream());
-	}
-
-
-	@Required
-	public void setSimulateMessageSending(final boolean simulateMessageSending) {
-		this.simulateMessageSending = simulateMessageSending;
-	}
-
-	@Required
-	public void setGammuConfigFileCpRessource(String gammuConfigFileCpRessource) throws IOException {
-		ClassPathResource gammuConfRessource = new ClassPathResource(gammuConfigFileCpRessource);
-		this.gammuConfigFileFullPath = gammuConfRessource.getFile().getAbsolutePath();
-	}
-
-	@Required
-	public void setPinCode(String pinCode) {
-		this.pinCode = pinCode;
 	}
 
 }

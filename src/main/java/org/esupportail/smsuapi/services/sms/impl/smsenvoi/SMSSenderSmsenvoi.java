@@ -10,7 +10,6 @@ import org.esupportail.smsuapi.services.sms.ISMSSender;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -39,6 +38,25 @@ public class SMSSenderSmsenvoi implements ISMSSender {
     private DaoService daoService;
     protected RestTemplate restTemplate;
 
+    public SMSSenderSmsenvoi(
+        final boolean simulateMessageSending,
+        String from_mapJSON,
+        String sendsms_url,
+        RestTemplate restTemplate,
+        String user_key,
+        String access_token        
+    ) {
+        this.simulateMessageSending = simulateMessageSending;
+        this.wsUrl = sendsms_url;
+        this.restTemplate = restTemplate;
+        this.user_key = user_key;
+        this.access_token = access_token;
+
+        this.from = HttpUtils.json_decode(from_mapJSON);
+        if (this.from == null)
+            logger.error("invalid from_mapJSON: " + from_mapJSON);
+    }
+    
     public void sendMessage(final SMSBroker sms) {
         sendMessage(sms, null, null);
     }
@@ -109,37 +127,6 @@ public class SMSSenderSmsenvoi implements ISMSSender {
 
     private String computeSenderlabel(SMSBroker sms) {
         return computeSenderlabel(logger, from, sms.accountLabel);
-    }
-
-    @Required
-    public void setSimulateMessageSending(final boolean simulateMessageSending) {
-        this.simulateMessageSending = simulateMessageSending;
-    }
-
-    @Required
-    public void setSendsms_url(String wsUrl) {
-        this.wsUrl = wsUrl;
-    }
-
-    @Required
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    public void setFrom_mapJSON(String from_mapJSON) {
-        this.from = HttpUtils.json_decode(from_mapJSON);
-        if (this.from == null)
-            logger.error("invalid from_mapJSON: " + from_mapJSON);
-    }
-
-    @Required
-    public void setUser_key(String user_key) {
-        this.user_key = user_key;
-    }
-
-    @Required
-    public void setAccess_token(String access_token) {
-        this.access_token = access_token;
     }
 
 }

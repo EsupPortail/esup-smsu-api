@@ -24,14 +24,14 @@
 		<description>
 			Smsenvoi implementation of the broker, this class manage the sms sending
 		</description>
-		<property name="user_key" value="${sms.connector.smsenvoi.account.user_key}" />
-		<property name="access_token" value="${sms.connector.smsenvoi.account.access_token}" />
-		<property name="sendsms_url" value="https://api.smsenvoi.com/API/v1.0/REST/sms" />
-		<property name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
-		<property name="simulateMessageSending">
+		<constructor-arg name="user_key" value="${sms.connector.smsenvoi.account.user_key}" />
+		<constructor-arg name="access_token" value="${sms.connector.smsenvoi.account.access_token}" />
+		<constructor-arg name="sendsms_url" value="https://api.smsenvoi.com/API/v1.0/REST/sms" />
+		<constructor-arg name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
+		<constructor-arg name="simulateMessageSending">
 			<value type="boolean">${sms.connector.simulateSending}</value>
-		</property>
-		<property name="restTemplate">
+		</constructor-arg>
+		<constructor-arg name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
 						<list>
@@ -39,7 +39,7 @@
 						</list>
 					</property>
 				</bean>
-			</property>
+			</constructor-arg>
 
 	</bean>
 

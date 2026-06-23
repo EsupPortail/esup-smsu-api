@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,6 +31,20 @@ public class SMSSenderDmc extends OldISMSSender {
 	protected String cookieJsessionId = null;
 
 	protected RestTemplate restTemplate;
+
+    public SMSSenderDmc(
+        final boolean simulateMessageSending,
+        DmcAuthenticate authenticate,
+        String dmcWsUrl,
+        String from,
+        RestTemplate restTemplate
+    ) {
+        this.simulateMessageSending = simulateMessageSending;
+        this.authenticate = authenticate;
+        this.dmcWsUrl = dmcWsUrl;
+        this.from = from;
+        this.restTemplate = restTemplate;
+    }
 	
 	public synchronized void sendMessage(final SMSBroker sms) {
 		
@@ -109,31 +122,5 @@ public class SMSSenderDmc extends OldISMSSender {
 
 	}
 
-
-	@Required
-	public void setSimulateMessageSending(final boolean simulateMessageSending) {
-		this.simulateMessageSending = simulateMessageSending;
-	}
-	
-	@Required
-	public void setAuthenticate(DmcAuthenticate authenticate) {
-		this.authenticate = authenticate;
-	}
-
-	@Required
-	public void setDmcWsUrl(String dmcWsUrl) {
-		this.dmcWsUrl = dmcWsUrl;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	@Required
-	public void setRestTemplate(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
-	}
-
-	
 	
 }

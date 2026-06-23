@@ -8,19 +8,19 @@
 
 	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.dmc.SMSSenderDmc">	
-			<property name="simulateMessageSending">
+			<constructor-arg name="simulateMessageSending">
 				<value type="boolean">${sms.connector.simulateSending}</value>
-			</property>
-			<property name="authenticate">
+			</constructor-arg>
+			<constructor-arg name="authenticate">
 				<bean class="org.esupportail.smsuapi.services.sms.impl.dmc.DmcAuthenticate">
 					<property name="serviceId" value="${sms.connector.dmc.account.serviceId}"/>
 					<property name="servicePassword" value="${sms.connector.dmc.account.servicePassword}"/>
 					<property name="spaceId" value="${sms.connector.dmc.account.spaceId}"/>
 				</bean>
-			</property>
-			<property name="dmcWsUrl" value="https://www.dmc.sfr-sh.fr/DmcWS/1.5.1/JsonService/MessagesUnitairesWS/addSingleCall"/>
-			<property name="from" value="${sms.connector.dmc.from}"/>
-			<property name="restTemplate">
+			</constructor-arg>
+			<constructor-arg name="dmcWsUrl" value="https://www.dmc.sfr-sh.fr/DmcWS/1.5.1/JsonService/MessagesUnitairesWS/addSingleCall"/>
+			<constructor-arg name="from" value="${sms.connector.dmc.from}"/>
+			<constructor-arg name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
 						<list>
@@ -29,7 +29,7 @@
 						</list>
 					</property>
 				</bean>
-			</property>
+			</constructor-arg>
 	</bean>
 
 </beans>

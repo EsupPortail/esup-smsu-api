@@ -18,7 +18,6 @@ import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils;
 import org.esupportail.smsuapi.utils.HttpUtils.Pair;
 import org.esupportail.ws.remote.beans.TrackInfos;
-import org.springframework.beans.factory.annotation.Required;
 
 public class HttpRequestSmsuapiWS {
 
@@ -28,8 +27,6 @@ public class HttpRequestSmsuapiWS {
     private String password;
     private String url;
 
-	public HttpRequestSmsuapiWS() {}
-      
 	public HttpRequestSmsuapiWS(String url, String username, String password) {
 		this.url = url;
 		this.username = username;
@@ -215,18 +212,5 @@ public class HttpRequestSmsuapiWS {
 			throw (T) e;
 		}
 	}
-	
-	@Required
-	public void setUsername(String username) {
-	this.username = username;
-    }
-	@Required
-    public void setPassword(String password) {
-	this.password = password;
-    }
-	@Required
-    public void setUrl(String url) {
-	this.url = url;
-    }
 
 }

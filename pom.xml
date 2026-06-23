@@ -24,6 +24,8 @@
 	<configuration>
 	  <source>17</source>
 	  <target>17</target>
+	  <!-- keep parameter names at runtime for XML <constructor-arg name="xxx"> : -->
+	  <parameters>true</parameters>
 	</configuration>
       </plugin>
 
