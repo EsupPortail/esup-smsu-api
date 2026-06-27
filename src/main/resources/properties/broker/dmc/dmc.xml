@@ -8,9 +8,7 @@
 
 	<bean
 		class="org.esupportail.smsuapi.services.sms.impl.dmc.SMSSenderDmc">	
-			<constructor-arg name="simulateMessageSending">
-				<value type="boolean">${sms.connector.simulateSending}</value>
-			</constructor-arg>
+			<constructor-arg name="simulateMessageSending" value="${sms.connector.simulateSending}" />
 			<constructor-arg name="authenticate">
 				<bean class="org.esupportail.smsuapi.services.sms.impl.dmc.DmcAuthenticate">
 					<property name="serviceId" value="${sms.connector.dmc.account.serviceId}"/>

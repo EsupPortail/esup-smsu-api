@@ -24,9 +24,7 @@
 		<constructor-arg name="simulate_sendsms_url" value="http://localhost:8081/DEBUG/" />
 		-->		
 		<constructor-arg name="from_mapJSON" value="${sms.connector.allmysms.from.mapJSON}" />
-		<constructor-arg name="simulateMessageSending">
-			<value type="boolean">${sms.connector.simulateSending}</value>
-		</constructor-arg>
+		<constructor-arg name="simulateMessageSending" value="${sms.connector.simulateSending}" />
 		<constructor-arg name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">

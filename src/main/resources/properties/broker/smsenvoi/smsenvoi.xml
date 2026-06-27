@@ -28,9 +28,7 @@
 		<constructor-arg name="access_token" value="${sms.connector.smsenvoi.account.access_token}" />
 		<constructor-arg name="sendsms_url" value="https://api.smsenvoi.com/API/v1.0/REST/sms" />
 		<constructor-arg name="from_mapJSON" value="${sms.connector.smsenvoi.from.mapJSON}" />
-		<constructor-arg name="simulateMessageSending">
-			<value type="boolean">${sms.connector.simulateSending}</value>
-		</constructor-arg>
+		<constructor-arg name="simulateMessageSending" value="${sms.connector.simulateSending}" />
 		<constructor-arg name="restTemplate">
 				<bean class="org.springframework.web.client.RestTemplate">
 					<property name="messageConverters">
