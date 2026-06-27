@@ -97,7 +97,7 @@ public class StatisticBuilder {
 			// store it in DB
 			daoService.addStatistic(new Statistic(
                 new StatisticPK(application, account, markerDate), 
-                new Long(nbSms), new Long(nbSmsInError)
+                Long.valueOf(nbSms), Long.valueOf(nbSmsInError)
             ));
 
 			if (logger.isDebugEnabled()) {
