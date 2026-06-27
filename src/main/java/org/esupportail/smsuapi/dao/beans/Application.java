@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -51,7 +52,7 @@ public class Application  implements Serializable, Comparable<Application> {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = 7265005139032030997L;
+	@Serial private static final long serialVersionUID = 7265005139032030997L;
 
 	/**
 	 * Application identifier.

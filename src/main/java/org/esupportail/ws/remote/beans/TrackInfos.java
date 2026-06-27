@@ -1,5 +1,6 @@
 package org.esupportail.ws.remote.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 
@@ -15,7 +16,7 @@ public class TrackInfos implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = -1278768065587081098L;
+	@Serial private static final long serialVersionUID = -1278768065587081098L;
 
 	/**
 	 * number of SMS to send.

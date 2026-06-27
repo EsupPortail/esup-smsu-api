@@ -1,5 +1,6 @@
 package org.esupportail.ws.remote.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -10,7 +11,7 @@ public class MsgIdAndPhone implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7187358986757940568L;
+	@Serial private static final long serialVersionUID = -7187358986757940568L;
 
 	/**
 	 * message Id

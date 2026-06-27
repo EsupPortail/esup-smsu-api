@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
@@ -67,7 +68,7 @@ public class Sms  implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = -583019571723546904L;
+	@Serial private static final long serialVersionUID = -583019571723546904L;
 
 	/**
 	 * Sms identifier.

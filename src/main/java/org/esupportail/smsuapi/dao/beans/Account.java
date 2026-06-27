@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -36,7 +37,7 @@ public class Account implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = -1278768065587081098L;
+	@Serial private static final long serialVersionUID = -1278768065587081098L;
 
 	/**
 	 * Account identifier.

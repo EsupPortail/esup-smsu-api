@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -11,7 +12,7 @@ public class StatisticPK implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = 8478349437014681287L;
+	@Serial private static final long serialVersionUID = 8478349437014681287L;
 
 
 	/**

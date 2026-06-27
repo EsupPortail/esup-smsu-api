@@ -1,5 +1,7 @@
 package org.esupportail.smsuapi.exceptions;
 
+import java.io.Serial;
+
 
 	/**
 	 * A class for identifer applica exceptions.
@@ -9,7 +11,7 @@ package org.esupportail.smsuapi.exceptions;
 			/**
 			 * The id for serialization.
 			 */
-			private static final long serialVersionUID = 8197090501242229324L;
+			@Serial private static final long serialVersionUID = 8197090501242229324L;
 
 			/**
 			 * @param message

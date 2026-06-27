@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.domain.beans.sms;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,10 +8,10 @@ import org.esupportail.smsuapi.dao.beans.Account;
 
 public class SMSBroker implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	@Serial private static final long serialVersionUID = 1L;
 
     static public class Rcpt implements Serializable {
-	   private static final long serialVersionUID = 1L;
+		@Serial private static final long serialVersionUID = 1L;
 	   public int id;
 	   public String recipient;
        public Rcpt(int id, String recipient) {

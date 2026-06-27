@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -26,7 +27,7 @@ public class Institution  implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = 5548416143260535777L;
+	@Serial private static final long serialVersionUID = 5548416143260535777L;
 
 	/**
 	 * Institution identifier.

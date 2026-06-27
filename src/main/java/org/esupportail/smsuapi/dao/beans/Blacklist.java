@@ -1,5 +1,6 @@
 package org.esupportail.smsuapi.dao.beans;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 
@@ -36,7 +37,7 @@ public class Blacklist  implements Serializable {
 	/**
 	 * The serialization id.
 	 */
-	private static final long serialVersionUID = -4890358065129207527L;
+	@Serial private static final long serialVersionUID = -4890358065129207527L;
 
 	/**
 	 * blacklist item identifier.
