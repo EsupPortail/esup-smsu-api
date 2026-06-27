@@ -26,7 +26,7 @@
 
     <bean 
     	id="smtpFromAddress" 
-    	class="javax.mail.internet.InternetAddress"
+    	class="jakarta.mail.internet.InternetAddress"
     	lazy-init="true"
     	>
         <property name="address" value="${smtp.fromEmail}" />
@@ -35,7 +35,7 @@
     
 	<bean 
 		id="smtpIntercept" 
-		class="javax.mail.internet.InternetAddress"
+		class="jakarta.mail.internet.InternetAddress"
     	lazy-init="true"
 		>
 		<property name="address" value="${smtp.interceptEmail}" /> 
@@ -44,7 +44,7 @@
 
 	<bean 
 		id="smtpTestAddress" 
-		class="javax.mail.internet.InternetAddress"
+		class="jakarta.mail.internet.InternetAddress"
 		lazy-init="true"
 		>
 		<property name="address" value="${smtp.testEmail}" /> 

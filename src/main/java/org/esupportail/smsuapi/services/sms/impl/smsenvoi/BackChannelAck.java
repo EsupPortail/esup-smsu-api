@@ -7,15 +7,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 
 import org.apache.log4j.Logger;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class BackChannelAck implements org.esupportail.smsuapi.services.sms.IBackChannelAck {
 

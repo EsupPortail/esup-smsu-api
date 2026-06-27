@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.services.sms.ackmanagement.AckManager;
 import org.esupportail.smsuapi.services.sms.ackmanagement.Acknowledgment;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import fr.cvf.util.mgs.mode.sgs.Manager;
 import fr.cvf.util.mgs.mode.sgs.message.request.SMText;

@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * Manage the purge in table SMS.

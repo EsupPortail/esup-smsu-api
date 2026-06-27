@@ -2,14 +2,14 @@ package org.esupportail.smsuapi.business;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.exceptions.AuthenticationFailed;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * @author xphp8691

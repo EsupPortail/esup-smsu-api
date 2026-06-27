@@ -16,7 +16,7 @@ import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
 import org.esupportail.ws.remote.beans.TrackInfos;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 
 

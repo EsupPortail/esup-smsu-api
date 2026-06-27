@@ -15,7 +15,7 @@ import org.esupportail.smsuapi.exceptions.InsufficientQuotaException;
 import org.esupportail.smsuapi.exceptions.InvalidParameterException;
 import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.ws.remote.beans.MsgIdAndPhone;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class RestServletActions {
 

@@ -14,7 +14,7 @@ import org.esupportail.smsuapi.exceptions.UnknownMessageIdException;
 import org.esupportail.smsuapi.services.client.HttpRequestSmsuapiWS;
 import org.esupportail.smsuapi.utils.HttpException;
 import org.esupportail.smsuapi.utils.HttpUtils.Pair;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 public class AckStatusProxy {
 		

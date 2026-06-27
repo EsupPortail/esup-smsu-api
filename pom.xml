@@ -79,9 +79,9 @@
 
   <dependencies>
                 <dependency>
-                        <groupId>javax.servlet</groupId>
-                        <artifactId>javax.servlet-api</artifactId>
-                        <version>3.1.0</version>
+                        <groupId>jakarta.servlet</groupId>
+                        <artifactId>jakarta.servlet-api</artifactId>
+                        <version>6.0.0</version>
                 </dependency>
 
 		<dependency>
@@ -219,6 +219,16 @@
 		  <groupId>fr.cvf.util</groupId>
 		  <artifactId>mode-sgs</artifactId>
 		  <version>2.0.5</version>            
+		</dependency>
+		<dependency>
+			<groupId>jakarta.inject</groupId>
+			<artifactId>jakarta.inject-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>

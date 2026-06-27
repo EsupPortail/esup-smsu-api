@@ -8,7 +8,7 @@ import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
 import org.esupportail.smsuapi.services.sms.ISMSSender;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

@@ -2,7 +2,7 @@ package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.services.sms.OldISMSSender;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import fr.cvf.util.mgs.message.NotificationLevel;
 import fr.cvf.util.mgs.mode.sgs.impl.message.request.RequestFactory;

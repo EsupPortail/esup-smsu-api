@@ -1,7 +1,7 @@
 package org.esupportail.smsuapi.services.sms.impl.olm;
 
 import org.springframework.beans.factory.InitializingBean;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import fr.cvf.util.mgs.Connector;
 import fr.cvf.util.mgs.ConnectorFactory;

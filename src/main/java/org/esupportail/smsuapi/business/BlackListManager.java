@@ -7,7 +7,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Blacklist;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 
 /**

@@ -12,7 +12,7 @@ import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.dao.beans.StatisticPK;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * This class manage the statistic creation.

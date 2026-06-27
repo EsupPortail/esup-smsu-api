@@ -8,11 +8,11 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
