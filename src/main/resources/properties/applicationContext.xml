@@ -23,7 +23,6 @@
 	</bean>
 
 	<import resource="business/business.xml" />
-	<import resource="cache/cache.xml" />
 	<import resource="dao/dao.xml" />
  	<import resource="domain/domain.xml" />
  	<import resource="export/export.xml" />
