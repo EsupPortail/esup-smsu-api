@@ -22,6 +22,7 @@ import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.TimestampType;
 
 
 /**
@@ -299,8 +300,8 @@ public class DaoService {
 	public int deleteSmsOlderThan(final Date date) {
 		final String hql = "delete from Sms as sms where sms.Date < :date";
 		
-		final Query query = getCurrentSession().createQuery(hql);
-		query.setTimestamp("date", date);
+		var query = getCurrentSession().createQuery(hql, Sms.class);
+		query.setParameter("date", date, TimestampType.INSTANCE);
 		
 		final int nbSmsDeleted = query.executeUpdate();
 		
@@ -413,12 +414,12 @@ public class DaoService {
 		hql.append("       month(stats.id.Month) = :month and");
 		hql.append("       day(stats.id.Month) = :day");
 		
-		final Query query = getCurrentSession().createQuery(hql.toString());
-		query.setInteger("app_id", application.getId());
-		query.setInteger("acc_id", account.getId());
-		query.setInteger("year", year);
-		query.setInteger("month", month);
-		query.setInteger("day", day);
+		var query = getCurrentSession().createQuery(hql.toString(), Statistic.class);
+		query.setParameter("app_id", application.getId());
+		query.setParameter("acc_id", account.getId());
+		query.setParameter("year", year);
+		query.setParameter("month", month);
+		query.setParameter("day", day);
 		return query.uniqueResult() != null;
 	}
 
