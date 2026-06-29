@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
@@ -37,10 +36,10 @@ public class StatisticBuilder {
 	 * Build all non already computed statistic whatever the application, account or date.
 	 */
 	public void buildAllStatistics() {
-		for (Map<String,?> map : daoService.getAppsAndAccounts()) {
+		for (var appAcc : daoService.getAppsAndAccounts()) {
 			// get the date of older SMS for this app and account
-			final Application application = (Application) map.get(Sms.PROP_APP);
-			final Account account = (Account) map.get(Sms.PROP_ACC);
+			final Application application = appAcc.app();
+			final Account account = appAcc.acc();
 			final Date olderSmsDate = daoService.getDateOfOlderSmsByApplicationAndAccount(application, account);
 			logger.debug("olderSmsDate for app=" + application.getName() + " account=" + account.getLabel() + " : " + " " + olderSmsDate);
 			// if there is not at least 1 sms in db for the specified app / account, the 

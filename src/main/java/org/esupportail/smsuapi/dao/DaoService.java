@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 //import org.apache.log4j.Logger;
@@ -21,13 +20,8 @@ import org.esupportail.smsuapi.dao.beans.Blacklist;
 import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 
 /**
@@ -70,11 +64,13 @@ public class DaoService {
 	 * used by sendSMS.
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	@SuppressWarnings("unchecked")
 	public Account getAccByLabel(final String labelAccount) {
-		Criteria criteria = getCurrentSession().createCriteria(Account.class);
-		criteria.add(Restrictions.eq(Account.PROP_LABEL, labelAccount));
-		List<Account> acc = criteria.list(); 
+		var query = getCurrentSession().createQuery("""
+		    FROM Account
+			WHERE Label = :Label
+		""", Account.class);
+		query.setParameter(Account.PROP_LABEL, labelAccount);
+		List<Account> acc = query.list(); 
 		if (acc.size() != 0) { return acc.get(0);
 		} else { return null; }
 		
@@ -85,13 +81,14 @@ public class DaoService {
 	 * used by sendSMS.
 	 * @see org.esupportail.smsuapi.services.remote.SendSms#getQuota()
 	 */
-	@SuppressWarnings("unchecked")
 	public int getBlackLListByPhone(final String phone) {
-		Criteria criteria = getCurrentSession().createCriteria(Blacklist.class);
-		criteria.add(Restrictions.eq(Blacklist.PROP_BLA_PHONE, phone));
-		List<Blacklist> bla = criteria.list();  
-		return  bla.size();  
-		
+		var query = getCurrentSession().createQuery("""
+		    SELECT count(*)
+			FROM Blacklist 
+			WHERE Phone = :Phone
+		""", Long.class);
+		query.setParameter(Blacklist.PROP_BLA_PHONE, phone);
+		return query.getSingleResult().intValue();
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -101,27 +98,30 @@ public class DaoService {
 	/**
 	 * @return the number of SMS recipients.
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbDest(final Integer msgId, final Application app) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			List<Sms> sms = criteria.list();  
-			return  sms.size();   
+			var query = getCurrentSession().createQuery("""
+			    SELECT count(*)
+				FROM Sms
+				WHERE InitialId = :InitialId AND App = :App
+			""", Long.class);
+			query.setParameter(Sms.PROP_INITIAL_ID, msgId);
+			query.setParameter(Sms.PROP_APP, app);
+			return query.getSingleResult().intValue();
 	}
 	
 	/**
 	 * @return the number of sms having one of the wanted states
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbSmsWithState(final Integer msgId, final Application app, final List<String> list) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.in(Sms.PROP_STATE, list));
-			List<Sms> sms = criteria.list();  
-			return  sms.size();   
-			
+			var query = getCurrentSession().createQuery("""
+			    SELECT count(*)
+				FROM Sms
+				WHERE InitialId = :InitialId AND App = :App AND State in :States
+			""", Long.class);
+			query.setParameter(Sms.PROP_INITIAL_ID, msgId);
+			query.setParameter(Sms.PROP_APP, app);
+			query.setParameter("States", list);
+			return query.getSingleResult().intValue();
 	}
 	
 	/**
@@ -148,13 +148,15 @@ public class DaoService {
 	/**
 	 * @return the list of phones SMS in error.
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Sms> getListNumErreur(final Integer msgId, final Application app) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.in(Sms.PROP_STATE, errorStatuses()));
-			return criteria.list();  
+			var query = getCurrentSession().createQuery("""
+			    FROM Sms
+				WHERE InitialId = :InitialId AND App = :App AND State in :States
+			""", Sms.class);
+			query.setParameter(Sms.PROP_INITIAL_ID, msgId);
+			query.setParameter(Sms.PROP_APP, app);
+			query.setParameter("States", errorStatuses());
+			return query.list();  
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -171,9 +173,12 @@ public class DaoService {
 	
 	public Sms getSmsByBrokerId(String id) {
 		Session currentSession = getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_BROKER_SMS_ID, id));
-		return (Sms) criteria.uniqueResult();
+		var query = currentSession.createQuery("""
+		    FROM Sms
+			WHERE BrokerId = :BrokerId
+		""", Sms.class);
+		query.setParameter(Sms.PROP_BROKER_SMS_ID, id);
+		return query.getSingleResult();
 	}
 	
 	/**
@@ -181,28 +186,35 @@ public class DaoService {
 	 * 
 	 * @see org.esupportail.smsuapi.dao.DaoService#getSms(org.esupportail.smsuapi.dao.beans.Application, int, java.lang.String)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Sms> getSms(final Application app, final  int id, final String phoneNumber) {
-		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID,id));
-		criteria.add(Restrictions.eq(Sms.PROP_APP,app));
-		criteria.add(Restrictions.eq(Sms.PROP_PHONE, phoneNumber));
-		return criteria.list();
+		var query = getCurrentSession().createQuery("""
+		    FROM Sms
+			WHERE InitialId = :InitialId and App = :App and Phone = :Phone
+		""", Sms.class);
+		query.setParameter(Sms.PROP_INITIAL_ID,id);
+		query.setParameter(Sms.PROP_APP,app);
+		query.setParameter(Sms.PROP_PHONE, phoneNumber);
+		return query.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Sms> getSms(SmsStatus status) {
-		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_STATE, status.name()));
-		return criteria.list();		
+		var query = getCurrentSession().createQuery("""
+		    FROM Sms
+			WHERE State = :State
+		""", Sms.class);
+		query.setParameter(Sms.PROP_STATE, status.name());
+		return query.list();		
 	}
 
 	public Integer getNewInitialId(Application app) {
-		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-		criteria.setProjection( Projections.max(Sms.PROP_INITIAL_ID) )
-				.add(Restrictions.eq(Sms.PROP_APP, app));
+		var query = getCurrentSession().createQuery("""
+		    SELECT max(InitialId)
+			FROM Sms
+			WHERE App = :App
+		""", Integer.class);
+		query.setParameter(Sms.PROP_APP, app);
 
-		Integer max = (Integer) criteria.uniqueResult();
+		Integer max = query.getSingleResult();
 		
 		return 1 + (max != null ? max : 0);
 	}
@@ -220,12 +232,14 @@ public class DaoService {
 	 * (org.esupportail.smsuapi.dao.beans.Application, org.esupportail.smsuapi.dao.beans.Account)
 	 */
 	public Date getDateOfOlderSmsByApplicationAndAccount(final Application application, final Account account) {
-		final Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_APP, application));
-		criteria.add(Restrictions.eq(Sms.PROP_ACC, account));
-		
-		criteria.setProjection(Projections.min(Sms.PROP_DATE));
-		return (Date) criteria.uniqueResult();
+		var query = getCurrentSession().createQuery("""
+		    SELECT min(Date)
+			FROM Sms
+			WHERE App = :App AND Acc = :Acc
+		""", Date.class);
+		query.setParameter(Sms.PROP_APP, application);
+		query.setParameter(Sms.PROP_ACC, account);
+		return query.getSingleResult();
 	}
 	
 	/* (non-Javadoc)
@@ -235,15 +249,17 @@ public class DaoService {
 	 */
 	public int getNbOfSmsByAppAndAccountAndDate(final Application application, final Account account,
 						final Date startDate, final Date endDate) {
-		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_APP, application));
-		criteria.add(Restrictions.eq(Sms.PROP_ACC, account));
-		criteria.add(Restrictions.between(Sms.PROP_DATE, startDate, endDate));
-		
-		criteria.setProjection(Projections.rowCount());
-		final Long count = (Long) criteria.uniqueResult();
-		return count.intValue();
+		var query = getCurrentSession().createQuery("""
+		    SELECT count(*)
+			FROM Sms
+			WHERE App = :App AND Acc = :Acc AND Date BEETWEEN :startDate and :endDate
+		""", Long.class);
+		query.setParameter(Sms.PROP_APP, application);
+		query.setParameter(Sms.PROP_ACC, account);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+
+		return query.getSingleResult().intValue();
 	}
 
     public List<String> errorStatuses() {
@@ -262,21 +278,18 @@ public class DaoService {
 	public int getNbOfSmsInErrorByAppAndAccountAndDate(final Application application, final Account account,
 						final Date startDate, final Date endDate) {
 		final Session currentSession = getCurrentSession();
-		final Criteria criteria = currentSession.createCriteria(Sms.class);
-		criteria.add(Restrictions.eq(Sms.PROP_APP, application));
-		criteria.add(Restrictions.eq(Sms.PROP_ACC, account));
-		criteria.add(Restrictions.between(Sms.PROP_DATE, startDate, endDate));
-		criteria.add(Restrictions.or(
-				          Restrictions.eq(Sms.PROP_STATE, SmsStatus.ERROR.name()), 
-				          Restrictions.or(
-		        		  Restrictions.eq(Sms.PROP_STATE, SmsStatus.ERROR_POST_BL.name()),
-		        		  Restrictions.eq(Sms.PROP_STATE, SmsStatus.ERROR_PRE_BL.name())
-				          )
-				    ));      
+		var query = currentSession.createQuery("""
+		    SELECT count(*)
+			FROM Sms
+			WHERE App = :App AND Acc = :Acc AND Date BEETWEEN :startDate AND :endDate AND State in :states
+		""", Long.class);
+		query.setParameter(Sms.PROP_APP, application);
+		query.setParameter(Sms.PROP_ACC, account);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		query.setParameter("states", errorStatuses());
 				          
-		criteria.setProjection(Projections.rowCount());
-		final Long count = (Long) criteria.uniqueResult();
-		return count.intValue();
+		return query.getSingleResult().intValue();
 	}
 	
 	
@@ -328,9 +341,12 @@ public class DaoService {
 	 * @see org.esupportail.smsuapi.dao.DaoService#getApplicationByName(java.lang.String)
 	 */
 	public Application getApplicationByName(final String name) {
-		Criteria criteria = getCurrentSession().createCriteria(Application.class);
-		criteria.add(Restrictions.eq(Application.PROP_NAME, name));
-		return (Application) criteria.uniqueResult();
+		var query = getCurrentSession().createQuery("""
+		    FROM Application
+			WHERE Name = :Name
+		""", Application.class);
+		query.setParameter(Application.PROP_NAME, name);
+		return query.getSingleResult();
 	}
 
 	//////////////////////////////////////////////////////////////
@@ -351,14 +367,18 @@ public class DaoService {
 	 * @see org.esupportail.smsuapi.dao.DaoService#isPhoneNumberInBlackList(java.lang.String)
 	 */
 	public boolean isPhoneNumberInBlackList(final String phoneNumber) {
-		final Criteria criteria = getCurrentSession().createCriteria(Blacklist.class);
-		criteria.add(Restrictions.eq(Blacklist.PROP_BLA_PHONE, phoneNumber));
-		return criteria.uniqueResult() != null;
+		var query = getCurrentSession().createQuery("""
+		    FROM Blacklist
+			WHERE Phone = :Phone
+		""", Blacklist.class);
+		query.setParameter(Blacklist.PROP_BLA_PHONE, phoneNumber);
+		return query.uniqueResult() != null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Blacklist> getListPhoneNumbersInBlackList() {
-        return getCurrentSession().createCriteria(Blacklist.class).list();
+        return getCurrentSession().createQuery("""
+                FROM Blacklist
+            """, Blacklist.class).list();
 	}
 	//////////////////////////////////////////////////////////////
 	// Statistic
@@ -401,21 +421,16 @@ public class DaoService {
 		query.setInteger("day", day);
 		return query.uniqueResult() != null;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Map<String,?>> getAppsAndAccounts() {
-		Criteria criteria = getCurrentSession().createCriteria(Sms.class);
+
+
+	public record AppAcc(Application app, Account acc) {}
 		
-		criteria.setProjection(Projections.projectionList()
-				.add( Projections.distinct(Projections.projectionList()
-						.add(Projections.property(Sms.PROP_APP), Sms.PROP_APP)
-						.add(Projections.property(Sms.PROP_ACC), Sms.PROP_ACC))));
-		
-		criteria.setResultTransformer(CriteriaSpecification.ALIAS_TO_ENTITY_MAP);
-		
-		List<Map<String,?>> result = criteria.list(); 
-		
-		return result;
+	public List<AppAcc> getAppsAndAccounts() {
+		var query = getCurrentSession().createQuery("""
+		    SELECT distinct new org.esupportail.smsuapi.dao.DaoService$AppAcc(sms.App as App, sms.Acc as Acc) 
+			FROM Sms sms
+		""", AppAcc.class);
+		return query.list(); 
 	}
 
 
