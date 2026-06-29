@@ -1,6 +1,6 @@
 package org.esupportail.smsuapi.services.scheduler;
 
-import java.util.Date;
+
 
 import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.domain.beans.sms.SMSBroker;
@@ -9,7 +9,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 
 import static org.quartz.TriggerBuilder.*;

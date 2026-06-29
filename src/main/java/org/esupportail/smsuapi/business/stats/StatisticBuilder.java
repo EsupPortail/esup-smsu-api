@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.esupportail.smsuapi.dao.DaoService;
 import org.esupportail.smsuapi.dao.beans.Account;
 import org.esupportail.smsuapi.dao.beans.Application;
-import org.esupportail.smsuapi.dao.beans.Sms;
 import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.dao.beans.StatisticPK;
 import javax.inject.Inject;
