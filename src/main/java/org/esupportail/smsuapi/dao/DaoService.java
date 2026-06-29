@@ -6,6 +6,7 @@ package org.esupportail.smsuapi.dao;
 
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -125,47 +126,22 @@ public class DaoService {
 	/**
 	 * @return the number of sent SMS.
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbSentSMS(final Integer msgId, final Application app) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.eq(Sms.PROP_STATE, SmsStatus.DELIVERED.name()));
-			List<Sms> sms = criteria.list();  
-				if (sms.isEmpty()) { return 0; 
-				} else { return  sms.size(); }  
-			
-
+	    return getNbSmsWithState(msgId, app, Collections.singletonList(SmsStatus.DELIVERED.name()));
 	}
 	
 	/**
 	 * @return the number of SMS in progress.
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbProgressSMS(final Integer msgId, final Application app) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.eq(Sms.PROP_STATE, SmsStatus.IN_PROGRESS.name()));
-			List<Sms> sms = criteria.list();  
-				if (sms.isEmpty()) { return 0; 
-				} else { return  sms.size(); }  
-			
-
+	    return getNbSmsWithState(msgId, app, Collections.singletonList(SmsStatus.IN_PROGRESS.name()));
 	}
 	
 	/**
 	 * @return the number of SMS in error.
 	 */
-	@SuppressWarnings("unchecked")
 	public int getNbErrorSMS(final Integer msgId, final Application app, final List<String> list) {
-			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
-			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
-			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.in(Sms.PROP_STATE, list));
-			List<Sms> sms = criteria.list();  
-			return  sms.size();   
-			
+	    return getNbSmsWithState(msgId, app, list);
 	}
 	
 	/**
