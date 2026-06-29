@@ -439,7 +439,7 @@ public class DaoService {
 		if (logger.isDebugEnabled()) {
 			logger.debug("adding " + object + "...");
 		}
-		getCurrentSession().save(object);
+		getCurrentSession().persist(object);
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}
@@ -450,7 +450,7 @@ public class DaoService {
 			logger.debug("adding " + objects + "...");
 		}
 		for (Object object : objects)
-		getCurrentSession().save(object);
+		getCurrentSession().persist(object);
 		if (logger.isDebugEnabled()) {
 			logger.debug("done.");
 		}
@@ -467,10 +467,6 @@ public class DaoService {
 		Object merged = getCurrentSession().merge(object);
 		if (logger.isDebugEnabled()) {
 			logger.debug("done, updating " + merged + "...");
-		}
-		getCurrentSession().update(merged);
-		if (logger.isDebugEnabled()) {
-			logger.debug("done.");
 		}
 	}
 
