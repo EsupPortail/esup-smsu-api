@@ -5,6 +5,7 @@ package org.esupportail.smsuapi.dao;
 
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -140,19 +141,19 @@ public class DaoService {
 	/**
 	 * @return the number of SMS in error.
 	 */
-	public int getNbErrorSMS(final Integer msgId, final Application app, final List<String> list) {
-	    return getNbSmsWithState(msgId, app, list);
+	public int getNbErrorSMS(final Integer msgId, final Application app) {
+	    return getNbSmsWithState(msgId, app, errorStatuses());
 	}
 	
 	/**
 	 * @return the list of phones SMS in error.
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Sms> getListNumErreur(final Integer msgId, final Application app, final List<String> list) {
+	public List<Sms> getListNumErreur(final Integer msgId, final Application app) {
 			Criteria criteria = getCurrentSession().createCriteria(Sms.class);
 			criteria.add(Restrictions.eq(Sms.PROP_INITIAL_ID, msgId));
 			criteria.add(Restrictions.eq(Sms.PROP_APP, app));
-			criteria.add(Restrictions.in(Sms.PROP_STATE, list));
+			criteria.add(Restrictions.in(Sms.PROP_STATE, errorStatuses()));
 			return criteria.list();  
 	}
 
@@ -244,6 +245,14 @@ public class DaoService {
 		final Long count = (Long) criteria.uniqueResult();
 		return count.intValue();
 	}
+
+    public List<String> errorStatuses() {
+        List<String> list = new ArrayList<>();
+        list.add(SmsStatus.ERROR.name());
+        list.add(SmsStatus.ERROR_PRE_BL.name());
+        list.add(SmsStatus.ERROR_POST_BL.name());
+        return list;
+    }
 	
 	/* (non-Javadoc)
 	 * @see org.esupportail.smsuapi.dao.DaoService#getNbOfSmsInErrorByAppAndAccountAndDate

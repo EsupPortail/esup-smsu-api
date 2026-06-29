@@ -49,8 +49,8 @@ public class DomainService {
 		infos.setNbDestBlackList(daoService.getNbSmsWithState(msgId, app, blacklistStatuses()));
 		infos.setNbSentSMS(daoService.getNbSentSMS(msgId, app));
 		infos.setNbProgressSMS(daoService.getNbProgressSMS(msgId, app));
-		infos.setNbErrorSMS(daoService.getNbErrorSMS(msgId, app, errorStatuses()));
-		infos.setListNumErreur(sms2phones(daoService.getListNumErreur(msgId, app, errorStatuses())));
+		infos.setNbErrorSMS(daoService.getNbErrorSMS(msgId, app));
+		infos.setListNumErreur(sms2phones(daoService.getListNumErreur(msgId, app)));
 		
 		logger.info("Response TrackInfos object, for the client of WS SendTrack : " + 
 				     "TrackInfos.NbDestTotal : " + infos.getNbDestTotal().toString() + 
@@ -67,14 +67,6 @@ public class DomainService {
 		return infos;
 	}
    
-    private List<String> errorStatuses() {
-		List<String> list = new ArrayList<>();
-		list.add(SmsStatus.ERROR.name());
-		list.add(SmsStatus.ERROR_PRE_BL.name());
-        list.add(SmsStatus.ERROR_POST_BL.name());
-        return list;
-    }
-
     private List<String> blacklistStatuses() {
         List<String> list = new ArrayList<>();
 		list.add(SmsStatus.ERROR_PRE_BL.name());
