@@ -42,6 +42,7 @@ public class StatisticBuilder {
 			final Application application = (Application) map.get(Sms.PROP_APP);
 			final Account account = (Account) map.get(Sms.PROP_ACC);
 			final Date olderSmsDate = daoService.getDateOfOlderSmsByApplicationAndAccount(application, account);
+			logger.debug("olderSmsDate for app=" + application.getName() + " account=" + account.getLabel() + " : " + " " + olderSmsDate);
 			// if there is not at least 1 sms in db for the specified app / account, the 
 			// previous method returns null, so we have to check it.
 			if (olderSmsDate != null) {
