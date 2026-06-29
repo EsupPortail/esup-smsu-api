@@ -22,7 +22,7 @@ import org.esupportail.smsuapi.dao.beans.Statistic;
 import org.esupportail.smsuapi.domain.beans.sms.SmsStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.type.TimestampType;
+import jakarta.persistence.TemporalType;
 
 
 /**
@@ -301,7 +301,7 @@ public class DaoService {
 		final String hql = "delete from Sms as sms where sms.Date < :date";
 		
 		var query = getCurrentSession().createQuery(hql, Sms.class);
-		query.setParameter("date", date, TimestampType.INSTANCE);
+		query.setParameter("date", date, TemporalType.TIMESTAMP);
 		
 		final int nbSmsDeleted = query.executeUpdate();
 		
