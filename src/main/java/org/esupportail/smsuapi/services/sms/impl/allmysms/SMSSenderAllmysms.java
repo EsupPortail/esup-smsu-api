@@ -17,6 +17,7 @@ import java.util.Set;
 import jakarta.inject.Inject;
 
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -75,7 +76,7 @@ public class SMSSenderAllmysms implements ISMSSender {
 
             // restTemplate will use here jacksonHttpMessageConverter for response json->object
             ResponseEntity<AllmysmsResponse> respEntity = restTemplate.exchange(
-                    simulateMessageSending ? simulate_wsUrl : wsUrl, HttpMethod.POST, new HttpEntity<>(params, null),
+                    simulateMessageSending ? simulate_wsUrl : wsUrl, HttpMethod.POST, new HttpEntity<>(params, (HttpHeaders) null),
                     AllmysmsResponse.class);
             AllmysmsResponse resp = respEntity.getBody();
             logger.info("allmysms response " + resp.toString());

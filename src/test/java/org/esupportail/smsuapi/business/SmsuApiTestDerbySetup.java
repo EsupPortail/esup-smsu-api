@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.dao.DataAccessResourceFailureException;
-import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.orm.jpa.hibernate.SessionHolder;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 

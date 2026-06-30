@@ -70,7 +70,7 @@
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-framework-bom</artifactId>
-        <version>6.2.19</version>
+        <version>7.0.8</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -144,7 +144,7 @@
 		<dependency>
 		  <groupId>org.hibernate.orm</groupId>
 		  <artifactId>hibernate-core</artifactId>
-		  <version>6.0.2.Final</version>
+		  <version>7.4.3.Final</version>
 		</dependency>
 		
 		<dependency>
