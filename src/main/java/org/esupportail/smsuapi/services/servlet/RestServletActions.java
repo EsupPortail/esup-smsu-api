@@ -37,7 +37,7 @@ public class RestServletActions {
 		return put(singletonMap("status", (Object)"OK"), "id", id);
 	}
 
-	/**
+	/*
 	   Since SendSms.sendSMS silently fail,
 	   and since we do not want to modify SOAP, we behave differently in REST: we do check first.
 	 */
